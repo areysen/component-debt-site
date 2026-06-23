@@ -1,17 +1,24 @@
 ---
-// Placeholder scaffold page. Replaced by the real landing page in U3.
+import Layout from "../layouts/Layout.astro";
+// Placeholder content. Replaced by the real landing page in U3.
 ---
-<!doctype html>
-<html lang="en">
-  <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-    <title>Component Debt</title>
-  </head>
-  <body>
-    <main>
-      <h1>Component Debt</h1>
-    </main>
-  </body>
-</html>
+
+<Layout title="Component Debt">
+  <section class="hero">
+    <div class="page">
+      <p class="kicker">Component Debt</p>
+      <h1>Layout scaffold</h1>
+      <p class="sub">Placeholder hero to verify the shared layout renders.</p>
+    </div>
+  </section>
+  <div class="page">
+    <section class="card">
+      <h2>Severity badge check</h2>
+      <p>
+        <span class="sev crit">High</span>
+        <span class="sev med">Medium</span>
+        <span class="sev low">Low</span>
+      </p>
+    </section>
+  </div>
+</Layout>

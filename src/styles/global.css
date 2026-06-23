@@ -1,0 +1,390 @@
+/* Component Debt: global tokens and shared chrome.
+   Single source of truth for the palette. Ported verbatim from the source
+   assets (launchpad.html, service-one-pager.html, sample-audit-report.html),
+   which share one WCAG AA-verified palette. Contrast ratios are recorded in
+   docs/accessibility/contrast-report.md; do not change a color here without
+   re-computing the affected pairs.
+
+   Severity is never conveyed by color alone: every severity badge pairs a
+   shape glyph and a text label with its color (see .sev rules). */
+
+:root {
+  /* Text + surfaces */
+  --ink: #15212b; /* headings, strongest text */
+  --body: #2b3742; /* body copy */
+  --muted: #566571; /* secondary / supporting text */
+  --accent: #1a4554; /* dark teal: section labels, prices */
+  --accent2: #236781; /* mid teal: links, accents */
+  --bg: #f4f7f8; /* page background */
+  --card: #ffffff; /* card / section surface */
+  --line: #dfe6ea; /* hairline borders (decorative) */
+  --chip: #eef3f4; /* tag / chip background */
+
+  /* Status text colors (paired with text labels, never color alone) */
+  --good: #155f3a;
+  --warn: #7a4d00;
+
+  /* Severity scale: high / medium / low. Each has bg, ink, border, and an
+     accent used for the finding card's left border. Paired with shape + text. */
+  --crit-bg: #fbe9e7;
+  --crit-ink: #8a1f12;
+  --crit-bd: #e6b3aa;
+  --crit-accent: #c0392b; /* high */
+  --warn-bg: #fdf3e3;
+  --warn-ink: #7a4d00;
+  --warn-bd: #e8d3a8;
+  --warn-accent: #b9821a; /* medium */
+  --low-bg: #eaf1f4;
+  --low-ink: #1f4d5f;
+  --low-bd: #c2d4dc;
+  --low-accent: #3d7d96; /* low */
+  --ok-bg: #e7f3ec;
+  --ok-ink: #155f3a;
+  --ok-bd: #b9ddca; /* good */
+
+  /* The teal hero/cover/end-CTA gradient. Dark stops chosen so white text and
+     UI clear AA (4.5:1) across the whole band. */
+  --grad: linear-gradient(135deg, #123540, #17576b);
+  --grad-ink: #123540; /* on-white text matching the gradient's dark stop */
+
+  --maxw: 980px;
+}
+
+* {
+  box-sizing: border-box;
+}
+html,
+body {
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: "Inter", "Segoe UI", "Helvetica Neue", Arial, sans-serif;
+  background: var(--bg);
+  color: var(--body);
+  line-height: 1.6;
+  font-size: 15px;
+  -webkit-font-smoothing: antialiased;
+}
+
+a {
+  color: var(--accent2);
+}
+
+/* Visible focus ring for every interactive element (keyboard navigation).
+   Not color alone: it is an outline (shape) with offset, visible on any bg. */
+:focus-visible {
+  outline: 3px solid var(--accent2);
+  outline-offset: 2px;
+  border-radius: 2px;
+}
+
+/* Skip link: visually hidden until focused. */
+.skip-link {
+  position: absolute;
+  left: -9999px;
+  top: 0;
+  background: #fff;
+  color: var(--grad-ink);
+  padding: 10px 16px;
+  border-radius: 8px;
+  font-weight: 700;
+  z-index: 100;
+}
+.skip-link:focus {
+  left: 16px;
+  top: 16px;
+}
+
+.wrap,
+.page {
+  max-width: var(--maxw);
+  margin: 0 auto;
+  padding: 0 20px;
+}
+
+/* ---- Headings / text primitives ---- */
+h1 {
+  color: var(--ink);
+}
+h2 {
+  font-size: 13px;
+  text-transform: uppercase;
+  letter-spacing: 1.3px;
+  color: var(--accent);
+  margin: 30px 0 14px;
+  font-weight: 700;
+}
+h3 {
+  font-size: 17px;
+  color: var(--ink);
+  margin: 0 0 6px;
+}
+p {
+  margin: 0 0 13px;
+}
+.lead {
+  font-size: 16.5px;
+  color: var(--ink);
+}
+.muted {
+  color: var(--muted);
+}
+
+ul.clean {
+  margin: 8px 0 14px;
+  padding-left: 20px;
+}
+ul.clean li {
+  margin-bottom: 7px;
+}
+ul.clean li strong {
+  color: var(--ink);
+}
+
+/* ---- Cards / sections ---- */
+section.card,
+.card {
+  background: var(--card);
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  padding: 24px 26px;
+  margin: 16px 0;
+  box-shadow: 0 1px 2px rgba(20, 40, 55, 0.04);
+}
+
+/* ---- Hero / cover / end-CTA gradient band ---- */
+.hero {
+  background: var(--grad);
+  color: #fff;
+  padding: 54px 0 46px;
+  margin-bottom: 30px;
+}
+.hero .page,
+.hero .wrap {
+  padding-bottom: 0;
+}
+.hero .kicker {
+  font-size: 12px;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: #cfe1e8; /* on dark teal, > 4.5:1 */
+  margin: 0 0 10px;
+}
+.hero h1 {
+  font-size: 34px;
+  line-height: 1.2;
+  margin: 0 0 12px;
+  letter-spacing: 0.2px;
+  color: #fff;
+}
+.hero .sub {
+  font-size: 17px;
+  color: #eef4f6;
+  margin: 0 0 24px;
+  max-width: 640px;
+} /* ~13:1 on dark teal */
+
+/* ---- CTA buttons ---- */
+.cta {
+  display: inline-block;
+  background: #fff;
+  color: var(--grad-ink);
+  font-weight: 700;
+  font-size: 15px;
+  padding: 13px 22px;
+  border-radius: 9px;
+  text-decoration: none;
+  border: 1px solid #fff;
+}
+.cta.secondary {
+  background: transparent;
+  color: #fff;
+  border-color: rgba(255, 255, 255, 0.65);
+  margin-left: 10px;
+}
+
+/* End CTA block (gradient, centered) */
+.endcta {
+  background: var(--grad);
+  color: #fff;
+  border-radius: 14px;
+  padding: 34px 30px;
+  text-align: center;
+  margin-top: 30px;
+}
+.endcta h2 {
+  color: #cfe1e8;
+  margin-top: 0;
+}
+.endcta p {
+  color: #eef4f6;
+  max-width: 560px;
+  margin: 0 auto 20px;
+}
+.endcta .placeholder-note {
+  font-size: 12.5px;
+  margin-top: 16px;
+  color: #cfe1e8;
+}
+
+/* ---- Tags / pills ---- */
+.tag {
+  display: inline-block;
+  background: var(--chip);
+  color: var(--accent);
+  font-size: 11px;
+  padding: 2px 9px;
+  border-radius: 99px;
+  font-weight: 600;
+  margin-bottom: 6px;
+}
+
+/* ---- Severity badges: shape + text + color (never color alone) ---- */
+.sev {
+  display: inline-block;
+  font-size: 11px;
+  font-weight: 700;
+  padding: 2px 9px;
+  border-radius: 6px;
+  letter-spacing: 0.4px;
+  border: 1px solid;
+}
+.sev.crit {
+  background: var(--crit-bg);
+  color: var(--crit-ink);
+  border-color: var(--crit-bd);
+}
+.sev.med {
+  background: var(--warn-bg);
+  color: var(--warn-ink);
+  border-color: var(--warn-bd);
+}
+.sev.low {
+  background: var(--low-bg);
+  color: var(--low-ink);
+  border-color: var(--low-bd);
+}
+.sev::before {
+  font-weight: 700;
+  margin-right: 4px;
+}
+.sev.crit::before {
+  content: "\25B2";
+} /* triangle = high */
+.sev.med::before {
+  content: "\25C6";
+} /* diamond  = medium */
+.sev.low::before {
+  content: "\25CF";
+} /* circle   = low */
+
+/* ---- Site header / nav ---- */
+.site-header {
+  background: var(--grad-ink);
+  color: #fff;
+}
+.site-header .nav-inner {
+  max-width: var(--maxw);
+  margin: 0 auto;
+  padding: 14px 20px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+.brand {
+  color: #fff;
+  font-weight: 800;
+  font-size: 16px;
+  letter-spacing: 0.3px;
+  text-decoration: none;
+}
+.brand:focus-visible {
+  outline-color: #fff;
+}
+.site-nav ul {
+  list-style: none;
+  display: flex;
+  gap: 20px;
+  margin: 0;
+  padding: 0;
+  flex-wrap: wrap;
+  align-items: center;
+}
+.site-nav a {
+  color: #eef4f6; /* ~13:1 on the dark teal header */
+  text-decoration: none;
+  font-size: 14px;
+  font-weight: 600;
+  padding: 4px 0;
+  border-bottom: 2px solid transparent; /* non-color active cue lives here */
+}
+.site-nav a:hover {
+  color: #fff;
+  border-bottom-color: rgba(255, 255, 255, 0.5);
+}
+.site-nav a:focus-visible {
+  outline-color: #fff;
+}
+/* Active page: underline + bold (non-color cues) paired with aria-current */
+.site-nav a[aria-current="page"] {
+  color: #fff;
+  font-weight: 800;
+  border-bottom-color: #fff;
+}
+.site-nav a[data-external]::after {
+  content: " \2197"; /* north-east arrow marks the outbound link */
+  font-weight: 700;
+}
+
+/* ---- Site footer ---- */
+.site-footer {
+  border-top: 1px solid var(--line);
+  margin-top: 40px;
+  background: var(--card);
+}
+.site-footer .foot-inner {
+  max-width: var(--maxw);
+  margin: 0 auto;
+  padding: 26px 20px 34px;
+  font-size: 13px;
+  color: var(--muted);
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px 28px;
+  justify-content: space-between;
+  align-items: baseline;
+}
+.site-footer a {
+  color: var(--accent2);
+  font-weight: 600;
+}
+.site-footer a[data-external]::after {
+  content: " \2197";
+  font-weight: 700;
+}
+.site-footer .foot-note {
+  max-width: 460px;
+}
+
+/* ---- Layout content wrapper for non-hero pages ---- */
+main {
+  display: block;
+}
+
+@media (max-width: 680px) {
+  .site-header .nav-inner {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+  .cta.secondary {
+    margin-left: 0;
+    margin-top: 10px;
+  }
+  .hero h1 {
+    font-size: 28px;
+  }
+}
