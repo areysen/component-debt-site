@@ -1,0 +1,6 @@
+dist/
+.astro/
+node_modules/
+package-lock.json
+# Decision artifacts: do not reformat plan/brief docs
+docs/plans/
