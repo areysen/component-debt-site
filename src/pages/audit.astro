@@ -1,0 +1,366 @@
+---
+import Layout from "../layouts/Layout.astro";
+import { MAILTO_AUDIT as mailto } from "../consts";
+
+const deliverables = [
+  {
+    name: "Written audit report",
+    body: "Findings graded by severity across tokens, components, theming, and accessibility, with code-level examples.",
+  },
+  {
+    name: "Prioritized fix roadmap",
+    body: "A phased plan ordered by impact, with effort estimates, so you know what to fix first and why.",
+  },
+  {
+    name: "Recorded walkthrough",
+    body: "A recording where I walk your team through the findings and the reasoning, watched on your own time.",
+  },
+  {
+    name: "30-minute Q&A call",
+    body: "One live session to dig into anything in the report and pressure-test the roadmap.",
+  },
+];
+
+const steps = [
+  {
+    name: "Intake form",
+    body: "You fill out a short written questionnaire: your stack, pain points, and read access to the repo and Figma. No discovery call needed.",
+  },
+  {
+    name: "The audit",
+    body: "I review your component library, styling and token approach, theming readiness, and accessibility against design-system maturity benchmarks.",
+  },
+  {
+    name: "Delivery",
+    body: "Within about a week you get the written report, roadmap, and recorded walkthrough.",
+  },
+  {
+    name: "Q&A",
+    body: "We spend 30 minutes on a call so your team can ask questions and align on next steps.",
+  },
+];
+---
+
+<Layout
+  title="The Design System Health Audit: Component Debt"
+  description="A fixed-scope, fully async audit of your component library, tokens, theming, and accessibility. One flat fee, about one week, written report plus recorded walkthrough plus a 30-minute Q&A."
+>
+  <section class="hero">
+    <div class="page">
+      <p class="kicker">Component Debt · Consulting</p>
+      <h1>
+        Find out what is actually wrong with your design system, in one week.
+      </h1>
+      <p class="sub">
+        A fixed-scope, fully async audit of your component library, tokens,
+        theming, and accessibility, delivered by a principal frontend and design
+        systems engineer. Written report, prioritized fix roadmap, and a
+        recorded walkthrough.
+      </p>
+      <a class="cta" href={mailto}>Start an audit</a>
+      <a class="cta secondary" href="#whatyouget">See what you get</a>
+      <p class="pricetag">
+        <b>$2,500</b> · fixed scope · about one week · fully async
+      </p>
+    </div>
+  </section>
+
+  <div class="page">
+    <section class="card">
+      <h2>The problem</h2>
+      <p class="lead">
+        Your UI works, but it is quietly working against you. The same button is
+        built five different ways, colors and spacing are hard-coded instead of
+        tokenized, and a few components fall short of accessibility standards
+        you cannot fully quantify. None of it is on fire; it is a steady tax on
+        velocity and quality that compounds as the team grows.
+      </p>
+      <p>
+        Most teams know something is off but cannot name it precisely enough to
+        fix it or justify the work. The Design System Health Audit turns that
+        vague friction into a specific, prioritized, evidence-backed list of
+        what is wrong and what to do about it.
+      </p>
+    </section>
+
+    <h2>Who this is for</h2>
+    <div class="twocol">
+      <div class="col yes card">
+        <h3>A good fit</h3>
+        <ul class="clean">
+          <li>
+            SMB and mid-market product teams with a real codebase and a UI that
+            has drifted
+          </li>
+          <li>Inconsistent components, no shared token or theming system</li>
+          <li>Accessibility gaps you suspect but have not measured</li>
+          <li>
+            Teams that want a clear-eyed diagnosis before committing to a
+            rebuild
+          </li>
+        </ul>
+      </div>
+      <div class="col no card">
+        <h3>Not a fit</h3>
+        <ul class="clean">
+          <li>Financial services, wealthtech, or fintech products</li>
+          <li>Greenfield projects with no UI to audit yet</li>
+          <li>
+            Teams looking for ongoing staff augmentation rather than a focused
+            diagnosis
+          </li>
+          <li>Anyone needing a same-day turnaround</li>
+        </ul>
+      </div>
+    </div>
+
+    <section class="card" id="whatyouget">
+      <h2>What you get</h2>
+      <div class="deliv">
+        {
+          deliverables.map((d) => (
+            <div class="item">
+              <h3>{d.name}</h3>
+              <p>{d.body}</p>
+            </div>
+          ))
+        }
+      </div>
+      <p class="muted see-sample">
+        <a href="/sample-report">See a sample report</a>
+      </p>
+    </section>
+
+    <section class="card">
+      <h2>How it works</h2>
+      <ol class="steps">
+        {
+          steps.map((s) => (
+            <li>
+              <h3>{s.name}</h3>
+              <p>{s.body}</p>
+            </li>
+          ))
+        }
+      </ol>
+      <p class="muted">
+        Everything runs async by default. The only scheduled time is the closing
+        30-minute Q&amp;A.
+      </p>
+    </section>
+
+    <section class="card">
+      <h2>Investment</h2>
+      <div class="pricebox">
+        <div class="amt">$2,500<span>fixed scope</span></div>
+        <div>
+          <p class="price-lead">
+            <strong>One flat fee.</strong> No hourly billing, no scope creep. You
+            know the price and the deliverables before we start.
+          </p>
+          <p class="muted no-margin">
+            Need the issues fixed, not just found? After the audit I offer
+            fixed-scope remediation engagements where I personally implement the
+            roadmap. Pricing scoped to your codebase, typically $6k to $15k.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <section class="card faq">
+      <h2>Questions</h2>
+      <h3>Do you need access to our private code?</h3>
+      <p>
+        Read-only access to the relevant repo and your Figma files is enough. I
+        work strictly on my own equipment and never reuse your code or assets
+        elsewhere.
+      </p>
+      <h3>What if we are not technical?</h3>
+      <p>
+        The report is written so an engineering manager or designer can follow
+        it, with deeper code-level detail in the findings for the engineers who
+        will do the work.
+      </p>
+      <h3>Can you just fix it?</h3>
+      <p>
+        Yes, that is the remediation engagement. The audit comes first so the
+        fix work is scoped against real findings rather than guesses.
+      </p>
+      <h3>Why fixed scope and async?</h3>
+      <p>
+        It keeps the price predictable, respects your team's time, and means you
+        are paying for findings and a plan, not for meetings.
+      </p>
+    </section>
+
+    <div class="endcta" id="start">
+      <h2>Start an audit</h2>
+      <p>
+        Send a note about your stack and what feels off. You will get a reply on
+        fit and timing within two business days. If it is not a fit, you will
+        hear that too.
+      </p>
+      <a class="cta" href={mailto}>Email to start an audit</a>
+      <p class="placeholder-note">
+        A hosted intake form will replace email here once it is set up.
+      </p>
+    </div>
+  </div>
+</Layout>
+
+<style>
+  .pricetag {
+    margin-top: 18px;
+    font-size: 13.5px;
+    color: #dcebf0;
+  }
+  .pricetag b {
+    color: #fff;
+  }
+
+  /* Who it's for: good-fit / not-a-fit. Headings carry a text label, not just
+     color, so the distinction does not rely on color. */
+  .twocol {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 18px;
+    margin: 6px 0;
+  }
+  .twocol .col {
+    margin: 0;
+  }
+  .twocol .col h3 {
+    font-size: 14px;
+    text-transform: uppercase;
+    letter-spacing: 0.6px;
+    margin-bottom: 10px;
+  }
+  .yes h3 {
+    color: var(--ok-ink);
+  }
+  .no h3 {
+    color: var(--crit-ink);
+  }
+
+  .deliv {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 14px;
+    margin: 8px 0;
+  }
+  .deliv .item {
+    border: 1px solid var(--line);
+    border-radius: 10px;
+    padding: 16px 18px;
+    background: #fbfdfd;
+  }
+  .deliv .item h3 {
+    font-size: 15.5px;
+    margin-bottom: 4px;
+  }
+  .deliv .item p {
+    font-size: 13.5px;
+    color: var(--muted);
+    margin: 0;
+  }
+  .see-sample {
+    margin-top: 6px;
+  }
+
+  /* Numbered process steps. The number is rendered text (a counter), so the
+     order reads without relying on color. */
+  ol.steps {
+    counter-reset: step;
+    list-style: none;
+    margin: 8px 0;
+    padding: 0;
+  }
+  ol.steps li {
+    position: relative;
+    padding: 4px 0 16px 46px;
+    margin: 0;
+  }
+  ol.steps li::before {
+    counter-increment: step;
+    content: counter(step);
+    position: absolute;
+    left: 0;
+    top: 2px;
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    background: var(--accent);
+    color: #fff;
+    font-weight: 700;
+    font-size: 14px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  ol.steps li::after {
+    content: "";
+    position: absolute;
+    left: 14px;
+    top: 32px;
+    bottom: 0;
+    width: 2px;
+    background: var(--line);
+  }
+  ol.steps li:last-child::after {
+    display: none;
+  }
+  ol.steps h3 {
+    font-size: 15.5px;
+    margin-bottom: 2px;
+  }
+  ol.steps p {
+    font-size: 13.5px;
+    color: var(--muted);
+    margin: 0;
+  }
+
+  .pricebox {
+    display: grid;
+    grid-template-columns: auto 1fr;
+    gap: 24px;
+    align-items: center;
+  }
+  .pricebox .amt {
+    font-size: 40px;
+    font-weight: 800;
+    color: var(--accent);
+    line-height: 1;
+  }
+  .pricebox .amt span {
+    display: block;
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--muted);
+    text-transform: uppercase;
+    letter-spacing: 0.6px;
+    margin-top: 6px;
+  }
+  .price-lead {
+    margin: 0 0 6px;
+  }
+  .no-margin {
+    margin: 0;
+  }
+
+  .faq h3 {
+    font-size: 15px;
+    margin-top: 16px;
+  }
+  .faq p {
+    font-size: 14px;
+    color: var(--body);
+  }
+
+  @media (max-width: 680px) {
+    .twocol,
+    .deliv,
+    .pricebox {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>

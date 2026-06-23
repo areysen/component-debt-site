@@ -1,5 +1,6 @@
 ---
 import "../styles/global.css";
+import { SUBSTACK_URL } from "../consts";
 
 interface Props {
   title: string;
@@ -7,8 +8,6 @@ interface Props {
 }
 
 const { title, description } = Astro.props;
-
-const SUBSTACK_URL = "https://componentdebt.substack.com";
 
 // Normalize the current path (strip a trailing slash except for root) so the
 // active-nav match works whether or not the build emits trailing slashes.
