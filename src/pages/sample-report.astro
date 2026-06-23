@@ -1,0 +1,637 @@
+---
+import Layout from "../layouts/Layout.astro";
+---
+
+<Layout
+  title="Design System Health Audit (Sample): Component Debt"
+  description="A sample Design System Health Audit deliverable: executive summary, severity-graded findings, and a prioritized remediation roadmap. Findings and client are illustrative."
+>
+  <section class="hero cover">
+    <div class="page">
+      <p class="kicker">Design System Health Audit</p>
+      <h1>Northwind Health: Web Platform UI</h1>
+      <p class="sub">
+        Findings, severity, and a prioritized remediation roadmap.
+      </p>
+      <div class="meta">
+        <div><b>Prepared for</b>Northwind Health, Inc. (sample)</div>
+        <div><b>Prepared by</b>Andrew Reysen, Frontend and Design Systems</div>
+        <div>
+          <b>Scope</b>Web app: component library, tokens, theming, accessibility
+        </div>
+        <div><b>Date</b>Sample report</div>
+      </div>
+    </div>
+  </section>
+
+  <div class="page">
+    <section class="card">
+      <h2>Executive summary</h2>
+      <p class="lead">
+        Northwind's web UI works, but it has grown without a shared system. The
+        same elements are built several different ways across the app, color and
+        spacing values are hard-coded rather than tokenized, and several
+        components fall short of accessibility standards. The result is slower
+        feature work, visible inconsistency for users, and avoidable
+        accessibility risk.
+      </p>
+      <p>
+        This audit reviewed the component library, styling approach, theming,
+        and accessibility across the primary web application. It identifies
+        <strong>3 high, 4 medium, and 3 low</strong> severity issues, and lays out
+        a prioritized roadmap to move from an ad hoc UI to a maintainable design system.
+        None of the issues are catastrophic; together they are a steady tax on velocity
+        and quality that compounds as the team grows.
+      </p>
+
+      <div class="scores">
+        <div class="score">
+          <div class="n grade">C&minus;</div><div class="l">Overall health</div>
+        </div>
+        <div class="score">
+          <div class="n">10</div><div class="l">Findings</div>
+        </div>
+        <div class="score">
+          <div class="n">6</div><div class="l">Button variants found</div>
+        </div>
+        <div class="score">
+          <div class="n">0</div><div class="l">Shared token files</div>
+        </div>
+      </div>
+      <p class="note score-note">
+        Grade reflects consistency, reuse, theming readiness, and accessibility
+        against common design-system maturity benchmarks. "6 button variants"
+        means six visually different button implementations doing the same job.
+      </p>
+    </section>
+
+    <section class="card">
+      <h2>What was reviewed</h2>
+      <ul class="clean">
+        <li>
+          Component library and shared UI code (structure, duplication, naming)
+        </li>
+        <li>
+          Styling approach: hard-coded values versus design tokens; CSS
+          organization
+        </li>
+        <li>Theming and white-label readiness</li>
+        <li>
+          Accessibility: color contrast, focus states, semantic markup, keyboard
+          support
+        </li>
+        <li>Design-to-code consistency (Figma intent versus shipped UI)</li>
+      </ul>
+      <h2 class="legend-heading">Severity legend</h2>
+      <div class="legend">
+        <span
+          ><span class="sev crit">High</span> Costs velocity or creates user or accessibility
+          risk now.</span
+        >
+        <span
+          ><span class="sev med">Medium</span> Meaningful drag; fix soon.</span
+        >
+        <span
+          ><span class="sev low">Low</span> Polish; fix opportunistically.</span
+        >
+      </div>
+      <p class="note">
+        Severity is shown by shape and label as well as color, so it reads
+        clearly for everyone including colorblind readers.
+      </p>
+    </section>
+
+    <h2 class="findings-heading">Findings</h2>
+
+    <div class="finding crit">
+      <div class="head">
+        <span class="id">DS-01</span><span class="sev crit">High</span>
+      </div>
+      <h3>No design tokens; color and spacing are hard-coded everywhere</h3>
+      <div class="where">Found across 40+ component and stylesheet files</div>
+      <p>
+        Brand colors, spacing, and font sizes are written as literal values (for
+        example <code>#2f6fed</code>, <code>16px</code>) scattered through the
+        codebase rather than referenced from a central token source. The same
+        blue appears as <code>#2f6fed</code>, <code>#2e6fed</code>, and
+        <code>#3170ee</code> in different places, which is three "brand blues" that
+        are meant to be one.
+      </p>
+      <div class="label">Example</div>
+      <pre
+        class="code"><span class="c">/* card.css */</span>
+.card-title &#123; color: #2f6fed; padding: 16px; &#125;
+<span class="c">/* banner.css, same intent, different values */</span>
+.banner h2  &#123; color: #3170ee; padding: 15px; &#125;</pre>
+      <div class="label">Recommendation</div>
+      <p>
+        Introduce a three-layer token system: primitive (raw values), semantic (<code
+          >--color-brand</code
+        >, <code>--space-md</code>), and component. Migrate hard-coded values to
+        semantic tokens. This is the highest-impact change in this report;
+        nearly every other issue gets easier once tokens exist.
+      </p>
+      <div class="impact">
+        <strong>Impact:</strong> Brand changes become a one-line edit instead of a
+        find-and-replace across the codebase. Theming and white-labeling become possible
+        (see DS-04).
+      </div>
+    </div>
+
+    <div class="finding crit">
+      <div class="head">
+        <span class="id">DS-02</span><span class="sev crit">High</span>
+      </div>
+      <h3>Six different button implementations</h3>
+      <div class="where">
+        btn.css, Button.tsx, LegacyButton.tsx, inline styles in 3 views
+      </div>
+      <p>
+        The app has at least six visually distinct ways to render a button, with
+        different padding, radius, hover behavior, and disabled states. New work
+        copies whichever one is nearest, so the count keeps growing. Users see
+        subtly different buttons across screens.
+      </p>
+      <div class="label">Recommendation</div>
+      <p>
+        Build one canonical <code>Button</code> component with documented variants
+        (primary, secondary, ghost, destructive) and sizes. Replace the others incrementally,
+        starting with the highest-traffic screens. Add a lint rule that flags raw
+        <code>&lt;button&gt;</code> styling outside the component.
+      </p>
+      <div class="impact">
+        <strong>Impact:</strong> One place to fix bugs and accessibility; consistent
+        UX; faster feature work because engineers stop re-deciding button styling.
+      </div>
+    </div>
+
+    <div class="finding crit">
+      <div class="head">
+        <span class="id">A11Y-01</span><span class="sev crit">High</span>
+      </div>
+      <h3>Primary button fails WCAG AA color contrast</h3>
+      <div class="where">
+        Primary button: white text <code>#ffffff</code> on <code>#5b9bd5</code>
+      </div>
+      <p>
+        The primary action button has a text-to-background contrast ratio of
+        about
+        <strong>2.6:1</strong>. WCAG AA requires <strong>4.5:1</strong> for normal
+        text. This is the most-clicked element in the product and it is hard to read
+        for low-vision users, and a measurable accessibility-compliance gap.
+      </p>
+      <div class="label">Recommendation</div>
+      <p>
+        Darken the button background to approximately <code>#2c6ca6</code> (about
+        4.6:1 with white) or darken the text. Once tokens exist (DS-01), enforce contrast
+        at the token level so it cannot regress.
+      </p>
+      <div class="impact">
+        <strong>Impact:</strong> Removes compliance risk, improves usability for all
+        users, and is a quick win.
+      </div>
+    </div>
+
+    <div class="finding med">
+      <div class="head">
+        <span class="id">DS-03</span><span class="sev med">Medium</span>
+      </div>
+      <h3>Inconsistent spacing scale</h3>
+      <div class="where">
+        Global; spacing values range freely from 4px to 40px
+      </div>
+      <p>
+        Spacing uses arbitrary values (13px, 15px, 18px, 22px) rather than a
+        fixed scale. Layouts look slightly "off" in places and engineers guess
+        at values.
+      </p>
+      <div class="label">Recommendation</div>
+      <p>
+        Adopt a spacing scale (4, 8, 12, 16, 24, 32, 48) as semantic tokens and
+        snap existing values to the nearest step.
+      </p>
+    </div>
+
+    <div class="finding med">
+      <div class="head">
+        <span class="id">DS-04</span><span class="sev med">Medium</span>
+      </div>
+      <h3>No theming layer; white-label is not feasible today</h3>
+      <div class="where">Styling architecture</div>
+      <p>
+        Because values are hard-coded (DS-01), the app cannot be re-themed for a
+        partner or a dark mode without editing source throughout. If multi-brand
+        or dark mode is on the roadmap, this is a blocker.
+      </p>
+      <div class="label">Recommendation</div>
+      <p>
+        Once semantic tokens land, add a theme layer that overrides token values
+        per brand or mode. This is incremental on top of DS-01, not separate
+        work.
+      </p>
+    </div>
+
+    <div class="finding med">
+      <div class="head">
+        <span class="id">A11Y-02</span><span class="sev med">Medium</span>
+      </div>
+      <h3>Missing visible focus states on interactive elements</h3>
+      <div class="where">Custom dropdowns, icon buttons, card links</div>
+      <p>
+        Several interactive elements remove the browser's default focus outline
+        without replacing it. Keyboard users cannot tell where they are on the
+        page, which fails WCAG 2.4.7.
+      </p>
+      <div class="label">Recommendation</div>
+      <p>
+        Add a consistent, token-driven <code>:focus-visible</code> style to the shared
+        components. One fix in the canonical components covers most of the app.
+      </p>
+    </div>
+
+    <div class="finding med">
+      <div class="head">
+        <span class="id">DS-05</span><span class="sev med">Medium</span>
+      </div>
+      <h3>Component naming and folder structure are inconsistent</h3>
+      <div class="where">src/components, src/ui, src/shared (overlapping)</div>
+      <p>
+        Shared components live in three different folders with mixed naming
+        conventions (<code>PascalCase</code>, <code>kebab-case</code>,
+        abbreviations). New engineers cannot predict where a component lives or
+        what to call a new one.
+      </p>
+      <div class="label">Recommendation</div>
+      <p>
+        Consolidate to a single <code>ui/</code> library with a documented naming
+        convention and an index. Document it in the contributing guide.
+      </p>
+    </div>
+
+    <div class="finding low">
+      <div class="head">
+        <span class="id">DS-06</span><span class="sev low">Low</span>
+      </div>
+      <h3>No component documentation or living examples</h3>
+      <div class="where">No Storybook or equivalent</div>
+      <p>
+        There is no place to see components in isolation, so engineers read
+        source to learn usage and designers cannot verify what shipped.
+      </p>
+      <div class="label">Recommendation</div>
+      <p>
+        Stand up Storybook for the canonical components as they are built. Pairs
+        naturally with the DS-02 button work.
+      </p>
+    </div>
+
+    <div class="finding low">
+      <div class="head">
+        <span class="id">DS-07</span><span class="sev low">Low</span>
+      </div>
+      <h3>Icon usage is mixed (inline SVG, icon font, and PNGs)</h3>
+      <div class="where">Header, nav, empty states</div>
+      <p>
+        Three icon delivery methods coexist, increasing bundle size and visual
+        inconsistency in stroke weight and sizing.
+      </p>
+      <div class="label">Recommendation</div>
+      <p>
+        Standardize on a single inline-SVG icon set wrapped in one
+        <code>Icon</code> component with size tokens.
+      </p>
+    </div>
+
+    <div class="finding low">
+      <div class="head">
+        <span class="id">A11Y-03</span><span class="sev low">Low</span>
+      </div>
+      <h3>Some images and icon buttons lack accessible labels</h3>
+      <div class="where">Dashboard icon buttons; a few content images</div>
+      <p>
+        Icon-only buttons and a handful of images are missing
+        <code>aria-label</code> or <code>alt</code> text, so screen readers announce
+        them as unlabeled.
+      </p>
+      <div class="label">Recommendation</div>
+      <p>
+        Add labels; bake the requirement into the <code>Icon</code> and
+        <code>Button</code> components so it is hard to omit.
+      </p>
+    </div>
+
+    <section class="card">
+      <h2>Prioritized remediation roadmap</h2>
+      <p class="muted">
+        Ordered by impact. The first phase unblocks most of the rest.
+      </p>
+      <table>
+        <thead>
+          <tr><th>Phase</th><th>Work</th><th>Addresses</th><th>Effort</th></tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><b>1. Foundation</b></td>
+            <td
+              >Introduce 3-layer design tokens; migrate the highest-traffic
+              screens</td
+            >
+            <td>DS-01, DS-03, A11Y-01</td>
+            <td class="eff">about 1 to 2 weeks</td>
+          </tr>
+          <tr>
+            <td><b>2. Core components</b></td>
+            <td
+              >Build canonical Button and Icon; add focus states; start
+              Storybook</td
+            >
+            <td>DS-02, DS-06, DS-07, A11Y-02, A11Y-03</td>
+            <td class="eff">about 2 weeks</td>
+          </tr>
+          <tr>
+            <td><b>3. Theming</b></td>
+            <td>Add theme override layer (dark mode and white-label ready)</td>
+            <td>DS-04</td>
+            <td class="eff">about 1 week</td>
+          </tr>
+          <tr>
+            <td><b>4. Structure and guardrails</b></td>
+            <td
+              >Consolidate component folders; add lint rules to prevent
+              regression</td
+            >
+            <td>DS-05, ongoing</td>
+            <td class="eff">about 1 week</td>
+          </tr>
+        </tbody>
+      </table>
+      <p class="note">
+        Effort assumes one focused engineer and is incremental; the app keeps
+        shipping throughout. I can scope and deliver phases 1 and 2 as a
+        follow-on engagement.
+      </p>
+    </section>
+
+    <section class="card">
+      <h2>What is already working</h2>
+      <ul class="clean">
+        <li>
+          Component logic is generally clean and well-separated from styling,
+          which gives tokenization a clean place to start.
+        </li>
+        <li>
+          The team already uses a single CSS approach (no competing frameworks),
+          so there is one place to introduce tokens.
+        </li>
+        <li>
+          Recent components show better patterns than older ones, so the team's
+          instincts are right; they just lack a shared system to apply them.
+        </li>
+      </ul>
+      <p class="muted">
+        This is a healthy starting point. The issues here are typical of a
+        product that grew faster than its UI foundation, and they are very
+        fixable.
+      </p>
+    </section>
+
+    <section class="card">
+      <h2>Recommended next steps</h2>
+      <ul class="clean">
+        <li>
+          <strong>Quick wins this week:</strong> fix the primary-button contrast (A11Y-01)
+          and add focus states (A11Y-02). Low effort, immediate user and compliance
+          benefit.
+        </li>
+        <li>
+          <strong>Highest impact:</strong> begin Phase 1 (tokens). Everything else
+          gets easier afterward.
+        </li>
+        <li>
+          <strong>Optional:</strong> I can deliver Phases 1 and 2 as a fixed-scope
+          remediation engagement, leaving your team with a documented system and the
+          guardrails to keep it healthy.
+        </li>
+      </ul>
+    </section>
+
+    <div class="report-foot">
+      Sample deliverable prepared as an illustrative example. Findings and the
+      client are fictional. Methodology and format reflect a real Design System
+      Health Audit engagement.
+    </div>
+  </div>
+</Layout>
+
+<style>
+  /* Cover variant of the hero: tighter, with a metadata strip. */
+  .cover .sub {
+    font-size: 15px;
+  }
+  .cover .meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 22px;
+    font-size: 13px;
+    color: #dcebf0;
+    border-top: 1px solid rgba(255, 255, 255, 0.25);
+    padding-top: 14px;
+  }
+  .cover .meta b {
+    color: #fff;
+    display: block;
+    font-size: 11px;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+    margin-bottom: 2px;
+    font-weight: 600;
+  }
+
+  /* Scorecard */
+  .scores {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 12px;
+    margin: 6px 0;
+  }
+  .score {
+    border: 1px solid var(--line);
+    border-radius: 10px;
+    padding: 14px;
+    text-align: center;
+    background: #fbfdfd;
+  }
+  .score .n {
+    font-size: 26px;
+    font-weight: 800;
+    color: var(--accent);
+  }
+  .score .l {
+    font-size: 11.5px;
+    color: var(--muted);
+    text-transform: uppercase;
+    letter-spacing: 0.6px;
+    margin-top: 2px;
+  }
+  .grade {
+    display: inline-block;
+    min-width: 30px;
+  }
+  .note {
+    font-size: 12px;
+    color: var(--muted);
+    font-style: italic;
+  }
+  .score-note {
+    margin-top: 12px;
+  }
+  .legend-heading {
+    margin-top: 18px;
+  }
+  .findings-heading {
+    margin-top: 8px;
+  }
+
+  /* Severity legend row */
+  .legend {
+    display: flex;
+    gap: 16px;
+    flex-wrap: wrap;
+    font-size: 12.5px;
+    color: var(--muted);
+    margin: 4px 0 2px;
+  }
+
+  /* Findings: card with a severity-colored left border. The border is a
+     redundant cue; severity is already carried by the .sev badge's shape and
+     text, so removing color still leaves the severity legible. */
+  .finding {
+    border: 1px solid var(--line);
+    border-left-width: 4px;
+    border-radius: 10px;
+    padding: 16px 18px;
+    margin: 12px 0;
+    background: #fff;
+  }
+  .finding.crit {
+    border-left-color: var(--crit-accent);
+  }
+  .finding.med {
+    border-left-color: var(--warn-accent);
+  }
+  .finding.low {
+    border-left-color: var(--low-accent);
+  }
+  .finding .head {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 12px;
+    margin-bottom: 6px;
+  }
+  .finding .id {
+    font-size: 12px;
+    color: var(--muted);
+    font-weight: 600;
+  }
+  .finding h3 {
+    margin: 2px 0 4px;
+  }
+  .finding .where {
+    font-size: 12.5px;
+    color: var(--muted);
+    margin-bottom: 8px;
+  }
+  .finding .label {
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.6px;
+    color: var(--accent);
+    font-weight: 700;
+    margin: 10px 0 2px;
+  }
+  .finding code {
+    font-size: 12.5px;
+    background: var(--chip);
+    padding: 1px 5px;
+    border-radius: 4px;
+  }
+  pre.code {
+    background: #0f2630;
+    color: #e7f0f3;
+    border-radius: 8px;
+    padding: 12px 14px;
+    overflow: auto;
+    font-size: 12.5px;
+    line-height: 1.5;
+    margin: 6px 0 4px;
+  }
+  pre.code .c {
+    color: #9cc2cf;
+  }
+  .impact {
+    background: var(--low-bg);
+    border: 1px solid var(--low-bd);
+    border-radius: 8px;
+    padding: 9px 12px;
+    font-size: 13px;
+    color: var(--low-ink);
+    margin-top: 8px;
+  }
+
+  /* Roadmap table */
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 13.5px;
+    margin: 6px 0;
+  }
+  th,
+  td {
+    text-align: left;
+    padding: 9px 10px;
+    border-bottom: 1px solid var(--line);
+    vertical-align: top;
+  }
+  th {
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.6px;
+    color: var(--accent);
+    font-weight: 700;
+  }
+  td .eff {
+    font-weight: 600;
+    color: var(--ink);
+  }
+
+  .report-foot {
+    font-size: 12px;
+    color: var(--muted);
+    border-top: 1px solid var(--line);
+    margin-top: 26px;
+    padding-top: 14px;
+  }
+
+  @media (max-width: 680px) {
+    .scores {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+
+  /* Print: the sample should read as a real deliverable on paper. Keep the
+     cover gradient (exact color), drop card shadows. */
+  @media print {
+    body {
+      background: #fff;
+    }
+    section.card,
+    .finding {
+      box-shadow: none;
+    }
+    .cover {
+      -webkit-print-color-adjust: exact;
+      print-color-adjust: exact;
+    }
+  }
+</style>
