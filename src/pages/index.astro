@@ -1,0 +1,243 @@
+---
+import Layout from "../layouts/Layout.astro";
+import { MAILTO_AUDIT as mailto } from "../consts";
+
+const pillars = [
+  {
+    name: "Token architecture",
+    body: "Whether color, spacing, and type live in a real token layer or are hard-coded across the codebase. A token layer is the foundation every other fix builds on.",
+  },
+  {
+    name: "Component API consistency",
+    body: "Whether the same UI element is built one canonical way or five competing ways. Inconsistent component APIs slow every new feature and multiply the surface for bugs.",
+  },
+  {
+    name: "Accessibility",
+    body: "Whether components meet WCAG AA: contrast computed not guessed, real focus states, keyboard support, and state never signaled by color alone.",
+  },
+  {
+    name: "Documentation",
+    body: "Whether the system is written down and discoverable, so the team can extend it without reading source or re-deciding settled questions.",
+  },
+];
+---
+
+<Layout
+  title="Component Debt: Design System Health Audits"
+  description="A fixed-scope, fully async audit of your component library, tokens, theming, and accessibility. Written report, prioritized roadmap, and a recorded walkthrough in about one week."
+>
+  <section class="hero">
+    <div class="page">
+      <p class="kicker">Component Debt</p>
+      <h1>Find out what is actually wrong with your design system.</h1>
+      <p class="sub">
+        Your UI works, but it is quietly working against you: the same button
+        built five ways, colors hard-coded instead of tokenized, components that
+        fall short of accessibility standards you cannot fully measure. The
+        Design System Health Audit turns that vague friction into a specific,
+        prioritized, evidence-backed plan. Fixed scope, fully async, about one
+        week.
+      </p>
+      <a class="cta" href={mailto}>Start an audit</a>
+      <a class="cta secondary" href="/audit">See what you get</a>
+      <p class="pricetag">
+        <b>$2,500</b> fixed scope · about one week · fully async
+      </p>
+    </div>
+  </section>
+
+  <div class="page">
+    <section class="card">
+      <h2>What the audit covers</h2>
+      <p class="lead">
+        Four pillars decide whether a design system helps a team move faster or
+        taxes every change. The audit grades each one against design-system
+        maturity benchmarks and shows you exactly where you stand.
+      </p>
+      <div class="pillars">
+        {
+          pillars.map((p, i) => (
+            <div class="pillar">
+              <div class="pillar-num" aria-hidden="true">
+                {i + 1}
+              </div>
+              <h3>{p.name}</h3>
+              <p class="muted">{p.body}</p>
+            </div>
+          ))
+        }
+      </div>
+    </section>
+
+    <section class="card">
+      <h2>The offer</h2>
+      <p>
+        Fixed scope and fixed price, so there is no hourly meter and no scope
+        creep. Start with the audit; it is the clear first step that tells you
+        what to fix and in what order.
+      </p>
+      <div class="offer">
+        <div class="tier featured">
+          <span class="tag">Start here</span>
+          <div class="name">Design System Health Audit</div>
+          <div class="price">$2,500 <small>fixed · about one week</small></div>
+          <ul class="clean">
+            <li>
+              Review of components, tokens, theming, and design-to-code
+              consistency
+            </li>
+            <li>
+              Accessibility (WCAG AA) gap check, contrast computed not guessed
+            </li>
+            <li>Written report with findings graded by severity</li>
+            <li>Prioritized fix roadmap ordered by impact</li>
+            <li>Recorded walkthrough you can watch on your own time</li>
+            <li>One 30-minute Q&amp;A call included</li>
+          </ul>
+        </div>
+        <div class="tier">
+          <span class="tag">Next step</span>
+          <div class="name">Remediation</div>
+          <div class="price">
+            $6k&ndash;$15k <small>scoped per project</small>
+          </div>
+          <ul class="clean">
+            <li>Build the token layer (primitive, semantic, themed)</li>
+            <li>Consolidate components into one documented library</li>
+            <li>Theming foundation for dark mode or white-label</li>
+            <li>Documentation and handoff so the team can maintain it</li>
+          </ul>
+        </div>
+      </div>
+      <p class="muted">
+        The audit comes first, so remediation is scoped against real findings
+        rather than guesses.
+      </p>
+    </section>
+
+    <section class="card">
+      <h2>How to start</h2>
+      <p>
+        The audit runs async by default. The only scheduled time is the closing
+        30-minute Q&amp;A. Send a note about your stack and what feels off, and
+        you will get a reply on fit and timing within two business days. If it
+        is not a fit, you will hear that too.
+      </p>
+      <p>
+        <a class="cta" href={mailto}>Email to start an audit</a>
+        <a class="cta secondary inline-dark" href={mailto} data-placeholder>
+          Intake form (coming soon)
+        </a>
+      </p>
+      <p class="muted placeholder-caption">
+        The intake form link is a placeholder pointing at email for now. It will
+        be swapped for a hosted intake form once that is set up.
+      </p>
+    </section>
+  </div>
+</Layout>
+
+<style>
+  .pricetag {
+    margin-top: 18px;
+    font-size: 13.5px;
+    color: #dcebf0;
+  }
+  .pricetag b {
+    color: #fff;
+  }
+
+  .pillars {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 18px;
+    margin-top: 14px;
+  }
+  .pillar {
+    border: 1px solid var(--line);
+    border-radius: 10px;
+    padding: 16px 18px;
+    background: #fbfdfd;
+  }
+  .pillar-num {
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    background: var(--accent);
+    color: #fff;
+    font-weight: 700;
+    font-size: 14px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 10px;
+  }
+  .pillar h3 {
+    font-size: 15.5px;
+    margin-bottom: 6px;
+  }
+  .pillar p {
+    font-size: 13.5px;
+    margin: 0;
+  }
+
+  .offer {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 14px;
+    margin: 10px 0;
+  }
+  .offer .tier {
+    border: 1px solid var(--line);
+    border-radius: 11px;
+    padding: 16px 18px;
+    background: #fbfdfd;
+  }
+  .offer .tier.featured {
+    border-color: var(--accent2);
+    box-shadow: 0 0 0 2px rgba(35, 103, 129, 0.14);
+  }
+  .tier .name {
+    font-weight: 700;
+    color: var(--ink);
+    font-size: 15px;
+  }
+  .tier .price {
+    font-size: 22px;
+    font-weight: 800;
+    color: var(--accent);
+    margin: 4px 0 8px;
+  }
+  .tier .price small {
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--muted);
+  }
+  .tier ul.clean {
+    font-size: 13.5px;
+  }
+
+  /* A dark-on-light secondary CTA for use on white cards (the hero's
+     white-bordered variant would be invisible here). */
+  .cta.inline-dark {
+    background: #fff;
+    color: var(--grad-ink);
+    border-color: var(--accent2);
+    margin-left: 10px;
+  }
+  .placeholder-caption {
+    font-size: 12.5px;
+    margin-top: 8px;
+  }
+
+  @media (max-width: 680px) {
+    .pillars,
+    .offer {
+      grid-template-columns: 1fr;
+    }
+    .cta.inline-dark {
+      margin-left: 0;
+      margin-top: 10px;
+    }
+  }
+</style>
