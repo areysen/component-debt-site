@@ -10,9 +10,9 @@
  * src/styles/global.css. When a color changes there, update the matching pair
  * here so the ratio is re-checked. Exits non-zero if any pair fails.
  *
- * For gradient backgrounds the lighter stop is the worst case for white text,
- * so we check white against the lighter stop (#17576b), per the source assets'
- * stated reasoning.
+ * For gradient backgrounds the lighter (higher-luminance) stop is the worst
+ * case for white text. The warm charcoal-to-plum gradient's lighter stop is
+ * the plum end (#3d1a45), so light text is checked against that stop.
  */
 
 // sRGB hex -> relative luminance (WCAG formula).
@@ -34,63 +34,113 @@ function ratio(fg, bg) {
 
 // kind: "text" (>=4.5) or "ui" (>=3, large text / non-text UI).
 const PAIRS = [
-  // Body + surfaces (on page bg #f4f7f8 and card #ffffff)
-  { name: "body on bg", fg: "#2b3742", bg: "#f4f7f8", kind: "text" },
-  { name: "body on card", fg: "#2b3742", bg: "#ffffff", kind: "text" },
-  { name: "ink heading on card", fg: "#15212b", bg: "#ffffff", kind: "text" },
-  { name: "muted on bg", fg: "#566571", bg: "#f4f7f8", kind: "text" },
-  { name: "muted on card", fg: "#566571", bg: "#ffffff", kind: "text" },
-  { name: "accent label on card", fg: "#1a4554", bg: "#ffffff", kind: "text" },
-  { name: "accent2 link on card", fg: "#236781", bg: "#ffffff", kind: "text" },
-  { name: "accent2 link on bg", fg: "#236781", bg: "#f4f7f8", kind: "text" },
+  // Body + surfaces (on page bg #f7f4f0 and card #ffffff)
+  { name: "body on bg", fg: "#2a2622", bg: "#f7f4f0", kind: "text" },
+  { name: "body on card", fg: "#2a2622", bg: "#ffffff", kind: "text" },
+  { name: "ink heading on card", fg: "#2a2622", bg: "#ffffff", kind: "text" },
+  { name: "muted on bg", fg: "#6b655f", bg: "#f7f4f0", kind: "text" },
+  { name: "muted on card", fg: "#6b655f", bg: "#ffffff", kind: "text" },
+  { name: "accent label on card", fg: "#3d1a45", bg: "#ffffff", kind: "text" },
+  { name: "accent2 link on card", fg: "#5a2c66", bg: "#ffffff", kind: "text" },
+  { name: "accent2 link on bg", fg: "#5a2c66", bg: "#f7f4f0", kind: "text" },
 
-  // On the teal gradient (worst case = lighter stop #17576b)
-  { name: "white h1 on gradient", fg: "#ffffff", bg: "#17576b", kind: "text" },
+  // On the charcoal-to-plum gradient (worst case = lighter stop #3d1a45)
+  { name: "white h1 on gradient", fg: "#ffffff", bg: "#3d1a45", kind: "text" },
   {
-    name: "sub #eef4f6 on gradient",
-    fg: "#eef4f6",
-    bg: "#17576b",
+    name: "sub #e6ddd0 on gradient",
+    fg: "#e6ddd0",
+    bg: "#3d1a45",
     kind: "text",
   },
   {
-    name: "kicker #cfe1e8 on gradient",
-    fg: "#cfe1e8",
-    bg: "#17576b",
+    name: "kicker #e8d5b0 on gradient",
+    fg: "#e8d5b0",
+    bg: "#3d1a45",
     kind: "text",
   },
 
-  // Header (dark teal solid #123540)
+  // Header (dark charcoal solid #1c1a18)
   {
-    name: "nav link #eef4f6 on header",
-    fg: "#eef4f6",
-    bg: "#123540",
+    name: "nav link #e6ddd0 on header",
+    fg: "#e6ddd0",
+    bg: "#1c1a18",
     kind: "text",
   },
-  { name: "brand #fff on header", fg: "#ffffff", bg: "#123540", kind: "text" },
+  { name: "brand #fff on header", fg: "#ffffff", bg: "#1c1a18", kind: "text" },
 
   // CTA button: dark text on white button
   {
     name: "cta text on white button",
-    fg: "#123540",
+    fg: "#1c1a18",
     bg: "#ffffff",
     kind: "text",
   },
 
   // Severity badges (ink on its own bg) , text, must clear 4.5
-  { name: "crit badge text", fg: "#8a1f12", bg: "#fbe9e7", kind: "text" },
-  { name: "med badge text", fg: "#7a4d00", bg: "#fdf3e3", kind: "text" },
-  { name: "low badge text", fg: "#1f4d5f", bg: "#eaf1f4", kind: "text" },
-  { name: "ok text", fg: "#155f3a", bg: "#e7f3ec", kind: "text" },
+  { name: "crit badge text", fg: "#9a2b1e", bg: "#f7e7e2", kind: "text" },
+  { name: "med badge text", fg: "#8a5a12", bg: "#f7eedd", kind: "text" },
+  { name: "low badge text", fg: "#3d1a45", bg: "#efe6f0", kind: "text" },
+  { name: "ok text", fg: "#1f6b3a", bg: "#e6f0e8", kind: "text" },
 
   // Tag / chip
-  { name: "tag accent on chip", fg: "#1a4554", bg: "#eef3f4", kind: "text" },
+  { name: "tag accent on chip", fg: "#3d1a45", bg: "#efe6f0", kind: "text" },
 
   // Findings impact box (low-ink on low-bg)
-  { name: "impact text", fg: "#1f4d5f", bg: "#eaf1f4", kind: "text" },
+  { name: "impact text", fg: "#3d1a45", bg: "#efe6f0", kind: "text" },
 
   // Focus ring (UI component, >=3:1 against adjacent surfaces)
-  { name: "focus ring on card", fg: "#236781", bg: "#ffffff", kind: "ui" },
-  { name: "focus ring on bg", fg: "#236781", bg: "#f4f7f8", kind: "ui" },
+  { name: "focus ring on card", fg: "#5a2c66", bg: "#ffffff", kind: "ui" },
+  { name: "focus ring on bg", fg: "#5a2c66", bg: "#f7f4f0", kind: "ui" },
+  // Dark-band focusables (hero CTAs, check-row toggles, start CTAs) override
+  // the ring to white, same as the header; worst case is the gradient's
+  // lighter stop #3d1a45.
+  { name: "focus ring on dark band (white override)", fg: "#ffffff", bg: "#3d1a45", kind: "ui" },
+
+  // Homepage (Variant B): checks-intro / check rows / dogfood / start bands,
+  // all on the solid dark charcoal #1c1a18 (same bg as the header pairs above)
+  {
+    name: "sand label on grad-ink (checks/dogfood/start)",
+    fg: "#e8d5b0",
+    bg: "#1c1a18",
+    kind: "text",
+  },
+  { name: "check body #d6cdc0 on grad-ink", fg: "#d6cdc0", bg: "#1c1a18", kind: "text" },
+  {
+    name: "mono caption #cfc6b8 on grad-ink",
+    fg: "#cfc6b8",
+    bg: "#1c1a18",
+    kind: "text",
+  },
+  { name: "spec value #dbe9ee on grad-ink", fg: "#dbe9ee", bg: "#1c1a18", kind: "text" },
+
+  // Token/button toggle drift note and OK line: translucent panels over
+  // .stagebig (rgba(255,255,255,.05) over grad-ink), composited to solid hex
+  {
+    name: "driftnote text on composited bg",
+    fg: "#ffd9d2",
+    bg: "#432623",
+    kind: "text",
+  },
+  { name: "okline text on composited bg", fg: "#bdedcf", bg: "#25372a", kind: "text" },
+
+  // Contrast-demo (check 03) verdict labels: the labels themselves are real,
+  // load-bearing text (they carry the pass/fail meaning since the sample's
+  // inner text is aria-hidden). The samples' own colors (#5b9bd5/#2c6ca6) are
+  // the intentional demo content and are not checked.
+  { name: "verdict fail label", fg: "#ffe4dd", bg: "#5a1f16", kind: "text" },
+  { name: "verdict pass label", fg: "#cdf3da", bg: "#163d27", kind: "text" },
+
+  // Evidence finding code sample
+  { name: "code sample text", fg: "#f1ece4", bg: "#241f1d", kind: "text" },
+  { name: "code sample comment", fg: "#cfc6b8", bg: "#241f1d", kind: "text" },
+
+  // Evidence scorecard: warn-ink flag numbers sit on a plain white card here,
+  // not the warn-bg chip the existing "med badge text" pair covers
+  { name: "scorecard flag number on card", fg: "#8a5a12", bg: "#ffffff", kind: "text" },
+
+  // Offer section's own background shift (distinct from --bg)
+  { name: "body on offer-sec bg", fg: "#2a2622", bg: "#f0ebe3", kind: "text" },
+  { name: "accent label on offer-sec bg", fg: "#3d1a45", bg: "#f0ebe3", kind: "text" },
 ];
 
 const results = [];

@@ -1,51 +1,53 @@
 /* Component Debt: global tokens and shared chrome.
-   Single source of truth for the palette. Ported verbatim from the source
-   assets (launchpad.html, service-one-pager.html, sample-audit-report.html),
-   which share one WCAG AA-verified palette. Contrast ratios are recorded in
-   docs/accessibility/contrast-report.md; do not change a color here without
-   re-computing the affected pairs.
+   Single source of truth for the palette: warm cream and charcoal, dark plum
+   accent, replacing the earlier navy/teal direction. Contrast ratios are
+   recorded in docs/accessibility/contrast-report.md; do not change a color
+   here without re-computing the affected pairs in scripts/check-contrast.mjs.
 
    Severity is never conveyed by color alone: every severity badge pairs a
    shape glyph and a text label with its color (see .sev rules). */
 
 :root {
   /* Text + surfaces */
-  --ink: #15212b; /* headings, strongest text */
-  --body: #2b3742; /* body copy */
-  --muted: #566571; /* secondary / supporting text */
-  --accent: #1a4554; /* dark teal: section labels, prices */
-  --accent2: #236781; /* mid teal: links, accents */
-  --bg: #f4f7f8; /* page background */
+  --ink: #2a2622; /* headings, strongest text */
+  --body: #2a2622; /* body copy */
+  --muted: #6b655f; /* secondary / supporting text */
+  --accent: #3d1a45; /* dark plum: section labels, prices */
+  --accent2: #5a2c66; /* mid plum: links, accents */
+  --bg: #f7f4f0; /* page background, warm cream */
   --card: #ffffff; /* card / section surface */
-  --line: #dfe6ea; /* hairline borders (decorative) */
-  --chip: #eef3f4; /* tag / chip background */
+  --line: #e3dccf; /* hairline borders (decorative) */
+  --chip: #efe6f0; /* tag / chip background */
 
   /* Status text colors (paired with text labels, never color alone) */
-  --good: #155f3a;
-  --warn: #7a4d00;
+  --good: #1f6b3a;
+  --warn: #8a5a12;
 
   /* Severity scale: high / medium / low. Each has bg, ink, border, and an
      accent used for the finding card's left border. Paired with shape + text. */
-  --crit-bg: #fbe9e7;
-  --crit-ink: #8a1f12;
-  --crit-bd: #e6b3aa;
-  --crit-accent: #c0392b; /* high */
-  --warn-bg: #fdf3e3;
-  --warn-ink: #7a4d00;
-  --warn-bd: #e8d3a8;
+  --crit-bg: #f7e7e2;
+  --crit-ink: #9a2b1e;
+  --crit-bd: #e3b8a9;
+  --crit-accent: #9a2b1e; /* high */
+  --warn-bg: #f7eedd;
+  --warn-ink: #8a5a12;
+  --warn-bd: #e3cd9e;
   --warn-accent: #b9821a; /* medium */
-  --low-bg: #eaf1f4;
-  --low-ink: #1f4d5f;
-  --low-bd: #c2d4dc;
-  --low-accent: #3d7d96; /* low */
-  --ok-bg: #e7f3ec;
-  --ok-ink: #155f3a;
-  --ok-bd: #b9ddca; /* good */
+  --low-bg: #efe6f0;
+  --low-ink: #3d1a45;
+  --low-bd: #d4bcd9;
+  --low-accent: #5a2c66; /* low */
+  --ok-bg: #e6f0e8;
+  --ok-ink: #1f6b3a;
+  --ok-bd: #b9d8c4; /* good */
 
-  /* The teal hero/cover/end-CTA gradient. Dark stops chosen so white text and
-     UI clear AA (4.5:1) across the whole band. */
-  --grad: linear-gradient(135deg, #123540, #17576b);
-  --grad-ink: #123540; /* on-white text matching the gradient's dark stop */
+  /* The warm charcoal-to-plum hero/cover/end-CTA gradient. Dark stops chosen
+     so white text and UI clear AA (4.5:1) across the whole band. */
+  --grad: linear-gradient(135deg, #1c1a18, #3d1a45);
+  --grad-ink: #1c1a18; /* on-white text matching the gradient's dark stop */
+
+  --display: "Fraunces", "Plus Jakarta Sans", system-ui, sans-serif;
+  --mono: "JetBrains Mono", ui-monospace, Menlo, Consolas, monospace;
 
   --maxw: 980px;
 }
@@ -60,7 +62,8 @@ body {
 }
 
 body {
-  font-family: "Inter", "Segoe UI", "Helvetica Neue", Arial, sans-serif;
+  font-family: "Plus Jakarta Sans", "Segoe UI", "Helvetica Neue", Arial,
+    sans-serif;
   background: var(--bg);
   color: var(--body);
   line-height: 1.6;
@@ -104,9 +107,15 @@ a {
   padding: 0 20px;
 }
 
-/* ---- Headings / text primitives ---- */
+/* ---- Headings / text primitives ----
+   h2 here is a small-caps section label (13px), not a display heading, so it
+   keeps the sans body font. h1 and h3 carry the display serif. Letter-spacing
+   tightening and the 1.0-1.05 line-height apply to real headings 28px+. */
 h1 {
+  font-family: var(--display);
+  font-weight: 600;
   color: var(--ink);
+  letter-spacing: -0.03em;
 }
 h2 {
   font-size: 13px;
@@ -117,6 +126,8 @@ h2 {
   font-weight: 700;
 }
 h3 {
+  font-family: var(--display);
+  font-weight: 600;
   font-size: 17px;
   color: var(--ink);
   margin: 0 0 6px;
@@ -169,22 +180,22 @@ section.card,
   font-size: 12px;
   letter-spacing: 2px;
   text-transform: uppercase;
-  color: #cfe1e8; /* on dark teal, > 4.5:1 */
+  color: #e8d5b0; /* sand, on warm charcoal/plum gradient > 4.5:1 */
   margin: 0 0 10px;
 }
 .hero h1 {
   font-size: 34px;
-  line-height: 1.2;
+  line-height: 1.05;
   margin: 0 0 12px;
-  letter-spacing: 0.2px;
+  letter-spacing: -0.03em;
   color: #fff;
 }
 .hero .sub {
   font-size: 17px;
-  color: #eef4f6;
+  color: #e6ddd0;
   margin: 0 0 24px;
   max-width: 640px;
-} /* ~13:1 on dark teal */
+} /* warm off-white, clears AA on both gradient stops */
 
 /* ---- CTA buttons ---- */
 .cta {
@@ -194,7 +205,7 @@ section.card,
   font-weight: 700;
   font-size: 15px;
   padding: 13px 22px;
-  border-radius: 9px;
+  border-radius: 11px;
   text-decoration: none;
   border: 1px solid #fff;
 }
@@ -215,18 +226,18 @@ section.card,
   margin-top: 30px;
 }
 .endcta h2 {
-  color: #cfe1e8;
+  color: #e8d5b0;
   margin-top: 0;
 }
 .endcta p {
-  color: #eef4f6;
+  color: #e6ddd0;
   max-width: 560px;
   margin: 0 auto 20px;
 }
 .endcta .placeholder-note {
   font-size: 12.5px;
   margin-top: 16px;
-  color: #cfe1e8;
+  color: #e8d5b0;
 }
 
 /* ---- Tags / pills ---- */
@@ -315,7 +326,7 @@ section.card,
   align-items: center;
 }
 .site-nav a {
-  color: #eef4f6; /* ~13:1 on the dark teal header */
+  color: #e6ddd0; /* warm off-white, clears AA on the dark charcoal header */
   text-decoration: none;
   font-size: 14px;
   font-weight: 600;

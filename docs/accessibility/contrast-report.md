@@ -11,44 +11,87 @@ luminance), not eyeballed. Source: `scripts/check-contrast.mjs`.
 
 ## Computed contrast ratios
 
-| Pair                       | Ratio   | Min | Kind | Result |
-| -------------------------- | ------- | --- | ---- | ------ |
-| body on bg                 | 11.29:1 | 4.5 | text | PASS   |
-| body on card               | 12.15:1 | 4.5 | text | PASS   |
-| ink heading on card        | 16.35:1 | 4.5 | text | PASS   |
-| muted on bg                | 5.58:1  | 4.5 | text | PASS   |
-| muted on card              | 6.01:1  | 4.5 | text | PASS   |
-| accent label on card       | 10.38:1 | 4.5 | text | PASS   |
-| accent2 link on card       | 6.31:1  | 4.5 | text | PASS   |
-| accent2 link on bg         | 5.86:1  | 4.5 | text | PASS   |
-| white h1 on gradient       | 8.04:1  | 4.5 | text | PASS   |
-| sub #eef4f6 on gradient    | 7.24:1  | 4.5 | text | PASS   |
-| kicker #cfe1e8 on gradient | 5.97:1  | 4.5 | text | PASS   |
-| nav link #eef4f6 on header | 11.75:1 | 4.5 | text | PASS   |
-| brand #fff on header       | 13.05:1 | 4.5 | text | PASS   |
-| cta text on white button   | 13.05:1 | 4.5 | text | PASS   |
-| crit badge text            | 7.84:1  | 4.5 | text | PASS   |
-| med badge text             | 6.61:1  | 4.5 | text | PASS   |
-| low badge text             | 8.05:1  | 4.5 | text | PASS   |
-| ok text                    | 6.75:1  | 4.5 | text | PASS   |
-| tag accent on chip         | 9.27:1  | 4.5 | text | PASS   |
-| impact text                | 8.05:1  | 4.5 | text | PASS   |
-| focus ring on card         | 6.31:1  | 3.0 | ui   | PASS   |
-| focus ring on bg           | 5.86:1  | 3.0 | ui   | PASS   |
+| Pair                        | Ratio   | Min | Kind | Result |
+| ---------------------------- | ------- | --- | ---- | ------ |
+| body on bg                  | 13.69:1 | 4.5 | text | PASS   |
+| body on card                 | 15.01:1 | 4.5 | text | PASS   |
+| ink heading on card          | 15.01:1 | 4.5 | text | PASS   |
+| muted on bg                  | 5.24:1  | 4.5 | text | PASS   |
+| muted on card                | 5.75:1  | 4.5 | text | PASS   |
+| accent label on card         | 14.66:1 | 4.5 | text | PASS   |
+| accent2 link on card         | 10.57:1 | 4.5 | text | PASS   |
+| accent2 link on bg           | 9.64:1  | 4.5 | text | PASS   |
+| white h1 on gradient         | 14.66:1 | 4.5 | text | PASS   |
+| sub #e6ddd0 on gradient      | 10.91:1 | 4.5 | text | PASS   |
+| kicker #e8d5b0 on gradient   | 10.18:1 | 4.5 | text | PASS   |
+| nav link #e6ddd0 on header   | 12.90:1 | 4.5 | text | PASS   |
+| brand #fff on header         | 17.35:1 | 4.5 | text | PASS   |
+| cta text on white button     | 17.35:1 | 4.5 | text | PASS   |
+| crit badge text              | 6.38:1  | 4.5 | text | PASS   |
+| med badge text               | 5.13:1  | 4.5 | text | PASS   |
+| low badge text               | 12.04:1 | 4.5 | text | PASS   |
+| ok text                      | 5.58:1  | 4.5 | text | PASS   |
+| tag accent on chip           | 12.04:1 | 4.5 | text | PASS   |
+| impact text                  | 12.04:1 | 4.5 | text | PASS   |
+| focus ring on card           | 10.57:1 | 3.0 | ui   | PASS   |
+| focus ring on bg             | 9.64:1  | 3.0 | ui   | PASS   |
+| focus ring on dark band (white override) | 14.66:1 | 3.0 | ui | PASS |
+| sand label on grad-ink (checks/dogfood/start) | 12.04:1 | 4.5 | text | PASS |
+| check body #d6cdc0 on grad-ink | 11.03:1 | 4.5 | text | PASS |
+| mono caption #cfc6b8 on grad-ink | 10.26:1 | 4.5 | text | PASS |
+| spec value #dbe9ee on grad-ink | 13.97:1 | 4.5 | text | PASS |
+| driftnote text on composited bg | 10.46:1 | 4.5 | text | PASS |
+| okline text on composited bg | 9.75:1  | 4.5 | text | PASS |
+| verdict fail label           | 10.59:1 | 4.5 | text | PASS |
+| verdict pass label           | 10.07:1 | 4.5 | text | PASS |
+| code sample text             | 13.86:1 | 4.5 | text | PASS |
+| code sample comment          | 9.64:1  | 4.5 | text | PASS |
+| scorecard flag number on card | 5.91:1 | 4.5 | text | PASS |
+| body on offer-sec bg         | 12.65:1 | 4.5 | text | PASS |
+| accent label on offer-sec bg | 12.36:1 | 4.5 | text | PASS |
 
-All 22 pairs clear AA. The tightest margin is muted text at 5.58:1 against the
-page background, still above the 4.5:1 floor.
+All 36 pairs clear AA. The tightest margin is med badge text at 5.13:1 against
+its own background, still above the 4.5:1 floor.
+
+Focus ring note: the site-wide ring (`--accent2`, dark plum) only clears AA on
+light surfaces. The homepage's new dark bands (hero, the four check rows, and
+the closing start section) override `outline-color` to white on every
+focusable they contain, the same pattern the site header already uses on its
+dark bar. White clears AA by a wide margin even against the gradient's
+lighter stop (`#3d1a45`), the worst case on this page.
+
+Homepage (Variant B) note: the checks-intro, four check rows, dogfood, and
+start sections sit on the same solid dark charcoal (`#1c1a18`) as the site
+header, so new foreground colors used there (sand, `#d6cdc0`, `#cfc6b8`,
+`#dbe9ee`) are checked against that background once rather than per section.
+The token-toggle drift note and OK line render on a translucent panel
+(`rgba(255,255,255,.05)` over `#1c1a18`); the ratios above use the composited
+solid color, not the rgba value, since contrast math requires an opaque
+background. The contrast-demo check (white text on `#5b9bd5` vs. `#2c6ca6`) is
+deliberately excluded: it is the intentional pass/fail being demonstrated, not
+real site chrome. Its verdict labels ("FAIL 2.6:1" / "PASS 4.6:1") are real,
+load-bearing text, since the sample's own visual text is marked
+`aria-hidden`, and are checked above.
 
 Gradient note: the hero, cover, and end-CTA use
-`linear-gradient(135deg, #123540, #17576b)`. The lighter stop (`#17576b`) is the
-worst case for white text, so white and the light on-gradient text colors are
-checked against `#17576b`, per the source assets' stated reasoning for choosing a
-dark gradient.
+`linear-gradient(135deg, #1c1a18, #3d1a45)`, a warm dark charcoal fading to a
+dark plum. The plum stop (`#3d1a45`) has the higher luminance of the two and is
+the worst case for light text, so white and the light on-gradient text colors
+are checked against `#3d1a45`.
+
+Palette note (2026-06-24): the site moved from a navy/coral, cool-teal palette
+to a warm cream and charcoal palette with a dark plum accent, replacing
+Inter/Space Grotesk with Fraunces (headings) and Plus Jakarta Sans (body). The
+ratios above reflect the new palette; the previous report's figures no longer
+apply.
 
 ## State is never conveyed by color alone
 
 Verified by forcing the rendered pages to grayscale (see
-`docs/screenshots/sample-report-grayscale.png`):
+`docs/screenshots/sample-report-grayscale.png`, captured under the prior
+navy/coral palette; the underlying severity cues described below are
+structural and unchanged by the palette update, but the screenshot itself is
+due for a refresh):
 
 - **Severity** carries a shape glyph and a text label, not just color. From the
   rendered DOM, the `.sev::before` glyphs are triangle `▲` (High), diamond `◆`
@@ -59,12 +102,21 @@ Verified by forcing the rendered pages to grayscale (see
   underline (a non-color cue), not color alone.
 - **Good-fit / not-a-fit** columns on `/audit` are labeled in text ("A good
   fit" / "Not a fit"); the column heading colors are redundant.
+- **Homepage accessibility demo (check 03)** shows a failing and a passing
+  contrast sample. Each verdict is a text label ("FAIL 2.6:1" / "PASS 4.6:1")
+  with a glyph (`▲` / `●`) rendered via `::before`, not color alone. The
+  sample's own visual text is `aria-hidden`, so a screen reader only
+  encounters the verdict label, never the demonstrated failure.
+- **Homepage token and button toggles** are real `<button>` elements with
+  `aria-pressed` reflecting the active state, plus a text label change
+  ("Found in code" / "After tokenizing", "Found in code" / "Canonical"), not a
+  color-only toggle indicator.
 
 ## Keyboard and focus
 
 - Every interactive element has a visible focus ring:
   `:focus-visible { outline: 3px solid var(--accent2); outline-offset: 2px; }`.
-  The ring clears AA as a UI component (6.31:1 on card, 5.86:1 on background).
+  The ring clears AA as a UI component (10.57:1 on card, 9.64:1 on background).
 - A "Skip to content" link is the first focusable element and targets `#main`.
 - Tab order on the landing page reaches: skip link, brand, the three nav links,
   the Newsletter outbound link, then the page CTAs, in logical order.

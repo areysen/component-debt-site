@@ -1,0 +1,536 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Component Debt: Design System Health Audits</title>
+<!--
+  VARIANT B: BOLD, redesigned. Concept "system as the art" pushed expressive.
+  Warm dark hero against cream sections, Fraunces display serif for headings, plum
+  and ochre accents replacing navy/coral. Full-bleed section bands, scroll reveals.
+  Guardrails: no em-dashes, no banned words, no emojis, AA contrast computed not
+  eyeballed, state never by color alone, reduced-motion respected, non-fintech.
+  Single file, portable.
+-->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,500;0,9..144,600;0,9..144,700;1,9..144,500&family=Plus+Jakarta+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --night:#1c1a18; --night2:#241f1d; --ink:#2a2622; --body:#2a2622; --muted:#6b655f;
+    --accent:#3d1a45; --accent2:#5a2c66; --cream:#f7f4f0; --line:#e3dccf; --linecool:#e6dfd3;
+    --amber:#c4912a; --amber-soft:#e8d5b0; --amber-ink:#8a5a12;
+    --crit-bg:#f7e7e2; --crit-ink:#9a2b1e; --crit-bd:#e3b8a9;
+    --ok-bg:#e6f0e8; --ok-ink:#1f6b3a; --ok-bd:#b9d8c4;
+    --low-bg:#efe6f0; --low-ink:#3d1a45; --low-bd:#d4bcd9;
+    --display:"Fraunces","Plus Jakarta Sans",system-ui,sans-serif;
+    --sans:"Plus Jakarta Sans",system-ui,sans-serif;
+    --mono:"JetBrains Mono",ui-monospace,Menlo,Consolas,monospace;
+    --s2:8px;--s3:12px;--s4:16px;--s5:24px;--s6:32px;--s7:48px;--s8:72px;--s9:112px;
+  }
+  *{box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{margin:0; font-family:var(--sans); background:var(--night); color:#f1ece4; line-height:1.55; font-size:16px; -webkit-font-smoothing:antialiased}
+  .wrap{max-width:1200px; margin:0 auto; padding:0 30px}
+  a{color:var(--amber)}
+  .mono{font-family:var(--mono)}
+  h1,h2,h3{font-family:var(--display); letter-spacing:-0.03em}
+  a:focus-visible,button:focus-visible,.btn:focus-visible{outline:3px solid var(--amber); outline-offset:3px; border-radius:8px}
+  .skip{position:absolute; left:-9999px; top:0; background:var(--amber); color:#1c1a18; font-weight:700;
+    padding:10px 16px; border-radius:8px; z-index:100}
+  .skip:focus{left:14px; top:10px}
+
+  /* nav */
+  nav.top{position:sticky; top:0; z-index:40; background:rgba(28,26,24,.88); backdrop-filter:blur(12px); -webkit-backdrop-filter:blur(12px); border-bottom:1px solid rgba(255,255,255,.08)}
+  nav.top .wrap{display:flex; align-items:center; justify-content:space-between; height:64px}
+  .brand{display:flex; align-items:center; gap:11px; text-decoration:none; color:#fff; font-family:var(--display); font-weight:600; font-size:18px; letter-spacing:-0.01em}
+  nav.top .links{display:flex; gap:26px; align-items:center}
+  nav.top .links a{font-family:var(--mono); font-size:13px; color:#e8d5b0; text-decoration:none}
+  nav.top .links a:hover{color:#fff}
+  nav.top .links a.cta{background:var(--amber); color:#1c1a18; font-weight:700; border-radius:10px; padding:8px 14px}
+  @media(max-width:760px){ nav.top .links a:not(.cta){display:none} }
+
+  /* HERO: huge type over an animated token grid */
+  header.hero{position:relative; overflow:hidden; border-bottom:1px solid rgba(255,255,255,.08)}
+  .gridmotif{position:absolute; inset:0; z-index:0; display:grid; grid-template-columns:repeat(16,1fr); grid-auto-rows:1fr; opacity:.5}
+  .gridmotif span{border-right:1px solid rgba(255,255,255,.04); border-bottom:1px solid rgba(255,255,255,.04)}
+  .gridmotif span.live{animation:cellpulse 6s ease-in-out infinite}
+  .gridmotif span.amberlive{animation:cellpulseA 7s ease-in-out infinite}
+  @keyframes cellpulse{0%,100%{background:transparent} 50%{background:rgba(90,44,102,.34)}}
+  @keyframes cellpulseA{0%,100%{background:transparent} 50%{background:rgba(196,145,42,.30)}}
+  header.hero .wrap{position:relative; z-index:1; padding:var(--s9) 30px}
+  .kicker{font-family:var(--mono); font-size:13px; letter-spacing:3px; text-transform:uppercase; color:var(--amber); margin:0 0 var(--s5)}
+  header.hero h1{font-weight:600; font-size:clamp(44px,8.5vw,92px); line-height:1.02; margin:0 0 var(--s5); max-width:15ch}
+  header.hero h1 .hl{color:var(--amber); display:inline-block}
+  header.hero .sub{font-size:clamp(17px,2vw,21px); color:#e6ddd0; max-width:58ch; margin:0 0 var(--s6)}
+  .btnrow{display:flex; gap:var(--s3); flex-wrap:wrap; align-items:center}
+  .btn{font-family:var(--sans); font-weight:600; font-size:16px; text-decoration:none; border-radius:11px; padding:15px 26px; border:1px solid transparent; cursor:pointer; display:inline-block}
+  .btn.amber{background:var(--amber); color:#1c1a18}
+  .btn.amber:hover{background:#d6a546}
+  .btn.ghost{background:transparent; color:#fff; border-color:rgba(255,255,255,.45)}
+  .btn.ghost:hover{background:rgba(255,255,255,.12)}
+  .priceline{font-family:var(--mono); font-size:13.5px; color:#cfc6b8; margin-top:var(--s6)}
+  .priceline b{color:#fff}
+
+  /* symptom ticker */
+  .ticker{position:relative; z-index:1; border-top:1px solid rgba(255,255,255,.1); border-bottom:1px solid rgba(255,255,255,.1); background:rgba(255,255,255,.03); overflow:hidden}
+  .ticker .track{display:flex; gap:var(--s7); white-space:nowrap; padding:14px 0; animation:scrollx 28s linear infinite; font-family:var(--mono); font-size:13px; color:#cfc6b8}
+  .ticker .track span b{color:var(--amber)}
+  @keyframes scrollx{from{transform:translateX(0)} to{transform:translateX(-50%)}}
+
+  /* section scaffolding */
+  .seclabel{font-family:var(--mono); font-size:12px; letter-spacing:2px; text-transform:uppercase; color:var(--amber); margin:0 0 var(--s4); display:flex; align-items:center; gap:10px}
+  .seclabel::before{content:""; width:30px; height:2px; background:var(--amber)}
+  .sectitle{font-weight:600; font-size:clamp(30px,5vw,52px); line-height:1.05; margin:0 0 var(--s5); max-width:20ch}
+  .lede{font-size:19px; max-width:62ch; margin:0}
+
+  /* DARK intro band for checks */
+  .checks-intro{padding:var(--s9) 0 var(--s7)}
+  .checks-intro .lede{color:#d6cdc0}
+
+  /* full-bleed alternating check rows */
+  .check{padding:var(--s8) 0; border-top:1px solid rgba(255,255,255,.08)}
+  .check .wrap{display:grid; grid-template-columns:1fr 1fr; gap:var(--s8); align-items:center}
+  .check.flip .copyc{order:2}
+  @media(max-width:880px){ .check .wrap{grid-template-columns:1fr; gap:var(--s6)} .check.flip .copyc{order:0} }
+  /* decorative section numeral: marked aria-hidden, and raised to clear 3:1 (large text) for legibility */
+  .check .pn{font-family:var(--mono); font-size:48px; font-weight:700; color:rgba(255,255,255,.42); line-height:1; letter-spacing:-1px}
+  .check h3{font-weight:600; font-size:clamp(24px,3vw,34px); color:#fff; margin:var(--s3) 0 var(--s3); max-width:18ch}
+  .check p{font-size:16px; color:#d6cdc0; max-width:46ch; margin:0 0 var(--s4)}
+  .check .label-key{font-family:var(--mono); font-size:12px; color:var(--amber)}
+
+  .stagebig{background:rgba(255,255,255,.04); border:1px solid rgba(255,255,255,.12); border-radius:20px; padding:var(--s7)}
+  .toggle{display:inline-flex; border:1px solid rgba(255,255,255,.22); border-radius:9px; overflow:hidden; margin-bottom:var(--s5)}
+  .toggle button{font-family:var(--mono); font-size:12.5px; border:0; background:transparent; color:#d6cdc0; padding:8px 15px; cursor:pointer}
+  .toggle button[aria-pressed="true"]{background:var(--amber); color:#1c1a18}
+
+  /* token big */
+  .swatches{display:flex; gap:var(--s4); flex-wrap:wrap}
+  .sw{flex:1; min-width:120px}
+  .sw .chip{height:80px; border-radius:12px; border:1px solid rgba(255,255,255,.16)}
+  .sw .name{font-family:var(--mono); font-size:13px; color:#fff; margin-top:8px}
+  .sw .sub{font-family:var(--mono); font-size:11px; color:#cfc6b8}
+  .driftnote,.okline{display:flex; align-items:center; gap:9px; font-size:14px; border-radius:10px; padding:11px 14px; margin-top:var(--s5)}
+  .driftnote{color:#ffd9d2; background:rgba(154,43,30,.22); border:1px solid rgba(220,120,100,.45)}
+  .okline{color:#bdedcf; background:rgba(31,107,58,.24); border:1px solid rgba(90,180,130,.4)}
+  .icn{font-family:var(--mono); font-weight:700; flex:none}
+
+  /* buttons big */
+  .bbar{display:flex; gap:12px; flex-wrap:wrap; align-items:center}
+  .b{cursor:default; font-family:var(--sans)}
+  .b1{background:#2f6fed;color:#fff;border:0;border-radius:4px;padding:11px 18px;font-size:15px}
+  .b2{background:#2c6ca6;color:#fff;border:1px solid #1e567f;border-radius:13px;padding:8px 16px;font-size:14px;font-weight:700}
+  .b3{background:#fff;color:#2f6fed;border:2px solid #2f6fed;border-radius:2px;padding:12px 20px;font-size:16px}
+  .b4{background:#3170ee;color:#fff;border:0;border-radius:26px;padding:7px 22px;font-size:12px;text-transform:uppercase;letter-spacing:1px}
+  .b5{background:#1a4554;color:#fff;border:0;border-radius:7px;padding:13px 15px;font-size:17px}
+  .b6{background:#243038;color:#dbe9ee;border:1px dashed #5a6873;border-radius:10px;padding:9px 18px;font-size:15px}
+  .bcanon{background:var(--amber);color:#1c1a18;border:0;border-radius:11px;padding:13px 24px;font-size:16px;font-weight:700}
+
+  /* contrast big */
+  .cgrid{display:grid; grid-template-columns:1fr 1fr; gap:var(--s4)}
+  @media(max-width:520px){ .cgrid{grid-template-columns:1fr} }
+  .csample{border-radius:13px; padding:var(--s6); text-align:center}
+  .csample .lbl{color:#fff; font-weight:700; font-size:16px}
+  .cfail{background:#5b9bd5}
+  .cpass{background:#2c6ca6}
+  .cverdict{font-family:var(--mono); font-size:12.5px; margin-top:11px; display:inline-flex; align-items:center; gap:6px; padding:4px 11px; border-radius:7px; border:1px solid}
+  .cverdict.bad{background:rgba(192,57,43,.18); color:#ffd9d2; border-color:rgba(230,120,105,.5)}
+  .cverdict.good{background:rgba(21,95,58,.22); color:#bdedcf; border-color:rgba(90,180,130,.5)}
+
+  /* spec big */
+  .spec{font-family:var(--mono); font-size:14px; color:#dbe9ee; line-height:1.8}
+  .spec .k{color:var(--amber)}
+  .spec .row{display:flex; justify-content:space-between; gap:14px; border-bottom:1px dashed rgba(255,255,255,.14); padding:7px 0}
+  .spec .row:last-child{border-bottom:0}
+
+  /* EVIDENCE on cream: full-bleed band, cards separated by background shift not borders */
+  .evidence{background:var(--cream); color:var(--body)}
+  .evidence .wrap{padding:var(--s9) 30px}
+  .evidence .seclabel{color:var(--amber-ink)}
+  .evidence .seclabel::before{background:var(--amber-ink)}
+  .evidence .sectitle{color:var(--ink)}
+  .evidence .lede{color:var(--body); margin-bottom:var(--s7)}
+  .scoreband{display:grid; grid-template-columns:1.2fr 1fr 1fr 1fr; gap:var(--s4); margin:0 0 var(--s6); align-items:stretch}
+  @media(max-width:620px){ .scoreband{grid-template-columns:1fr 1fr} }
+  .score{border-radius:14px; padding:var(--s5); text-align:center; background:#fff}
+  .score.grade{background:var(--ink); border-color:var(--ink)}
+  .score.grade .n{color:#fff} .score.grade .l{color:#cfc6b8}
+  .score .n{font-family:var(--display); font-size:clamp(36px,5vw,56px); font-weight:700; color:var(--accent); line-height:1}
+  .score.flag .n{color:var(--amber-ink)}
+  .score .l{font-size:11.5px; color:var(--muted); text-transform:uppercase; letter-spacing:.6px; margin-top:8px}
+  .sev{display:inline-flex; align-items:center; gap:5px; font-family:var(--mono); font-size:11px; font-weight:700; padding:2px 9px; border-radius:6px; border:1px solid; background:var(--crit-bg); color:var(--crit-ink); border-color:var(--crit-bd)}
+  .sev::before{content:"\25B2"}
+  .finding{border-left:6px solid #9a2b1e; border-radius:14px; padding:var(--s6); background:#fff}
+  .finding .fhead{display:flex; justify-content:space-between; align-items:flex-start; gap:12px}
+  .finding .id{font-family:var(--mono); font-size:12px; color:var(--muted)}
+  .finding h3{font-weight:600; font-size:22px; color:var(--ink); margin:6px 0 4px}
+  .finding .where{font-family:var(--mono); font-size:12px; color:var(--muted); margin-bottom:var(--s3)}
+  pre.code{background:#241f1d; color:#f1ece4; border-radius:11px; padding:15px 17px; overflow:auto; font-family:var(--mono); font-size:13px; line-height:1.6; margin:var(--s3) 0}
+  pre.code .c{color:#cfc6b8}
+  .impact{background:var(--low-bg); border:1px solid var(--low-bd); border-radius:11px; padding:12px 15px; font-size:14px; color:var(--low-ink); margin-top:var(--s4)}
+  .note{font-size:13px; color:var(--muted); margin-top:var(--s4)}
+
+  /* OFFER on cream: background shift instead of card borders */
+  .offer-sec{background:#f0ebe3; color:var(--body)}
+  .offer-sec .wrap{padding:var(--s9) 30px}
+  .offer-sec .seclabel{color:var(--amber-ink)} .offer-sec .seclabel::before{background:var(--amber-ink)}
+  .offer-sec .sectitle{color:var(--ink)} .offer-sec .lede{color:var(--body); margin-bottom:var(--s7)}
+  .offer{display:grid; grid-template-columns:1fr 1fr; gap:var(--s5)}
+  @media(max-width:760px){ .offer{grid-template-columns:1fr} }
+  .tier{border-radius:18px; padding:var(--s6); background:#fff}
+  .tier.featured{box-shadow:0 0 0 3px var(--amber-soft)}
+  .tier .tag{display:inline-block; font-family:var(--mono); font-size:11px; letter-spacing:.6px; text-transform:uppercase; background:#efe6f0; color:var(--accent); padding:4px 11px; border-radius:99px; margin-bottom:var(--s3)}
+  .tier.featured .tag{background:var(--amber); color:#1c1a18}
+  .tier .name{font-family:var(--display); font-weight:600; color:var(--ink); font-size:20px}
+  .tier .price{font-family:var(--display); font-size:34px; font-weight:700; color:var(--accent); margin:8px 0}
+  .tier .price small{font-family:var(--mono); font-size:13px; font-weight:500; color:var(--muted)}
+  .tier ul{margin:var(--s3) 0 0; padding-left:18px; font-size:14.5px}
+  .tier li{margin-bottom:8px}
+
+  /* DOGFOOD dark */
+  .dogfood{background:var(--night2); border-top:1px solid rgba(255,255,255,.08)}
+  .dogfood .wrap{padding:var(--s9) 30px}
+  .dogfood h3{font-weight:600; color:#fff; font-size:clamp(26px,4vw,40px); margin:0 0 var(--s4); max-width:22ch}
+  .dogfood p{color:#d6cdc0; max-width:62ch; font-size:16px; margin:0 0 var(--s8)}
+  .systable{display:grid; grid-template-columns:repeat(3,1fr); gap:var(--s8)}
+  @media(max-width:680px){ .systable{grid-template-columns:1fr; gap:var(--s6)} }
+  .systable h4{font-family:var(--mono); font-size:12px; letter-spacing:1px; text-transform:uppercase; color:#e8d5b0; margin:0 0 var(--s4)}
+  .ramp span{display:block; color:#fff; line-height:1.4; font-family:var(--display)}
+  .scale-row{display:flex; align-items:center; gap:11px; margin-bottom:10px; font-family:var(--mono); font-size:12.5px; color:#d6cdc0}
+  .scale-row i{display:block; height:13px; background:var(--amber); border-radius:3px}
+  .tokrow{font-family:var(--mono); font-size:13px; color:#e6ddd0; display:flex; align-items:center; gap:10px; margin-bottom:10px}
+  .tokrow .sw2{width:18px; height:18px; border-radius:5px; border:1px solid rgba(255,255,255,.25); flex:none}
+
+  /* START big */
+  .start{background:linear-gradient(135deg,#1c1a18,#3d1a45); border-top:1px solid rgba(255,255,255,.08)}
+  .start .wrap{padding:var(--s9) 30px; text-align:center}
+  .start .sectitle{color:#fff; margin:0 auto var(--s4); max-width:24ch}
+  .start .lede{color:#e6ddd0; margin:0 auto var(--s6)}
+  .start .btnrow{justify-content:center}
+  .start .btn.outline{border:1px solid rgba(255,255,255,.5); color:#fff; background:transparent}
+  .start .note{color:#d6cdc0} /* clears AA 4.5:1 against both gradient stops */
+
+  footer.site{background:var(--night); border-top:1px solid rgba(255,255,255,.08)}
+  footer.site .wrap{padding:var(--s7) 30px; display:flex; justify-content:space-between; gap:var(--s5); flex-wrap:wrap; align-items:center}
+  footer.site p{font-size:13px; color:#cfc6b8; max-width:50ch; margin:0}
+  footer.site a{font-family:var(--mono); font-size:13px}
+
+  /* scroll reveal */
+  .reveal{opacity:0; transform:translateY(18px); transition:opacity .6s ease, transform .6s ease}
+  .reveal.in{opacity:1; transform:none}
+
+  @media (prefers-reduced-motion: reduce){
+    *{animation:none !important; transition:none !important; scroll-behavior:auto !important}
+    .reveal{opacity:1; transform:none}
+    .ticker .track{animation:none}
+  }
+</style>
+</head>
+<body>
+
+<a class="skip" href="#main">Skip to content</a>
+
+<nav class="top">
+  <div class="wrap">
+    <a class="brand" href="#top">
+      <svg width="22" height="22" viewBox="0 0 22 22" aria-hidden="true"><rect x="1" y="1" width="9" height="9" rx="2" fill="#5a2c66"/><rect x="12" y="1" width="9" height="9" rx="2" fill="#c4912a"/><rect x="1" y="12" width="9" height="9" rx="2" fill="#e8d5b0"/><rect x="12" y="12" width="9" height="9" rx="2" fill="#9a2b1e"/></svg>
+      Component Debt
+    </a>
+    <div class="links">
+      <a href="#covers">The audit</a>
+      <a href="#evidence">Sample report</a>
+      <a href="#newsletter">Newsletter</a>
+      <a class="cta" href="#start">Start an audit</a>
+    </div>
+  </div>
+</nav>
+
+<main id="main">
+
+<header class="hero" id="top">
+  <div class="gridmotif" id="gridmotif" aria-hidden="true"></div>
+  <div class="wrap">
+    <p class="kicker">Design System Health Audit</p>
+    <h1>Find out what is <span class="hl">actually wrong</span> with your design system.</h1>
+    <p class="sub">Your UI works, but it is quietly working against you. The audit turns vague friction into a specific, graded, evidence-backed plan. Fixed scope, fully async, about one week.</p>
+    <div class="btnrow">
+      <a class="btn amber" href="#start">Start an audit</a>
+      <a class="btn ghost" href="#covers">See what it checks</a>
+    </div>
+    <p class="priceline"><b>$2,500</b> fixed scope &nbsp;/&nbsp; about one week &nbsp;/&nbsp; fully async</p>
+  </div>
+  <div class="ticker" aria-hidden="true">
+    <div class="track">
+      <span>The same button built <b>six ways</b></span><span>Colors <b>hard-coded</b> instead of tokenized</span><span>Spacing that ranges from <b>4px to 40px</b> at random</span><span>Primary button at <b>2.6:1</b> contrast</span><span>No <b>theming layer</b></span><span>Components living in <b>someone's head</b></span>
+      <span>The same button built <b>six ways</b></span><span>Colors <b>hard-coded</b> instead of tokenized</span><span>Spacing that ranges from <b>4px to 40px</b> at random</span><span>Primary button at <b>2.6:1</b> contrast</span><span>No <b>theming layer</b></span><span>Components living in <b>someone's head</b></span>
+    </div>
+  </div>
+</header>
+
+<!-- CHECKS INTRO -->
+<section class="checks-intro" id="covers">
+  <div class="wrap reveal">
+    <p class="seclabel">What the audit checks</p>
+    <h2 class="sectitle">Four things decide whether a system speeds a team up or taxes every change.</h2>
+    <p class="lede">Each is graded against design-system maturity benchmarks. Everything below is live. These are the same problems the audit surfaces, shown the way the report shows them.</p>
+  </div>
+</section>
+
+<!-- CHECK 1 -->
+<section class="check">
+  <div class="wrap reveal">
+    <div class="copyc">
+      <div class="pn" aria-hidden="true">01</div>
+      <h3>One brand color, or three pretending to be one?</h3>
+      <p>When color lives as literal hex across the code instead of a token, "the brand blue" drifts into several near-identical blues. Toggle to watch them resolve.</p>
+      <span class="label-key">Token architecture</span>
+    </div>
+    <div class="stagebig">
+      <div class="toggle" role="group" aria-label="Token view">
+        <button type="button" data-tok="before" aria-pressed="true">Found in code</button>
+        <button type="button" data-tok="after" aria-pressed="false">After tokenizing</button>
+      </div>
+      <div class="swatches" id="tokBefore">
+        <div class="sw"><div class="chip" style="background:#2f6fed"></div><div class="name">#2f6fed</div><div class="sub">card.css</div></div>
+        <div class="sw"><div class="chip" style="background:#2e6fed"></div><div class="name">#2e6fed</div><div class="sub">nav.css</div></div>
+        <div class="sw"><div class="chip" style="background:#3170ee"></div><div class="name">#3170ee</div><div class="sub">banner.css</div></div>
+      </div>
+      <div class="swatches" id="tokAfter" hidden>
+        <div class="sw" style="max-width:260px"><div class="chip" style="background:#2f6fed"></div><div class="name">--color-brand</div><div class="sub">one source, referenced everywhere</div></div>
+      </div>
+      <div class="driftnote" id="tokNote"><span class="icn" aria-hidden="true">!</span><span>Three "brand blues" that are meant to be one.</span></div>
+      <div class="okline" id="tokOk" hidden><span class="icn" aria-hidden="true">OK</span><span>One semantic token. A brand change is a one-line edit.</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- CHECK 2 -->
+<section class="check flip">
+  <div class="wrap reveal">
+    <div class="copyc">
+      <div class="pn" aria-hidden="true">02</div>
+      <h3>The same button, built six ways.</h3>
+      <p>New work copies whichever button is nearest, so the count keeps growing. Each one carries its own padding, radius, hover, and disabled states to maintain.</p>
+      <span class="label-key">Component API consistency</span>
+    </div>
+    <div class="stagebig">
+      <div class="toggle" role="group" aria-label="Button view">
+        <button type="button" data-btn="before" aria-pressed="true">Found in code</button>
+        <button type="button" data-btn="after" aria-pressed="false">Canonical</button>
+      </div>
+      <div class="bbar" id="btnBefore">
+        <span class="b b1">Save</span><span class="b b2">Save</span><span class="b b3">Save</span>
+        <span class="b b4">Save</span><span class="b b5">Save</span><span class="b b6">Save</span>
+      </div>
+      <div class="bbar" id="btnAfter" hidden>
+        <span class="b bcanon">Save</span>
+        <span class="mono" style="font-size:13px;color:#cfc6b8">one component, documented variants</span>
+      </div>
+      <div class="caption mono" id="btnCap" style="font-size:12.5px;color:#cfc6b8;margin-top:16px">6 implementations doing one job.</div>
+    </div>
+  </div>
+</section>
+
+<!-- CHECK 3 -->
+<section class="check">
+  <div class="wrap reveal">
+    <div class="copyc">
+      <div class="pn" aria-hidden="true">03</div>
+      <h3>Contrast you can measure, not eyeball.</h3>
+      <p>The most-clicked element in a product is often the one that fails. Contrast is computed against the AA floor of 4.5:1, and the verdict is shown by label, not color alone. Tab in to see real focus states.</p>
+      <span class="label-key">Accessibility</span>
+    </div>
+    <div class="stagebig">
+      <div class="cgrid">
+        <div>
+          <div class="csample cfail"><span class="lbl">Primary action</span></div>
+          <span class="cverdict bad"><span aria-hidden="true">&#9650;</span> FAIL 2.6:1</span>
+        </div>
+        <div>
+          <div class="csample cpass"><span class="lbl">Primary action</span></div>
+          <span class="cverdict good"><span aria-hidden="true">&#10003;</span> PASS 4.6:1</span>
+        </div>
+      </div>
+      <div class="caption mono" style="font-size:12.5px;color:#cfc6b8;margin-top:16px">White text on #5b9bd5 vs. #2c6ca6. Same color family, one clears AA.</div>
+    </div>
+  </div>
+</section>
+
+<!-- CHECK 4 -->
+<section class="check flip">
+  <div class="wrap reveal">
+    <div class="copyc">
+      <div class="pn" aria-hidden="true">04</div>
+      <h3>Written down, or living in someone's head?</h3>
+      <p>If a component is not specified, every engineer re-decides it. A system is documented when the contract is explicit and discoverable, not buried in source.</p>
+      <span class="label-key">Documentation</span>
+    </div>
+    <div class="stagebig">
+      <div class="spec">
+        <div class="row"><span class="k">component</span><span>Button</span></div>
+        <div class="row"><span class="k">variants</span><span>primary / secondary / ghost / destructive</span></div>
+        <div class="row"><span class="k">sizes</span><span>sm / md / lg</span></div>
+        <div class="row"><span class="k">tokens</span><span>--color-brand, --space-3, --radius-md</span></div>
+        <div class="row"><span class="k">a11y</span><span>focus-visible ring, label required</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- EVIDENCE -->
+<section class="evidence" id="evidence">
+  <div class="wrap reveal">
+    <p class="seclabel">What you get</p>
+    <h2 class="sectitle">A graded report, the way a real one reads.</h2>
+    <p class="lede">Every audit opens with a scorecard, then findings ordered by severity, each with where it lives, an example, a recommendation, and the impact of fixing it. From a sample engagement: fictional client, real format.</p>
+
+    <div class="scoreband">
+      <div class="score grade"><div class="n">C&minus;</div><div class="l">Overall health</div></div>
+      <div class="score flag"><div class="n">10</div><div class="l">Findings</div></div>
+      <div class="score flag"><div class="n">6</div><div class="l">Button variants</div></div>
+      <div class="score flag"><div class="n">0</div><div class="l">Shared token files</div></div>
+    </div>
+
+    <div class="finding">
+      <div class="fhead"><span class="id">DS-01</span><span class="sev">High</span></div>
+      <h3>No design tokens; color and spacing are hard-coded everywhere</h3>
+      <div class="where">Found across 40+ component and stylesheet files</div>
+      <p style="font-size:14.5px">Brand colors, spacing, and font sizes are written as literal values scattered through the codebase rather than referenced from a central source. The same blue appears as three different values, which is three "brand blues" that are meant to be one.</p>
+      <pre class="code"><span class="c">/* card.css */</span>
+.card-title { color: #2f6fed; padding: 16px; }
+<span class="c">/* banner.css, same intent, different values */</span>
+.banner h2  { color: #3170ee; padding: 15px; }</pre>
+      <div class="impact"><strong>Impact:</strong> with a three-layer token system, a brand change becomes a one-line edit instead of a find-and-replace across the codebase, and theming becomes possible at all.</div>
+    </div>
+    <p class="note">Severity is marked by shape (triangle, diamond, circle) and label as well as color, so it reads for everyone, including colorblind readers.</p>
+  </div>
+</section>
+
+<!-- OFFER -->
+<section class="offer-sec">
+  <div class="wrap reveal">
+    <p class="seclabel">The offer</p>
+    <h2 class="sectitle">Fixed scope, fixed price. No hourly meter.</h2>
+    <p class="lede">Start with the audit. It is the clear first step that tells you what to fix and in what order. Remediation is scoped against real findings, not guesses.</p>
+    <div class="offer">
+      <div class="tier featured">
+        <span class="tag">Start here</span>
+        <div class="name">Design System Health Audit</div>
+        <div class="price">$2,500 <small>fixed / about one week</small></div>
+        <ul>
+          <li>Review of components, tokens, theming, and design-to-code consistency</li>
+          <li>Accessibility (WCAG AA) gap check, contrast computed not guessed</li>
+          <li>Written report with findings graded by severity</li>
+          <li>Prioritized fix roadmap ordered by impact</li>
+          <li>Recorded walkthrough you can watch on your own time</li>
+          <li>One 30-minute Q&amp;A call included</li>
+        </ul>
+      </div>
+      <div class="tier">
+        <span class="tag">Next step</span>
+        <div class="name">Remediation</div>
+        <div class="price">$6k&ndash;$15k <small>scoped per project</small></div>
+        <ul>
+          <li>Build the token layer (primitive, semantic, themed)</li>
+          <li>Consolidate components into one documented library</li>
+          <li>Theming foundation for dark mode or white-label</li>
+          <li>Documentation and handoff so the team can maintain it</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- DOGFOOD -->
+<section class="dogfood">
+  <div class="wrap reveal">
+    <p class="seclabel">Practicing what it checks</p>
+    <h3>This page runs on the same kind of token system the audit looks for.</h3>
+    <p>One type scale, one spacing scale, semantic color tokens, focus states on every interactive element, and severity that never depends on color alone. If a design-systems site cannot hold its own system together, why trust it with yours.</p>
+    <div class="systable">
+      <div>
+        <h4>Type scale</h4>
+        <div class="ramp">
+          <span style="font-size:40px;font-weight:700">Aa 40</span>
+          <span style="font-size:26px;font-weight:600">Aa 26</span>
+          <span style="font-size:16px">Aa 16</span>
+          <span style="font-size:13px;color:#cfc6b8">Aa 13</span>
+        </div>
+      </div>
+      <div>
+        <h4>Spacing scale</h4>
+        <div class="scale-row"><i style="width:4px"></i> 4</div>
+        <div class="scale-row"><i style="width:8px"></i> 8</div>
+        <div class="scale-row"><i style="width:16px"></i> 16</div>
+        <div class="scale-row"><i style="width:24px"></i> 24</div>
+        <div class="scale-row"><i style="width:48px"></i> 48</div>
+      </div>
+      <div>
+        <h4>Color tokens</h4>
+        <div class="tokrow"><span class="sw2" style="background:#5a2c66"></span> --accent2</div>
+        <div class="tokrow"><span class="sw2" style="background:#3d1a45"></span> --accent</div>
+        <div class="tokrow"><span class="sw2" style="background:#c4912a"></span> --amber</div>
+        <div class="tokrow"><span class="sw2" style="background:#2a2622"></span> --body</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- START -->
+<section class="start" id="start">
+  <div class="wrap reveal">
+    <p class="seclabel" style="justify-content:center">How to start</p>
+    <h2 class="sectitle">Async by default. The only scheduled time is the closing Q&amp;A.</h2>
+    <p class="lede">Send a note about your stack and what feels off. You will get a reply on fit and timing within two business days. If it is not a fit, you will hear that too.</p>
+    <div class="btnrow">
+      <a class="btn amber" href="mailto:hello@componentdebt.com?subject=Design%20System%20Health%20Audit">Email to start an audit</a>
+      <a class="btn outline" href="#start">Intake form (coming soon)</a>
+    </div>
+    <p class="note">The intake form points at email for now. It will be swapped for a hosted form once that is set up.</p>
+  </div>
+</section>
+
+</main>
+
+<footer class="site" id="newsletter">
+  <div class="wrap">
+    <p>Component Debt. Independent design system audits by Andrew Reysen, principal frontend and design systems engineer. Non-fintech engagements only.</p>
+    <a href="https://componentdebt.substack.com">Read the newsletter &#8599;</a>
+  </div>
+</footer>
+
+<script>
+  // build hero grid motif
+  (function(){
+    var g = document.getElementById('gridmotif'); if(!g) return;
+    var cols=16, rows=7, total=cols*rows;
+    for(var i=0;i<total;i++){
+      var s=document.createElement('span');
+      var r=Math.random();
+      if(r>0.93){ s.className='amberlive'; s.style.animationDelay=(Math.random()*7)+'s'; }
+      else if(r>0.82){ s.className='live'; s.style.animationDelay=(Math.random()*6)+'s'; }
+      g.appendChild(s);
+    }
+    g.style.gridTemplateRows='repeat('+rows+',1fr)';
+  })();
+
+  function setPressed(group, active){ group.querySelectorAll('button').forEach(function(b){ b.setAttribute('aria-pressed', b===active?'true':'false'); }); }
+  document.querySelectorAll('[data-tok]').forEach(function(btn){ btn.addEventListener('click', function(){
+    var after=btn.dataset.tok==='after'; setPressed(btn.parentElement, btn);
+    document.getElementById('tokBefore').hidden=after; document.getElementById('tokAfter').hidden=!after;
+    document.getElementById('tokNote').hidden=after; document.getElementById('tokOk').hidden=!after;
+  });});
+  document.querySelectorAll('[data-btn]').forEach(function(btn){ btn.addEventListener('click', function(){
+    var after=btn.dataset.btn==='after'; setPressed(btn.parentElement, btn);
+    document.getElementById('btnBefore').hidden=after; document.getElementById('btnAfter').hidden=!after;
+    document.getElementById('btnCap').textContent = after ? 'One component, documented variants and sizes.' : '6 implementations doing one job.';
+  });});
+
+  // scroll reveal
+  var io = new IntersectionObserver(function(entries){
+    entries.forEach(function(e){ if(e.isIntersecting){ e.target.classList.add('in'); io.unobserve(e.target);} });
+  }, {threshold:0.12});
+  document.querySelectorAll('.reveal').forEach(function(el){ io.observe(el); });
+</script>
+</body>
+</html>

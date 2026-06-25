@@ -1,93 +1,327 @@
 ---
 import Layout from "../layouts/Layout.astro";
 import { MAILTO_AUDIT as mailto } from "../consts";
-
-const pillars = [
-  {
-    name: "Token architecture",
-    body: "Whether color, spacing, and type live in a real token layer or are hard-coded across the codebase. A token layer is the foundation every other fix builds on.",
-  },
-  {
-    name: "Component API consistency",
-    body: "Whether the same UI element is built one canonical way or five competing ways. Inconsistent component APIs slow every new feature and multiply the surface for bugs.",
-  },
-  {
-    name: "Accessibility",
-    body: "Whether components meet WCAG AA: contrast computed not guessed, real focus states, keyboard support, and state never signaled by color alone.",
-  },
-  {
-    name: "Documentation",
-    body: "Whether the system is written down and discoverable, so the team can extend it without reading source or re-deciding settled questions.",
-  },
-];
 ---
 
 <Layout
   title="Component Debt: Design System Health Audits"
   description="A fixed-scope, fully async audit of your component library, tokens, theming, and accessibility. Written report, prioritized roadmap, and a recorded walkthrough in about one week."
 >
-  <section class="hero">
+  <header class="hero">
+    <div class="gridmotif" id="gridmotif" aria-hidden="true"></div>
     <div class="page">
-      <p class="kicker">Component Debt</p>
-      <h1>Find out what is actually wrong with your design system.</h1>
+      <p class="kicker">Design System Health Audit</p>
+      <h1>Find out what is <span class="hl">actually wrong</span> with your design system.</h1>
       <p class="sub">
-        Your UI works, but it is quietly working against you: the same button
-        built five ways, colors hard-coded instead of tokenized, components that
-        fall short of accessibility standards you cannot fully measure. The
-        Design System Health Audit turns that vague friction into a specific,
-        prioritized, evidence-backed plan. Fixed scope, fully async, about one
-        week.
+        Your UI works, but it is quietly working against you. The audit turns
+        vague friction into a specific, graded, evidence-backed plan. Fixed
+        scope, fully async, about one week.
       </p>
-      <a class="cta" href={mailto}>Start an audit</a>
-      <a class="cta secondary" href="/audit">See what you get</a>
+      <div class="btnrow">
+        <a class="cta" href={mailto}>Start an audit</a>
+        <a class="cta secondary" href="#covers">See what it checks</a>
+      </div>
       <p class="pricetag">
-        <b>$2,500</b> fixed scope · about one week · fully async
+        <b>$2,500</b> fixed scope &nbsp;/&nbsp; about one week &nbsp;/&nbsp; fully
+        async
+      </p>
+    </div>
+    <div class="ticker" aria-hidden="true">
+      <div class="track">
+        <span>The same button built <b>six ways</b></span><span
+          >Colors <b>hard-coded</b> instead of tokenized</span
+        ><span>Spacing that ranges from <b>4px to 40px</b> at random</span><span
+          >Primary button at <b>2.6:1</b> contrast</span
+        ><span>No <b>theming layer</b></span><span
+          >Components living in <b>someone's head</b></span
+        >
+        <span>The same button built <b>six ways</b></span><span
+          >Colors <b>hard-coded</b> instead of tokenized</span
+        ><span>Spacing that ranges from <b>4px to 40px</b> at random</span><span
+          >Primary button at <b>2.6:1</b> contrast</span
+        ><span>No <b>theming layer</b></span><span
+          >Components living in <b>someone's head</b></span
+        >
+      </div>
+    </div>
+  </header>
+
+  <!-- CHECKS INTRO -->
+  <section class="checks-intro" id="covers">
+    <div class="page reveal">
+      <p class="seclabel">What the audit checks</p>
+      <h2 class="sectitle">
+        Four things decide whether a system speeds a team up or taxes every
+        change.
+      </h2>
+      <p class="lede">
+        Each is graded against design-system maturity benchmarks. Everything
+        below is live. These are the same problems the audit surfaces, shown
+        the way the report shows them.
       </p>
     </div>
   </section>
 
-  <div class="page">
-    <section class="card">
-      <h2>What the audit covers</h2>
-      <p class="lead">
-        Four pillars decide whether a design system helps a team move faster or
-        taxes every change. The audit grades each one against design-system
-        maturity benchmarks and shows you exactly where you stand.
-      </p>
-      <div class="pillars">
-        {
-          pillars.map((p, i) => (
-            <div class="pillar">
-              <div class="pillar-num" aria-hidden="true">
-                {i + 1}
-              </div>
-              <h3>{p.name}</h3>
-              <p class="muted">{p.body}</p>
-            </div>
-          ))
-        }
+  <!-- CHECK 1: token architecture -->
+  <section class="check">
+    <div class="page reveal">
+      <div class="copyc">
+        <div class="pn" aria-hidden="true">01</div>
+        <h3>One brand color, or three pretending to be one?</h3>
+        <p>
+          When color lives as literal hex across the code instead of a
+          token, "the brand blue" drifts into several near-identical blues.
+          Toggle to watch them resolve.
+        </p>
+        <span class="label-key">Token architecture</span>
       </div>
-    </section>
+      <div class="stagebig">
+        <div class="toggle" role="group" aria-label="Token view">
+          <button type="button" data-tok="before" aria-pressed="true"
+            >Found in code</button
+          >
+          <button type="button" data-tok="after" aria-pressed="false"
+            >After tokenizing</button
+          >
+        </div>
+        <div class="swatches" id="tokBefore">
+          <div class="sw">
+            <div class="chip" style="background:#2f6fed"></div>
+            <div class="name">#2f6fed</div>
+            <div class="subtle">card.css</div>
+          </div>
+          <div class="sw">
+            <div class="chip" style="background:#2e6fed"></div>
+            <div class="name">#2e6fed</div>
+            <div class="subtle">nav.css</div>
+          </div>
+          <div class="sw">
+            <div class="chip" style="background:#3170ee"></div>
+            <div class="name">#3170ee</div>
+            <div class="subtle">banner.css</div>
+          </div>
+        </div>
+        <div class="swatches" id="tokAfter" hidden>
+          <div class="sw" style="max-width:260px">
+            <div class="chip" style="background:#2f6fed"></div>
+            <div class="name">--color-brand</div>
+            <div class="subtle">one source, referenced everywhere</div>
+          </div>
+        </div>
+        <div class="driftnote" id="tokNote">
+          <span class="icn" aria-hidden="true">!</span><span
+            >Three "brand blues" that are meant to be one.</span
+          >
+        </div>
+        <div class="okline" id="tokOk" hidden>
+          <span class="icn" aria-hidden="true">OK</span><span
+            >One semantic token. A brand change is a one-line edit.</span
+          >
+        </div>
+      </div>
+    </div>
+  </section>
 
-    <section class="card">
-      <h2>The offer</h2>
-      <p>
-        Fixed scope and fixed price, so there is no hourly meter and no scope
-        creep. Start with the audit; it is the clear first step that tells you
-        what to fix and in what order.
+  <!-- CHECK 2: component API consistency -->
+  <section class="check flip">
+    <div class="page reveal">
+      <div class="copyc">
+        <div class="pn" aria-hidden="true">02</div>
+        <h3>The same button, built six ways.</h3>
+        <p>
+          New work copies whichever button is nearest, so the count keeps
+          growing. Each one carries its own padding, radius, hover, and
+          disabled states to maintain.
+        </p>
+        <span class="label-key">Component API consistency</span>
+      </div>
+      <div class="stagebig">
+        <div class="toggle" role="group" aria-label="Button view">
+          <button type="button" data-btn="before" aria-pressed="true"
+            >Found in code</button
+          >
+          <button type="button" data-btn="after" aria-pressed="false"
+            >Canonical</button
+          >
+        </div>
+        <div class="bbar" id="btnBefore">
+          <span class="b b1">Save</span><span class="b b2">Save</span><span
+            class="b b3">Save</span
+          ><span class="b b4">Save</span><span class="b b5">Save</span><span
+            class="b b6">Save</span
+          >
+        </div>
+        <div class="bbar" id="btnAfter" hidden>
+          <span class="b bcanon">Save</span>
+          <span class="mono btncaption"
+            >one component, documented variants</span
+          >
+        </div>
+        <div class="caption mono" id="btnCap">
+          6 implementations doing one job.
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CHECK 3: accessibility -->
+  <section class="check">
+    <div class="page reveal">
+      <div class="copyc">
+        <div class="pn" aria-hidden="true">03</div>
+        <h3>Contrast you can measure, not eyeball.</h3>
+        <p>
+          The most-clicked element in a product is often the one that fails.
+          Contrast is computed against the AA floor of 4.5:1, and the verdict
+          is shown by label, not color alone. Tab in to see real focus
+          states.
+        </p>
+        <span class="label-key">Accessibility</span>
+      </div>
+      <div class="stagebig">
+        <div class="cgrid">
+          <div>
+            <div class="csample cfail">
+              <span class="lbl" aria-hidden="true">Primary action</span>
+            </div>
+            <span class="cverdict bad">FAIL 2.6:1</span>
+          </div>
+          <div>
+            <div class="csample cpass">
+              <span class="lbl" aria-hidden="true">Primary action</span>
+            </div>
+            <span class="cverdict good">PASS 4.6:1</span>
+          </div>
+        </div>
+        <div class="caption mono">
+          White text on #5b9bd5 vs. #2c6ca6. Same color family, one clears
+          AA.
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CHECK 4: documentation -->
+  <section class="check flip">
+    <div class="page reveal">
+      <div class="copyc">
+        <div class="pn" aria-hidden="true">04</div>
+        <h3>Written down, or living in someone's head?</h3>
+        <p>
+          If a component is not specified, every engineer re-decides it. A
+          system is documented when the contract is explicit and
+          discoverable, not buried in source.
+        </p>
+        <span class="label-key">Documentation</span>
+      </div>
+      <div class="stagebig">
+        <div class="spec">
+          <div class="row"><span class="k">component</span><span>Button</span></div>
+          <div class="row">
+            <span class="k">variants</span><span
+              >primary / secondary / ghost / destructive</span
+            >
+          </div>
+          <div class="row"><span class="k">sizes</span><span>sm / md / lg</span></div>
+          <div class="row">
+            <span class="k">tokens</span><span
+              >--color-brand, --space-3, --radius-md</span
+            >
+          </div>
+          <div class="row">
+            <span class="k">a11y</span><span
+              >focus-visible ring, label required</span
+            >
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- EVIDENCE -->
+  <section class="evidence" id="evidence">
+    <div class="page reveal">
+      <p class="seclabel">What you get</p>
+      <h2 class="sectitle">A graded report, the way a real one reads.</h2>
+      <p class="lede">
+        Every audit opens with a scorecard, then findings ordered by
+        severity, each with where it lives, an example, a recommendation, and
+        the impact of fixing it. From a sample engagement: fictional client,
+        real format.
+      </p>
+
+      <div class="scoreband">
+        <div class="score grade">
+          <div class="n">C&minus;</div>
+          <div class="l">Overall health</div>
+        </div>
+        <div class="score flag">
+          <div class="n">10</div>
+          <div class="l">Findings</div>
+        </div>
+        <div class="score flag">
+          <div class="n">6</div>
+          <div class="l">Button variants</div>
+        </div>
+        <div class="score flag">
+          <div class="n">0</div>
+          <div class="l">Shared token files</div>
+        </div>
+      </div>
+
+      <div class="finding">
+        <div class="fhead">
+          <span class="id">DS-01</span><span class="sev crit">High</span>
+        </div>
+        <h3>No design tokens; color and spacing are hard-coded everywhere</h3>
+        <div class="where">Found across 40+ component and stylesheet files</div>
+        <p class="findingbody">
+          Brand colors, spacing, and font sizes are written as literal
+          values scattered through the codebase rather than referenced from
+          a central source. The same blue appears as three different values,
+          which is three "brand blues" that are meant to be one.
+        </p>
+        <pre class="code"><span class="c">/* card.css */</span>
+.card-title &lbrace; color: #2f6fed; padding: 16px; &rbrace;
+<span class="c">/* banner.css, same intent, different values */</span>
+.banner h2  &lbrace; color: #3170ee; padding: 15px; &rbrace;</pre>
+        <div class="impact">
+          <strong>Impact:</strong> with a three-layer token system, a brand
+          change becomes a one-line edit instead of a find-and-replace across
+          the codebase, and theming becomes possible at all.
+        </div>
+      </div>
+      <p class="note muted">
+        Severity is marked by shape (triangle, diamond, circle) and label as
+        well as color, so it reads for everyone, including colorblind
+        readers.
+      </p>
+    </div>
+  </section>
+
+  <!-- OFFER -->
+  <section class="offer-sec">
+    <div class="page reveal">
+      <p class="seclabel">The offer</p>
+      <h2 class="sectitle">Fixed scope, fixed price. No hourly meter.</h2>
+      <p class="lede">
+        Start with the audit. It is the clear first step that tells you what
+        to fix and in what order. Remediation is scoped against real
+        findings, not guesses.
       </p>
       <div class="offer">
         <div class="tier featured">
           <span class="tag">Start here</span>
           <div class="name">Design System Health Audit</div>
-          <div class="price">$2,500 <small>fixed · about one week</small></div>
+          <div class="price">$2,500 <small>fixed / about one week</small></div>
           <ul class="clean">
             <li>
               Review of components, tokens, theming, and design-to-code
               consistency
             </li>
             <li>
-              Accessibility (WCAG AA) gap check, contrast computed not guessed
+              Accessibility (WCAG AA) gap check, contrast computed not
+              guessed
             </li>
             <li>Written report with findings graded by severity</li>
             <li>Prioritized fix roadmap ordered by impact</li>
@@ -109,135 +343,951 @@ const pillars = [
           </ul>
         </div>
       </div>
-      <p class="muted">
-        The audit comes first, so remediation is scoped against real findings
-        rather than guesses.
-      </p>
-    </section>
+    </div>
+  </section>
 
-    <section class="card">
-      <h2>How to start</h2>
+  <!-- DOGFOOD -->
+  <section class="dogfood">
+    <div class="page reveal">
+      <p class="seclabel">Practicing what it checks</p>
+      <h3>
+        This page runs on the same kind of token system the audit looks for.
+      </h3>
       <p>
-        The audit runs async by default. The only scheduled time is the closing
-        30-minute Q&amp;A. Send a note about your stack and what feels off, and
-        you will get a reply on fit and timing within two business days. If it
-        is not a fit, you will hear that too.
+        One type scale, one spacing scale, semantic color tokens, focus
+        states on every interactive element, and severity that never depends
+        on color alone. If a design-systems site cannot hold its own system
+        together, why trust it with yours.
       </p>
-      <p>
+      <div class="systable">
+        <div>
+          <h4>Type scale</h4>
+          <div class="ramp">
+            <span class="r40">Aa 40</span>
+            <span class="r26">Aa 26</span>
+            <span class="r16">Aa 16</span>
+            <span class="r13">Aa 13</span>
+          </div>
+        </div>
+        <div>
+          <h4>Spacing scale</h4>
+          <div class="scale-row"><i style="width:4px"></i> 4</div>
+          <div class="scale-row"><i style="width:8px"></i> 8</div>
+          <div class="scale-row"><i style="width:16px"></i> 16</div>
+          <div class="scale-row"><i style="width:24px"></i> 24</div>
+          <div class="scale-row"><i style="width:48px"></i> 48</div>
+        </div>
+        <div>
+          <h4>Color tokens</h4>
+          <div class="tokrow">
+            <span class="sw2" style="background:#5a2c66"></span> --accent2
+          </div>
+          <div class="tokrow">
+            <span class="sw2" style="background:#3d1a45"></span> --accent
+          </div>
+          <div class="tokrow">
+            <span class="sw2" style="background:#e8d5b0"></span> sand label
+          </div>
+          <div class="tokrow">
+            <span class="sw2" style="background:#2a2622"></span> --body
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- START -->
+  <section class="start" id="start">
+    <div class="page reveal">
+      <p class="seclabel centered">How to start</p>
+      <h2 class="sectitle">
+        Async by default. The only scheduled time is the closing Q&amp;A.
+      </h2>
+      <p class="lede">
+        Send a note about your stack and what feels off. You will get a
+        reply on fit and timing within two business days. If it is not a
+        fit, you will hear that too.
+      </p>
+      <div class="btnrow centered">
         <a class="cta" href={mailto}>Email to start an audit</a>
-        <a class="cta secondary inline-dark" href={mailto} data-placeholder>
-          Intake form (coming soon)
-        </a>
+        <a class="cta secondary" href={mailto} data-placeholder
+          >Intake form (coming soon)</a
+        >
+      </div>
+      <p class="note">
+        The intake form points at email for now. It will be swapped for a
+        hosted form once that is set up.
       </p>
-      <p class="muted placeholder-caption">
-        The intake form link is a placeholder pointing at email for now. It will
-        be swapped for a hosted intake form once that is set up.
-      </p>
-    </section>
-  </div>
-</Layout>
+    </div>
+  </section>
 
-<style>
-  .pricetag {
-    margin-top: 18px;
-    font-size: 13.5px;
-    color: #dcebf0;
-  }
-  .pricetag b {
-    color: #fff;
-  }
+  <script>
+    function byId(id: string): HTMLElement {
+      const el = document.getElementById(id);
+      if (!el) throw new Error(`expected #${id} to exist`);
+      return el;
+    }
 
-  .pillars {
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    gap: 18px;
-    margin-top: 14px;
-  }
-  .pillar {
-    border: 1px solid var(--line);
-    border-radius: 10px;
-    padding: 16px 18px;
-    background: #fbfdfd;
-  }
-  .pillar-num {
-    width: 28px;
-    height: 28px;
-    border-radius: 50%;
-    background: var(--accent);
-    color: #fff;
-    font-weight: 700;
-    font-size: 14px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    margin-bottom: 10px;
-  }
-  .pillar h3 {
-    font-size: 15.5px;
-    margin-bottom: 6px;
-  }
-  .pillar p {
-    font-size: 13.5px;
-    margin: 0;
-  }
+    (function () {
+      // build hero grid motif
+      const g = document.getElementById("gridmotif");
+      if (g) {
+        const cols = 16,
+          rows = 7,
+          total = cols * rows;
+        for (let i = 0; i < total; i++) {
+          const s = document.createElement("span");
+          const r = Math.random();
+          if (r > 0.93) {
+            s.className = "sandlive";
+            s.style.animationDelay = Math.random() * 7 + "s";
+          } else if (r > 0.82) {
+            s.className = "live";
+            s.style.animationDelay = Math.random() * 6 + "s";
+          }
+          g.appendChild(s);
+        }
+        g.style.gridTemplateRows = "repeat(" + rows + ",1fr)";
+      }
 
-  .offer {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 14px;
-    margin: 10px 0;
-  }
-  .offer .tier {
-    border: 1px solid var(--line);
-    border-radius: 11px;
-    padding: 16px 18px;
-    background: #fbfdfd;
-  }
-  .offer .tier.featured {
-    border-color: var(--accent2);
-    box-shadow: 0 0 0 2px rgba(35, 103, 129, 0.14);
-  }
-  .tier .name {
-    font-weight: 700;
-    color: var(--ink);
-    font-size: 15px;
-  }
-  .tier .price {
-    font-size: 22px;
-    font-weight: 800;
-    color: var(--accent);
-    margin: 4px 0 8px;
-  }
-  .tier .price small {
-    font-size: 12px;
-    font-weight: 600;
-    color: var(--muted);
-  }
-  .tier ul.clean {
-    font-size: 13.5px;
-  }
+      function setPressed(group: ParentNode, active: Element) {
+        group.querySelectorAll("button").forEach(function (b) {
+          b.setAttribute("aria-pressed", b === active ? "true" : "false");
+        });
+      }
 
-  /* A dark-on-light secondary CTA for use on white cards (the hero's
-     white-bordered variant would be invisible here). */
-  .cta.inline-dark {
-    background: #fff;
-    color: var(--grad-ink);
-    border-color: var(--accent2);
-    margin-left: 10px;
-  }
-  .placeholder-caption {
-    font-size: 12.5px;
-    margin-top: 8px;
-  }
+      document.querySelectorAll<HTMLButtonElement>("[data-tok]").forEach(
+        function (btn) {
+          btn.addEventListener("click", function () {
+            const after = btn.dataset.tok === "after";
+            if (btn.parentElement) setPressed(btn.parentElement, btn);
+            (byId("tokBefore") as HTMLElement).hidden = after;
+            (byId("tokAfter") as HTMLElement).hidden = !after;
+            (byId("tokNote") as HTMLElement).hidden = after;
+            (byId("tokOk") as HTMLElement).hidden = !after;
+          });
+        },
+      );
 
-  @media (max-width: 680px) {
-    .pillars,
+      document.querySelectorAll<HTMLButtonElement>("[data-btn]").forEach(
+        function (btn) {
+          btn.addEventListener("click", function () {
+            const after = btn.dataset.btn === "after";
+            if (btn.parentElement) setPressed(btn.parentElement, btn);
+            (byId("btnBefore") as HTMLElement).hidden = after;
+            (byId("btnAfter") as HTMLElement).hidden = !after;
+            byId("btnCap").textContent = after
+              ? "One component, documented variants and sizes."
+              : "6 implementations doing one job.";
+          });
+        },
+      );
+
+      // scroll reveal
+      const io = new IntersectionObserver(
+        function (entries) {
+          entries.forEach(function (e) {
+            if (e.isIntersecting) {
+              e.target.classList.add("in");
+              io.unobserve(e.target);
+            }
+          });
+        },
+        { threshold: 0.12 },
+      );
+      document.querySelectorAll(".reveal").forEach(function (el) {
+        io.observe(el);
+      });
+    })();
+  </script>
+
+  <style>
+    /* [hidden] loses the cascade to .swatches/.bbar's own display:flex
+       (equal specificity, later rule wins), so toggled-off demo panels stay
+       visible without this. */
+    :global([hidden]) {
+      display: none !important;
+    }
+
+    /* ---- Hero additions: headline highlight, button row, price line, grid motif, ticker ---- */
+    .hero {
+      position: relative;
+      overflow: hidden;
+      padding-bottom: 0;
+      margin-bottom: 0;
+    }
+    .hero .page {
+      position: relative;
+      z-index: 1;
+      padding-top: 72px;
+      padding-bottom: 72px;
+    }
+    .hero h1 .hl {
+      color: #e8d5b0;
+    }
+    /* The global focus ring (--accent2, dark plum) fails AA on every dark
+       band this page adds (hero, check rows, start): ~1.5:1, far under the
+       3:1 UI floor. White matches the header's existing dark-bg override. */
+    .hero a:focus-visible,
+    .toggle button:focus-visible,
+    .start a:focus-visible {
+      outline-color: #fff;
+    }
+    .btnrow {
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap;
+      align-items: center;
+    }
+    .pricetag {
+      margin-top: 24px;
+      font-family: var(--mono);
+      font-size: 13.5px;
+      color: #e6ddd0;
+    }
+    .pricetag b {
+      color: #fff;
+    }
+
+    .ticker {
+      position: relative;
+      z-index: 1;
+      border-top: 1px solid rgba(255, 255, 255, 0.12);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.12);
+      background: rgba(255, 255, 255, 0.04);
+      overflow: hidden;
+    }
+    .ticker .track {
+      display: flex;
+      gap: 48px;
+      white-space: nowrap;
+      padding: 14px 0;
+      animation: scrollx 28s linear infinite;
+      font-family: var(--mono);
+      font-size: 13px;
+      color: #cfc6b8;
+    }
+    .ticker .track span b {
+      color: #e8d5b0;
+    }
+    @keyframes scrollx {
+      from {
+        transform: translateX(0);
+      }
+      to {
+        transform: translateX(-50%);
+      }
+    }
+
+    /* ---- Section scaffolding shared by checks-intro / evidence / offer / start ---- */
+    .seclabel {
+      font-family: var(--mono);
+      font-size: 12px;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin: 0 0 16px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .seclabel::before {
+      content: "";
+      width: 30px;
+      height: 2px;
+      background: var(--accent);
+    }
+    .seclabel.centered {
+      justify-content: center;
+    }
+    .sectitle {
+      font-family: var(--display);
+      font-weight: 600;
+      font-size: clamp(28px, 4.5vw, 44px);
+      line-height: 1.08;
+      letter-spacing: -0.03em;
+      color: var(--ink);
+      margin: 0 0 20px;
+      max-width: 20ch;
+    }
+    .lede {
+      font-size: 18px;
+      color: var(--body);
+      max-width: 62ch;
+      margin: 0;
+    }
+
+    /* ---- Checks intro: dark band so the demo rows have somewhere to sit ---- */
+    .checks-intro {
+      background: var(--grad-ink);
+      padding: 72px 0 48px;
+    }
+    .checks-intro .sectitle {
+      color: #fff;
+    }
+    .checks-intro .seclabel {
+      color: #e8d5b0;
+    }
+    .checks-intro .seclabel::before {
+      background: #e8d5b0;
+    }
+    .checks-intro .lede {
+      color: #d6cdc0;
+    }
+
+    /* ---- Full-bleed alternating check rows (dark band continues) ---- */
+    .check {
+      background: var(--grad-ink);
+      padding: 56px 0;
+      border-top: 1px solid rgba(255, 255, 255, 0.08);
+    }
+    .check .page {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 48px;
+      align-items: center;
+    }
+    .check.flip .copyc {
+      order: 2;
+    }
+    .check .pn {
+      font-family: var(--mono);
+      font-size: 44px;
+      font-weight: 700;
+      color: rgba(255, 255, 255, 0.42);
+      line-height: 1;
+      letter-spacing: -1px;
+    }
+    .check h3 {
+      font-size: clamp(22px, 2.6vw, 30px);
+      color: #fff;
+      margin: 12px 0 12px;
+      max-width: 18ch;
+    }
+    .check p {
+      font-size: 16px;
+      color: #d6cdc0;
+      max-width: 46ch;
+      margin: 0 0 16px;
+    }
+    .check .label-key {
+      font-family: var(--mono);
+      font-size: 12px;
+      color: #e8d5b0;
+    }
+
+    .stagebig {
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid rgba(255, 255, 255, 0.14);
+      border-radius: 18px;
+      padding: 32px;
+    }
+    .toggle {
+      display: inline-flex;
+      border: 1px solid rgba(255, 255, 255, 0.24);
+      border-radius: 9px;
+      overflow: hidden;
+      margin-bottom: 20px;
+    }
+    .toggle button {
+      font-family: var(--mono);
+      font-size: 12.5px;
+      border: 0;
+      background: transparent;
+      color: #d6cdc0;
+      padding: 8px 15px;
+      cursor: pointer;
+    }
+    .toggle button[aria-pressed="true"] {
+      background: #e8d5b0;
+      color: var(--grad-ink);
+    }
+
+    /* token swatches */
+    .swatches {
+      display: flex;
+      gap: 16px;
+      flex-wrap: wrap;
+    }
+    .sw {
+      flex: 1;
+      min-width: 110px;
+    }
+    .sw .chip {
+      height: 76px;
+      border-radius: 12px;
+      border: 1px solid rgba(255, 255, 255, 0.18);
+    }
+    .sw .name {
+      font-family: var(--mono);
+      font-size: 13px;
+      color: #fff;
+      margin-top: 8px;
+    }
+    .sw .subtle {
+      font-family: var(--mono);
+      font-size: 11px;
+      color: #cfc6b8;
+    }
+    .driftnote,
+    .okline {
+      display: flex;
+      align-items: center;
+      gap: 9px;
+      font-size: 14px;
+      border-radius: 10px;
+      padding: 11px 14px;
+      margin-top: 20px;
+    }
+    .driftnote {
+      color: #ffd9d2;
+      background: rgba(154, 43, 30, 0.24);
+      border: 1px solid rgba(220, 120, 100, 0.5);
+    }
+    .okline {
+      color: #bdedcf;
+      background: rgba(31, 107, 58, 0.26);
+      border: 1px solid rgba(90, 180, 130, 0.45);
+    }
+    .icn {
+      font-family: var(--mono);
+      font-weight: 700;
+      flex: none;
+    }
+
+    /* button row demo */
+    .bbar {
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap;
+      align-items: center;
+    }
+    .b {
+      cursor: default;
+      font-family: "Plus Jakarta Sans", sans-serif;
+    }
+    .b1 {
+      background: #2f6fed;
+      color: #fff;
+      border: 0;
+      border-radius: 4px;
+      padding: 11px 18px;
+      font-size: 15px;
+    }
+    .b2 {
+      background: #2c6ca6;
+      color: #fff;
+      border: 1px solid #1e567f;
+      border-radius: 13px;
+      padding: 8px 16px;
+      font-size: 14px;
+      font-weight: 700;
+    }
+    .b3 {
+      background: #fff;
+      color: #2f6fed;
+      border: 2px solid #2f6fed;
+      border-radius: 2px;
+      padding: 12px 20px;
+      font-size: 16px;
+    }
+    .b4 {
+      background: #3170ee;
+      color: #fff;
+      border: 0;
+      border-radius: 26px;
+      padding: 7px 22px;
+      font-size: 12px;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+    .b5 {
+      background: #1a4554;
+      color: #fff;
+      border: 0;
+      border-radius: 7px;
+      padding: 13px 15px;
+      font-size: 17px;
+    }
+    .b6 {
+      background: #243038;
+      color: #dbe9ee;
+      border: 1px dashed #5a6873;
+      border-radius: 10px;
+      padding: 9px 18px;
+      font-size: 15px;
+    }
+    .bcanon {
+      background: #e8d5b0;
+      color: var(--grad-ink);
+      border: 0;
+      border-radius: 11px;
+      padding: 13px 24px;
+      font-size: 16px;
+      font-weight: 700;
+    }
+    .btncaption {
+      font-size: 13px;
+      color: #cfc6b8;
+    }
+    .caption.mono {
+      font-family: var(--mono);
+      font-size: 12.5px;
+      color: #cfc6b8;
+      margin-top: 16px;
+    }
+
+    /* contrast demo */
+    .cgrid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+    }
+    .csample {
+      border-radius: 13px;
+      padding: 32px;
+      text-align: center;
+    }
+    .csample .lbl {
+      color: #fff;
+      font-weight: 700;
+      font-size: 16px;
+    }
+    .cfail {
+      background: #5b9bd5;
+    }
+    .cpass {
+      background: #2c6ca6;
+    }
+    .cverdict {
+      font-family: var(--mono);
+      font-size: 12.5px;
+      margin-top: 11px;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 4px 11px;
+      border-radius: 7px;
+      border: 1px solid;
+    }
+    .cverdict::before {
+      font-weight: 700;
+    }
+    .cverdict.bad {
+      background: #5a1f16;
+      color: #ffe4dd;
+      border-color: #8a3022;
+    }
+    .cverdict.bad::before {
+      content: "\25B2 ";
+    }
+    .cverdict.good {
+      background: #163d27;
+      color: #cdf3da;
+      border-color: #2a6b45;
+    }
+    .cverdict.good::before {
+      content: "\25CF ";
+    }
+
+    /* spec demo */
+    .spec {
+      font-family: var(--mono);
+      font-size: 14px;
+      color: #dbe9ee;
+      line-height: 1.8;
+    }
+    .spec .k {
+      color: #e8d5b0;
+    }
+    .spec .row {
+      display: flex;
+      justify-content: space-between;
+      gap: 14px;
+      border-bottom: 1px dashed rgba(255, 255, 255, 0.16);
+      padding: 7px 0;
+    }
+    .spec .row:last-child {
+      border-bottom: 0;
+    }
+
+    /* ---- Evidence ---- */
+    .evidence {
+      background: var(--bg);
+      padding: 72px 0;
+    }
+    .evidence .lede {
+      margin-bottom: 40px;
+    }
+    .scoreband {
+      display: grid;
+      grid-template-columns: 1.2fr 1fr 1fr 1fr;
+      gap: 16px;
+      margin: 0 0 32px;
+      align-items: stretch;
+    }
+    .score {
+      border-radius: 14px;
+      padding: 20px;
+      text-align: center;
+      background: var(--card);
+      border: 1px solid var(--line);
+    }
+    .score.grade {
+      background: var(--grad-ink);
+      border-color: var(--grad-ink);
+    }
+    .score.grade .n {
+      color: #fff;
+    }
+    .score.grade .l {
+      color: #cfc6b8;
+    }
+    .score .n {
+      font-family: var(--display);
+      font-size: clamp(32px, 4.5vw, 48px);
+      font-weight: 700;
+      color: var(--accent);
+      line-height: 1;
+    }
+    .score.flag .n {
+      color: var(--warn-ink);
+    }
+    .score .l {
+      font-size: 11.5px;
+      color: var(--muted);
+      text-transform: uppercase;
+      letter-spacing: 0.6px;
+      margin-top: 8px;
+    }
+
+    .finding {
+      border-left: 6px solid var(--crit-accent);
+      border-radius: 14px;
+      padding: 28px;
+      background: var(--card);
+      border-top: 1px solid var(--line);
+      border-right: 1px solid var(--line);
+      border-bottom: 1px solid var(--line);
+    }
+    .finding .fhead {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 12px;
+    }
+    .finding .id {
+      font-family: var(--mono);
+      font-size: 12px;
+      color: var(--muted);
+    }
+    .finding h3 {
+      font-size: 22px;
+      color: var(--ink);
+      margin: 8px 0 6px;
+    }
+    .finding .where {
+      font-family: var(--mono);
+      font-size: 12px;
+      color: var(--muted);
+      margin-bottom: 12px;
+    }
+    .finding .findingbody {
+      font-size: 14.5px;
+      margin: 0 0 12px;
+    }
+    pre.code {
+      background: #241f1d;
+      color: #f1ece4;
+      border-radius: 11px;
+      padding: 15px 17px;
+      overflow: auto;
+      font-family: var(--mono);
+      font-size: 13px;
+      line-height: 1.6;
+      margin: 12px 0;
+    }
+    pre.code .c {
+      color: #cfc6b8;
+    }
+    .impact {
+      background: var(--low-bg);
+      border: 1px solid var(--low-bd);
+      border-radius: 11px;
+      padding: 12px 15px;
+      font-size: 14px;
+      color: var(--low-ink);
+      margin-top: 16px;
+    }
+    .note {
+      font-size: 13px;
+      color: var(--muted);
+      margin-top: 16px;
+    }
+
+    /* ---- Offer ---- */
+    .offer-sec {
+      background: #f0ebe3;
+      padding: 72px 0;
+    }
+    .offer-sec .lede {
+      margin-bottom: 40px;
+    }
     .offer {
-      grid-template-columns: 1fr;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 20px;
     }
-    .cta.inline-dark {
-      margin-left: 0;
-      margin-top: 10px;
+    .tier {
+      border-radius: 18px;
+      padding: 28px;
+      background: var(--card);
+      border: 1px solid var(--line);
     }
-  }
-</style>
+    .tier.featured {
+      border-color: var(--accent2);
+      box-shadow: 0 0 0 3px rgba(90, 44, 102, 0.16);
+    }
+    .tier .name {
+      font-family: var(--display);
+      font-weight: 600;
+      color: var(--ink);
+      font-size: 20px;
+    }
+    .tier .price {
+      font-family: var(--display);
+      font-size: 32px;
+      font-weight: 700;
+      color: var(--accent);
+      margin: 8px 0;
+    }
+    .tier .price small {
+      font-family: var(--mono);
+      font-size: 13px;
+      font-weight: 500;
+      color: var(--muted);
+    }
+    .tier ul.clean {
+      margin: 12px 0 0;
+      font-size: 14.5px;
+    }
+
+    /* ---- Dogfood ---- */
+    .dogfood {
+      background: var(--grad-ink);
+      padding: 72px 0;
+      border-top: 1px solid rgba(255, 255, 255, 0.08);
+    }
+    .dogfood .seclabel {
+      color: #e8d5b0;
+    }
+    .dogfood .seclabel::before {
+      background: #e8d5b0;
+    }
+    .dogfood h3 {
+      color: #fff;
+      font-size: clamp(24px, 3.6vw, 36px);
+      margin: 0 0 16px;
+      max-width: 22ch;
+    }
+    .dogfood p {
+      color: #d6cdc0;
+      max-width: 62ch;
+      font-size: 16px;
+      margin: 0 0 48px;
+    }
+    .systable {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 40px;
+    }
+    .systable h4 {
+      font-family: var(--mono);
+      font-size: 12px;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      color: #e8d5b0;
+      margin: 0 0 16px;
+      font-weight: 500;
+    }
+    .ramp span {
+      display: block;
+      color: #fff;
+      line-height: 1.4;
+      font-family: var(--display);
+    }
+    .r40 {
+      font-size: 40px;
+      font-weight: 700;
+    }
+    .r26 {
+      font-size: 26px;
+      font-weight: 600;
+    }
+    .r16 {
+      font-size: 16px;
+    }
+    .r13 {
+      font-size: 13px;
+      color: #cfc6b8;
+    }
+    .scale-row {
+      display: flex;
+      align-items: center;
+      gap: 11px;
+      margin-bottom: 10px;
+      font-family: var(--mono);
+      font-size: 12.5px;
+      color: #d6cdc0;
+    }
+    .scale-row i {
+      display: block;
+      height: 13px;
+      background: #e8d5b0;
+      border-radius: 3px;
+    }
+    .tokrow {
+      font-family: var(--mono);
+      font-size: 13px;
+      color: #e6ddd0;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 10px;
+    }
+    .tokrow .sw2 {
+      width: 18px;
+      height: 18px;
+      border-radius: 5px;
+      border: 1px solid rgba(255, 255, 255, 0.25);
+      flex: none;
+    }
+
+    /* ---- Start ---- */
+    .start {
+      background: var(--grad);
+      padding: 72px 0;
+      text-align: center;
+      border-top: 1px solid rgba(255, 255, 255, 0.08);
+    }
+    .start .seclabel {
+      color: #e8d5b0;
+      justify-content: center;
+    }
+    .start .seclabel::before {
+      background: #e8d5b0;
+    }
+    .start .sectitle {
+      color: #fff;
+      margin: 0 auto 16px;
+      max-width: 24ch;
+    }
+    .start .lede {
+      color: #e6ddd0;
+      margin: 0 auto 32px;
+    }
+    .start .btnrow {
+      justify-content: center;
+    }
+    .start .note {
+      color: #d6cdc0;
+      margin-top: 24px;
+    }
+
+    /* ---- Hero grid motif and reveal: must be global, the spans are
+       created at runtime and never receive Astro's scope hash ---- */
+    :global(.gridmotif) {
+      position: absolute;
+      inset: 0;
+      z-index: 0;
+      display: grid;
+      grid-template-columns: repeat(16, 1fr);
+      grid-auto-rows: 1fr;
+      opacity: 0.5;
+    }
+    :global(.gridmotif span) {
+      border-right: 1px solid rgba(255, 255, 255, 0.05);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+    }
+    :global(.gridmotif span.live) {
+      animation: cellpulse 6s ease-in-out infinite;
+    }
+    :global(.gridmotif span.sandlive) {
+      animation: cellpulseSand 7s ease-in-out infinite;
+    }
+    @keyframes cellpulse {
+      0%,
+      100% {
+        background: transparent;
+      }
+      50% {
+        background: rgba(90, 44, 102, 0.4);
+      }
+    }
+    @keyframes cellpulseSand {
+      0%,
+      100% {
+        background: transparent;
+      }
+      50% {
+        background: rgba(232, 213, 176, 0.28);
+      }
+    }
+
+    /* ---- Scroll reveal ---- */
+    .reveal {
+      opacity: 0;
+      transform: translateY(18px);
+      transition:
+        opacity 0.6s ease,
+        transform 0.6s ease;
+    }
+    .reveal.in {
+      opacity: 1;
+      transform: none;
+    }
+
+    @media (max-width: 880px) {
+      .check .page {
+        grid-template-columns: 1fr;
+        gap: 32px;
+      }
+      .check.flip .copyc {
+        order: 0;
+      }
+    }
+    @media (max-width: 760px) {
+      .offer {
+        grid-template-columns: 1fr;
+      }
+      .systable {
+        grid-template-columns: 1fr;
+        gap: 32px;
+      }
+    }
+    @media (max-width: 680px) {
+      .scoreband {
+        grid-template-columns: 1fr 1fr;
+      }
+    }
+    @media (max-width: 520px) {
+      .cgrid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      :global(.gridmotif span) {
+        animation: none !important;
+      }
+      .ticker .track {
+        animation: none !important;
+      }
+      .reveal {
+        opacity: 1;
+        transform: none;
+        transition: none;
+      }
+    }
+  </style>
+</Layout>
