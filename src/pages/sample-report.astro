@@ -325,46 +325,48 @@ import Layout from "../layouts/Layout.astro";
       <p class="muted">
         Ordered by impact. The first phase unblocks most of the rest.
       </p>
-      <table>
-        <thead>
-          <tr><th>Phase</th><th>Work</th><th>Addresses</th><th>Effort</th></tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td><b>1. Foundation</b></td>
-            <td
-              >Introduce 3-layer design tokens; migrate the highest-traffic
-              screens</td
-            >
-            <td>DS-01, DS-03, A11Y-01</td>
-            <td class="eff">about 1 to 2 weeks</td>
-          </tr>
-          <tr>
-            <td><b>2. Core components</b></td>
-            <td
-              >Build canonical Button and Icon; add focus states; start
-              Storybook</td
-            >
-            <td>DS-02, DS-06, DS-07, A11Y-02, A11Y-03</td>
-            <td class="eff">about 2 weeks</td>
-          </tr>
-          <tr>
-            <td><b>3. Theming</b></td>
-            <td>Add theme override layer (dark mode and white-label ready)</td>
-            <td>DS-04</td>
-            <td class="eff">about 1 week</td>
-          </tr>
-          <tr>
-            <td><b>4. Structure and guardrails</b></td>
-            <td
-              >Consolidate component folders; add lint rules to prevent
-              regression</td
-            >
-            <td>DS-05, ongoing</td>
-            <td class="eff">about 1 week</td>
-          </tr>
-        </tbody>
-      </table>
+      <div class="table-scroll" tabindex="0" role="region" aria-label="Prioritized remediation roadmap table">
+        <table>
+          <thead>
+            <tr><th>Phase</th><th>Work</th><th>Addresses</th><th>Effort</th></tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><b>1. Foundation</b></td>
+              <td
+                >Introduce 3-layer design tokens; migrate the highest-traffic
+                screens</td
+              >
+              <td>DS-01, DS-03, A11Y-01</td>
+              <td class="eff">about 1 to 2 weeks</td>
+            </tr>
+            <tr>
+              <td><b>2. Core components</b></td>
+              <td
+                >Build canonical Button and Icon; add focus states; start
+                Storybook</td
+              >
+              <td>DS-02, DS-06, DS-07, A11Y-02, A11Y-03</td>
+              <td class="eff">about 2 weeks</td>
+            </tr>
+            <tr>
+              <td><b>3. Theming</b></td>
+              <td>Add theme override layer (dark mode and white-label ready)</td>
+              <td>DS-04</td>
+              <td class="eff">about 1 week</td>
+            </tr>
+            <tr>
+              <td><b>4. Structure and guardrails</b></td>
+              <td
+                >Consolidate component folders; add lint rules to prevent
+                regression</td
+              >
+              <td>DS-05, ongoing</td>
+              <td class="eff">about 1 week</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
       <p class="note">
         Effort assumes one focused engineer and is incremental; the app keeps
         shipping throughout. I can scope and deliver phases 1 and 2 as a
@@ -579,7 +581,12 @@ import Layout from "../layouts/Layout.astro";
     margin-top: var(--space-2);
   }
 
-  /* Roadmap table */
+  /* Roadmap table: wrapped in a scrollable region rather than letting the
+     4-column min-content width push the page wider than the viewport on
+     narrow screens. */
+  .table-scroll {
+    overflow-x: auto;
+  }
   table {
     width: 100%;
     border-collapse: collapse;
