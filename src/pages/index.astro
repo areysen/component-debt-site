@@ -366,9 +366,9 @@ import { MAILTO_AUDIT as mailto, INTAKE_URL } from "../consts";
   <section class="dogfood">
     <div class="page reveal">
       <p class="seclabel">Practicing what it checks</p>
-      <h3>
+      <h2 class="sectitle">
         This page runs on the same kind of token system the audit looks for.
-      </h3>
+      </h2>
       <p>
         One type scale, one spacing scale, semantic color tokens, focus
         states on every interactive element, and severity that never depends
@@ -377,7 +377,7 @@ import { MAILTO_AUDIT as mailto, INTAKE_URL } from "../consts";
       </p>
       <div class="systable">
         <div>
-          <h4>Type scale</h4>
+          <h3>Type scale</h3>
           <div class="ramp">
             <span class="r40">Aa 40</span>
             <span class="r26">Aa 26</span>
@@ -386,7 +386,7 @@ import { MAILTO_AUDIT as mailto, INTAKE_URL } from "../consts";
           </div>
         </div>
         <div>
-          <h4>Spacing scale</h4>
+          <h3>Spacing scale</h3>
           <div class="scale-row"><i style="width:4px"></i> 4</div>
           <div class="scale-row"><i style="width:8px"></i> 8</div>
           <div class="scale-row"><i style="width:16px"></i> 16</div>
@@ -394,7 +394,7 @@ import { MAILTO_AUDIT as mailto, INTAKE_URL } from "../consts";
           <div class="scale-row"><i style="width:48px"></i> 48</div>
         </div>
         <div>
-          <h4>Color tokens</h4>
+          <h3>Color tokens</h3>
           <div class="tokrow">
             <span class="sw2" style="background:var(--accent2)"></span> --accent2
           </div>
@@ -607,7 +607,14 @@ import { MAILTO_AUDIT as mailto, INTAKE_URL } from "../consts";
       }
     }
 
-    /* ---- Section scaffolding shared by checks-intro / evidence / offer / start ---- */
+    /* ---- Section scaffolding shared by checks-intro / dogfood / evidence / offer / start ----
+       This kicker-label-plus-display-heading pattern is specific to this
+       marketing homepage. /audit and /sample-report use a plainer document
+       pattern instead (a bare small-caps h2, see global.css's h2 rule) since
+       they read as a report, not a pitch. That split is intentional: forcing
+       the document pages to grow a kicker label, or shrinking this page's
+       display headings to match a report's running h2, would both be
+       regressions. Do not unify them. */
     .seclabel {
       font-family: var(--mono);
       font-size: var(--text-xs);
@@ -874,7 +881,7 @@ import { MAILTO_AUDIT as mailto, INTAKE_URL } from "../consts";
       font-weight: 700;
     }
     .btncaption {
-      font-size: 13px; /* TODO: snap to scale (13px) */
+      font-size: var(--text-sm);
       color: var(--on-dark-dim);
     }
     .caption.mono {
@@ -1136,7 +1143,11 @@ import { MAILTO_AUDIT as mailto, INTAKE_URL } from "../consts";
     .dogfood .seclabel::before {
       background: var(--accent-warm);
     }
-    .dogfood h3 {
+    /* Joins the shared .sectitle pattern (see .checks-intro/.start overrides
+       above) rather than rolling its own heading, but stays smaller than the
+       28-44px default: this is a supporting proof-point between two bigger
+       sales sections, not a primary pitch heading. */
+    .dogfood .sectitle {
       color: #fff;
       font-size: clamp(24px, 3.6vw, 36px); /* TODO: snap to scale (clamp bounds) */
       margin: 0 0 var(--space-4);
@@ -1153,7 +1164,7 @@ import { MAILTO_AUDIT as mailto, INTAKE_URL } from "../consts";
       grid-template-columns: repeat(3, 1fr);
       gap: 40px; /* TODO: snap to scale (40px) */
     }
-    .systable h4 {
+    .systable h3 {
       font-family: var(--mono);
       font-size: var(--text-xs);
       letter-spacing: 1px;
