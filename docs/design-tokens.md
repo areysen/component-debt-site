@@ -149,14 +149,28 @@ in the source; this is the consolidated list.
 | `#5b9bd5` | Contrast demo: the failing white-on-blue sample |
 | `#2c6ca6` | Contrast demo: the passing white-on-blue sample |
 
+`.driftnote` / `.okline` (the "!" and "OK" callouts under the brand-blue
+swatches, ~line 792-801) and `.cverdict.bad` / `.cverdict.good` (the FAIL /
+PASS labels under the contrast samples, ~line 931-947) carry their own
+status-red and status-green literals (`#ffd9d2`/`#bdedcf` on driftnote/okline;
+`#5a1f16`/`#ffe4dd`/`#8a3022` and `#163d27`/`#cdf3da`/`#2a6b45` on cverdict).
+These are part of the same illustration, not the site's real status UI (that
+uses `--crit-*` / `--ok-*` elsewhere), so they stay literal too.
+
 ### Button-drift demo (`.b1`-`.b6`, `.bcanon`, ~line 815-881)
 
 Six buttons with intentionally inconsistent padding, border-radius, and
 font-size, illustrating component drift. `.bcanon` is the "canonical" button
 built from tokens, for contrast. In addition to the three brand blues above,
 this block also carries its own one-off hex (`#1a4554`, `#243038`,
-`#1e567f`, `#5a6873`) as part of the same illustration; none of it should be
-tokenized.
+`#1e567f`, `#5a6873`, `#dbe9ee`) as part of the same illustration; none of it
+should be tokenized.
+
+### Documentation demo (`.spec`, ~line 949-975)
+
+The "is it written down" illustration renders a mock component spec as plain
+text. Its color (`#dbe9ee`, a second, unrelated use of the same hex as the
+button-drift demo above) is part of the mockup, not site UI.
 
 ### Type-ramp demo (`.r40`, `.r26`, `.r16`, `.r13`, ~line 1175-1198)
 
@@ -170,7 +184,8 @@ label lie about what is on screen.
 grep -n "2f6fed\|2e6fed\|3170ee\|5b9bd5\|2c6ca6" src/pages/index.astro
 grep -n "\.b1\b\|\.b6\b\|\.bcanon\b" src/pages/index.astro
 grep -n "\.r40\b\|\.r13\b" src/pages/index.astro
+grep -n "driftnote\|okline\|cverdict" src/pages/index.astro
 ```
 
-All three should return matches. If any come back empty, something tokenized
+All four should return matches. If any come back empty, something tokenized
 content that was supposed to stay literal.
