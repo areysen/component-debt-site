@@ -53,8 +53,8 @@ const PAIRS = [
     kind: "text",
   },
   {
-    name: "kicker #e8d5b0 on gradient",
-    fg: "#e8d5b0",
+    name: "kicker #e07a5f on gradient",
+    fg: "#e07a5f",
     bg: "#3d1a45",
     kind: "text",
   },
@@ -99,8 +99,8 @@ const PAIRS = [
   // Homepage (Variant B): checks-intro / check rows / dogfood / start bands,
   // all on the solid dark charcoal #1c1a18 (same bg as the header pairs above)
   {
-    name: "sand label on grad-ink (checks/dogfood/start)",
-    fg: "#e8d5b0",
+    name: "terracotta label on grad-ink (checks/dogfood/start)",
+    fg: "#e07a5f",
     bg: "#1c1a18",
     kind: "text",
   },
@@ -112,6 +112,15 @@ const PAIRS = [
     kind: "text",
   },
   { name: "spec value #dbe9ee on grad-ink", fg: "#dbe9ee", bg: "#1c1a18", kind: "text" },
+
+  // Active toggle state (.toggle button[aria-pressed=true]) and the .bcanon
+  // demo button: dark ink text on a terracotta fill.
+  {
+    name: "grad-ink text on terracotta fill (active toggle / canonical button)",
+    fg: "#1c1a18",
+    bg: "#e07a5f",
+    kind: "text",
+  },
 
   // Token/button toggle drift note and OK line: translucent panels over
   // .stagebig (rgba(255,255,255,.05) over grad-ink), composited to solid hex

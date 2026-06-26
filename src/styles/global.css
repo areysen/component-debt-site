@@ -125,7 +125,7 @@ a {
   position: absolute;
   left: -9999px;
   top: 0;
-  background: #fff;
+  background: var(--card);
   color: var(--grad-ink);
   padding: 10px 16px;
   border-radius: 8px;
@@ -221,7 +221,7 @@ section.card,
   font-size: 12px;
   letter-spacing: 2px;
   text-transform: uppercase;
-  color: #e07a5f; /* terracotta, on warm charcoal/plum gradient > 4.5:1 */
+  color: var(--accent-warm); /* terracotta, on warm charcoal/plum gradient > 4.5:1 */
   margin: 0 0 10px;
 }
 .hero h1 {
@@ -233,7 +233,7 @@ section.card,
 }
 .hero .sub {
   font-size: 17px;
-  color: #e6ddd0;
+  color: var(--on-dark);
   margin: 0 0 24px;
   max-width: 640px;
 } /* warm off-white, clears AA on both gradient stops */
@@ -267,18 +267,18 @@ section.card,
   margin-top: 30px;
 }
 .endcta h2 {
-  color: #e07a5f;
+  color: var(--accent-warm);
   margin-top: 0;
 }
 .endcta p {
-  color: #e6ddd0;
+  color: var(--on-dark);
   max-width: 560px;
   margin: 0 auto 20px;
 }
 .endcta .placeholder-note {
   font-size: 12.5px;
   margin-top: 16px;
-  color: #e07a5f;
+  color: var(--accent-warm);
 }
 
 /* ---- Tags / pills ---- */
@@ -367,7 +367,7 @@ section.card,
   align-items: center;
 }
 .site-nav a {
-  color: #e6ddd0; /* warm off-white, clears AA on the dark charcoal header */
+  color: var(--on-dark); /* warm off-white, clears AA on the dark charcoal header */
   text-decoration: none;
   font-size: 14px;
   font-weight: 600;

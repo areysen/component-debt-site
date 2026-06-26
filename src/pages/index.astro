@@ -396,16 +396,16 @@ import { MAILTO_AUDIT as mailto, INTAKE_URL } from "../consts";
         <div>
           <h4>Color tokens</h4>
           <div class="tokrow">
-            <span class="sw2" style="background:#5a2c66"></span> --accent2
+            <span class="sw2" style="background:var(--accent2)"></span> --accent2
           </div>
           <div class="tokrow">
-            <span class="sw2" style="background:#3d1a45"></span> --accent
+            <span class="sw2" style="background:var(--accent)"></span> --accent
           </div>
           <div class="tokrow">
-            <span class="sw2" style="background:#e07a5f"></span> terracotta label
+            <span class="sw2" style="background:var(--accent-warm)"></span> terracotta label
           </div>
           <div class="tokrow">
-            <span class="sw2" style="background:#2a2622"></span> --body
+            <span class="sw2" style="background:var(--body)"></span> --body
           </div>
         </div>
       </div>
@@ -551,7 +551,7 @@ import { MAILTO_AUDIT as mailto, INTAKE_URL } from "../consts";
       padding-bottom: 72px;
     }
     .hero h1 .hl {
-      color: #e07a5f;
+      color: var(--accent-warm);
     }
     /* The global focus ring (--accent2, dark plum) fails AA on every dark
        band this page adds (hero, check rows, start): ~1.5:1, far under the
@@ -571,7 +571,7 @@ import { MAILTO_AUDIT as mailto, INTAKE_URL } from "../consts";
       margin-top: 24px;
       font-family: var(--mono);
       font-size: 13.5px;
-      color: #e6ddd0;
+      color: var(--on-dark);
     }
     .pricetag b {
       color: #fff;
@@ -593,10 +593,10 @@ import { MAILTO_AUDIT as mailto, INTAKE_URL } from "../consts";
       animation: scrollx 28s linear infinite;
       font-family: var(--mono);
       font-size: 13px;
-      color: #cfc6b8;
+      color: var(--on-dark-dim);
     }
     .ticker .track span b {
-      color: #e07a5f;
+      color: var(--accent-warm);
     }
     @keyframes scrollx {
       from {
@@ -654,13 +654,13 @@ import { MAILTO_AUDIT as mailto, INTAKE_URL } from "../consts";
       color: #fff;
     }
     .checks-intro .seclabel {
-      color: #e07a5f;
+      color: var(--accent-warm);
     }
     .checks-intro .seclabel::before {
-      background: #e07a5f;
+      background: var(--accent-warm);
     }
     .checks-intro .lede {
-      color: #d6cdc0;
+      color: var(--on-dark-soft);
     }
 
     /* ---- Full-bleed alternating check rows (dark band continues) ---- */
@@ -694,14 +694,14 @@ import { MAILTO_AUDIT as mailto, INTAKE_URL } from "../consts";
     }
     .check p {
       font-size: 16px;
-      color: #d6cdc0;
+      color: var(--on-dark-soft);
       max-width: 46ch;
       margin: 0 0 16px;
     }
     .check .label-key {
       font-family: var(--mono);
       font-size: 12px;
-      color: #e07a5f;
+      color: var(--accent-warm);
     }
 
     .stagebig {
@@ -738,12 +738,12 @@ import { MAILTO_AUDIT as mailto, INTAKE_URL } from "../consts";
       font-size: 12.5px;
       border: 0;
       background: transparent;
-      color: #d6cdc0;
+      color: var(--on-dark-soft);
       padding: 8px 15px;
       cursor: pointer;
     }
     .toggle button[aria-pressed="true"] {
-      background: #e07a5f;
+      background: var(--accent-warm);
       color: var(--grad-ink);
     }
 
@@ -771,7 +771,7 @@ import { MAILTO_AUDIT as mailto, INTAKE_URL } from "../consts";
     .sw .subtle {
       font-family: var(--mono);
       font-size: 11px;
-      color: #cfc6b8;
+      color: var(--on-dark-dim);
     }
     .driftnote,
     .okline {
@@ -862,7 +862,7 @@ import { MAILTO_AUDIT as mailto, INTAKE_URL } from "../consts";
       font-size: 15px;
     }
     .bcanon {
-      background: #e07a5f;
+      background: var(--accent-warm);
       color: var(--grad-ink);
       border: 0;
       border-radius: 11px;
@@ -872,12 +872,12 @@ import { MAILTO_AUDIT as mailto, INTAKE_URL } from "../consts";
     }
     .btncaption {
       font-size: 13px;
-      color: #cfc6b8;
+      color: var(--on-dark-dim);
     }
     .caption.mono {
       font-family: var(--mono);
       font-size: 12.5px;
-      color: #cfc6b8;
+      color: var(--on-dark-dim);
       margin-top: 16px;
     }
 
@@ -942,7 +942,7 @@ import { MAILTO_AUDIT as mailto, INTAKE_URL } from "../consts";
       line-height: 1.8;
     }
     .spec .k {
-      color: #e07a5f;
+      color: var(--accent-warm);
     }
     .spec .row {
       /* Two columns so every value shares one left edge instead of being
@@ -988,7 +988,7 @@ import { MAILTO_AUDIT as mailto, INTAKE_URL } from "../consts";
       color: #fff;
     }
     .score.grade .l {
-      color: #cfc6b8;
+      color: var(--on-dark-dim);
     }
     .score .n {
       font-family: var(--display);
@@ -1055,7 +1055,7 @@ import { MAILTO_AUDIT as mailto, INTAKE_URL } from "../consts";
       margin: 12px 0;
     }
     pre.code .c {
-      color: #cfc6b8;
+      color: var(--on-dark-dim);
     }
     .impact {
       background: var(--low-bg);
@@ -1126,10 +1126,10 @@ import { MAILTO_AUDIT as mailto, INTAKE_URL } from "../consts";
       border-top: 1px solid rgba(255, 255, 255, 0.08);
     }
     .dogfood .seclabel {
-      color: #e07a5f;
+      color: var(--accent-warm);
     }
     .dogfood .seclabel::before {
-      background: #e07a5f;
+      background: var(--accent-warm);
     }
     .dogfood h3 {
       color: #fff;
@@ -1138,7 +1138,7 @@ import { MAILTO_AUDIT as mailto, INTAKE_URL } from "../consts";
       max-width: 22ch;
     }
     .dogfood p {
-      color: #d6cdc0;
+      color: var(--on-dark-soft);
       max-width: 62ch;
       font-size: 16px;
       margin: 0 0 48px;
@@ -1153,7 +1153,7 @@ import { MAILTO_AUDIT as mailto, INTAKE_URL } from "../consts";
       font-size: 12px;
       letter-spacing: 1px;
       text-transform: uppercase;
-      color: #e07a5f;
+      color: var(--accent-warm);
       margin: 0 0 16px;
       font-weight: 500;
     }
@@ -1176,7 +1176,7 @@ import { MAILTO_AUDIT as mailto, INTAKE_URL } from "../consts";
     }
     .r13 {
       font-size: 13px;
-      color: #cfc6b8;
+      color: var(--on-dark-dim);
     }
     .scale-row {
       display: flex;
@@ -1185,18 +1185,18 @@ import { MAILTO_AUDIT as mailto, INTAKE_URL } from "../consts";
       margin-bottom: 10px;
       font-family: var(--mono);
       font-size: 12.5px;
-      color: #d6cdc0;
+      color: var(--on-dark-soft);
     }
     .scale-row i {
       display: block;
       height: 13px;
-      background: #e07a5f;
+      background: var(--accent-warm);
       border-radius: 3px;
     }
     .tokrow {
       font-family: var(--mono);
       font-size: 13px;
-      color: #e6ddd0;
+      color: var(--on-dark);
       display: flex;
       align-items: center;
       gap: 10px;
@@ -1218,11 +1218,11 @@ import { MAILTO_AUDIT as mailto, INTAKE_URL } from "../consts";
       border-top: 1px solid rgba(255, 255, 255, 0.08);
     }
     .start .seclabel {
-      color: #e07a5f;
+      color: var(--accent-warm);
       justify-content: center;
     }
     .start .seclabel::before {
-      background: #e07a5f;
+      background: var(--accent-warm);
     }
     .start .sectitle {
       color: #fff;
@@ -1230,14 +1230,14 @@ import { MAILTO_AUDIT as mailto, INTAKE_URL } from "../consts";
       max-width: 24ch;
     }
     .start .lede {
-      color: #e6ddd0;
+      color: var(--on-dark);
       margin: 0 auto 32px;
     }
     .start .btnrow {
       justify-content: center;
     }
     .start .note {
-      color: #d6cdc0;
+      color: var(--on-dark-soft);
       margin-top: 24px;
     }
 
