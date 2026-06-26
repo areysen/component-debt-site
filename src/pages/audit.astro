@@ -1,6 +1,6 @@
 ---
 import Layout from "../layouts/Layout.astro";
-import { MAILTO_AUDIT as mailto } from "../consts";
+import { MAILTO_AUDIT as mailto, INTAKE_URL } from "../consts";
 
 const deliverables = [
   {
@@ -57,7 +57,7 @@ const steps = [
         systems engineer. Written report, prioritized fix roadmap, and a
         recorded walkthrough.
       </p>
-      <a class="cta" href={mailto}>Start an audit</a>
+      <a class="cta" href={INTAKE_URL}>Start an audit</a>
       <a class="cta secondary" href="#whatyouget">See what you get</a>
       <p class="pricetag">
         <b>$2,500</b> · fixed scope · about one week · fully async
@@ -70,7 +70,7 @@ const steps = [
       <h2>The problem</h2>
       <p class="lead">
         Your UI works, but it is quietly working against you. The same button is
-        built five different ways, colors and spacing are hard-coded instead of
+        built six different ways, colors and spacing are hard-coded instead of
         tokenized, and a few components fall short of accessibility standards
         you cannot fully quantify. None of it is on fire; it is a steady tax on
         velocity and quality that compounds as the team grows.
@@ -200,9 +200,11 @@ const steps = [
         fit and timing within two business days. If it is not a fit, you will
         hear that too.
       </p>
-      <a class="cta" href={mailto}>Email to start an audit</a>
+      <a class="cta" href={INTAKE_URL}>Start an audit</a>
+      <a class="cta secondary" href={mailto}>Email instead</a>
       <p class="placeholder-note">
-        A hosted intake form will replace email here once it is set up.
+        The intake is a short written questionnaire. Email works too if you
+        prefer.
       </p>
     </div>
   </div>
@@ -210,9 +212,10 @@ const steps = [
 
 <style>
   .pricetag {
-    margin-top: 18px;
-    font-size: 13.5px;
-    color: #e6ddd0;
+    margin-top: 18px; /* TODO: snap to scale (18px) */
+    font-family: var(--mono); /* match the homepage hero price line */
+    font-size: 13.5px; /* TODO: snap to scale (13.5px) */
+    color: var(--on-dark);
   }
   .pricetag b {
     color: #fff;
@@ -223,17 +226,17 @@ const steps = [
   .twocol {
     display: grid;
     grid-template-columns: 1fr 1fr;
-    gap: 18px;
-    margin: 6px 0;
+    gap: 18px; /* TODO: snap to scale (18px) */
+    margin: 6px 0; /* TODO: snap to scale (6px) */
   }
   .twocol .col {
     margin: 0;
   }
   .twocol .col h3 {
-    font-size: 14px;
+    font-size: 14px; /* TODO: snap to scale (14px) */
     text-transform: uppercase;
     letter-spacing: 0.6px;
-    margin-bottom: 10px;
+    margin-bottom: 10px; /* TODO: snap to scale (10px) */
   }
   .yes h3 {
     color: var(--ok-ink);
@@ -245,26 +248,26 @@ const steps = [
   .deliv {
     display: grid;
     grid-template-columns: repeat(2, 1fr);
-    gap: 14px;
-    margin: 8px 0;
+    gap: 14px; /* TODO: snap to scale (14px) */
+    margin: var(--space-2) 0;
   }
   .deliv .item {
     border: 1px solid var(--line);
-    border-radius: 10px;
-    padding: 16px 18px;
+    border-radius: 10px; /* TODO: snap to scale (10px) */
+    padding: var(--space-4) 18px; /* TODO: snap to scale (18px) */
     background: #fbf9f6;
   }
   .deliv .item h3 {
-    font-size: 15.5px;
-    margin-bottom: 4px;
+    font-size: 15.5px; /* TODO: snap to scale (15.5px) */
+    margin-bottom: var(--space-1);
   }
   .deliv .item p {
-    font-size: 13.5px;
+    font-size: 13.5px; /* TODO: snap to scale (13.5px) */
     color: var(--muted);
     margin: 0;
   }
   .see-sample {
-    margin-top: 6px;
+    margin-top: 6px; /* TODO: snap to scale (6px) */
   }
 
   /* Numbered process steps. The number is rendered text (a counter), so the
@@ -272,12 +275,12 @@ const steps = [
   ol.steps {
     counter-reset: step;
     list-style: none;
-    margin: 8px 0;
+    margin: var(--space-2) 0;
     padding: 0;
   }
   ol.steps li {
     position: relative;
-    padding: 4px 0 16px 46px;
+    padding: var(--space-1) 0 var(--space-4) 46px; /* TODO: snap to scale (46px) */
     margin: 0;
   }
   ol.steps li::before {
@@ -292,7 +295,7 @@ const steps = [
     background: var(--accent);
     color: #fff;
     font-weight: 700;
-    font-size: 14px;
+    font-size: 14px; /* TODO: snap to scale (14px) */
     display: flex;
     align-items: center;
     justify-content: center;
@@ -310,11 +313,11 @@ const steps = [
     display: none;
   }
   ol.steps h3 {
-    font-size: 15.5px;
-    margin-bottom: 2px;
+    font-size: 15.5px; /* TODO: snap to scale (15.5px) */
+    margin-bottom: 2px; /* TODO: snap to scale (2px) */
   }
   ol.steps p {
-    font-size: 13.5px;
+    font-size: 13.5px; /* TODO: snap to scale (13.5px) */
     color: var(--muted);
     margin: 0;
   }
@@ -322,12 +325,12 @@ const steps = [
   .pricebox {
     display: grid;
     grid-template-columns: auto 1fr;
-    gap: 24px;
+    gap: var(--space-5);
     align-items: center;
   }
   .pricebox .amt {
     font-family: var(--display);
-    font-size: 40px;
+    font-size: 40px; /* TODO: snap to scale (40px) */
     font-weight: 700;
     letter-spacing: -0.03em;
     color: var(--accent);
@@ -335,26 +338,26 @@ const steps = [
   }
   .pricebox .amt span {
     display: block;
-    font-size: 12px;
+    font-size: var(--text-xs);
     font-weight: 600;
     color: var(--muted);
     text-transform: uppercase;
     letter-spacing: 0.6px;
-    margin-top: 6px;
+    margin-top: 6px; /* TODO: snap to scale (6px) */
   }
   .price-lead {
-    margin: 0 0 6px;
+    margin: 0 0 6px; /* TODO: snap to scale (6px) */
   }
   .no-margin {
     margin: 0;
   }
 
   .faq h3 {
-    font-size: 15px;
-    margin-top: 16px;
+    font-size: var(--text-base);
+    margin-top: var(--space-4);
   }
   .faq p {
-    font-size: 14px;
+    font-size: 14px; /* TODO: snap to scale (14px) */
     color: var(--body);
   }
 

@@ -6,4 +6,7 @@ export const EMAIL = "areysen@gmail.com";
 
 export const MAILTO_AUDIT = `mailto:${EMAIL}?subject=Design%20System%20Health%20Audit%20inquiry`;
 
+// Hosted intake form (Tally), embedded full-page at this internal route.
+export const INTAKE_URL = "/intake";
+
 export const SUBSTACK_URL = "https://componentdebt.substack.com";

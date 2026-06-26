@@ -50,6 +50,38 @@
   --mono: "JetBrains Mono", ui-monospace, Menlo, Consolas, monospace;
 
   --maxw: 980px;
+
+  /* On-dark de-facto tokens: colors used as repeated literals on the
+     gradient/header bands before this pass. See docs/design-tokens.md. */
+  --accent-warm: #e07a5f; /* terracotta: kicker + endcta accents on the dark band */
+  --on-dark: #e6ddd0; /* warm off-white body text on the gradient/header */
+  --on-dark-dim: #cfc6b8; /* dimmer on-dark text (captions on gradient) */
+  --on-dark-soft: #d6cdc0; /* softer on-dark body text */
+
+  /* Spacing scale (4px base) */
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 12px;
+  --space-4: 16px;
+  --space-5: 24px;
+  --space-6: 32px;
+  --space-7: 48px;
+  --space-8: 72px;
+
+  /* Radius scale */
+  --radius-sm: 6px;
+  --radius-md: 11px;
+  --radius-lg: 18px;
+  --radius-pill: 999px;
+
+  /* Type scale */
+  --text-xs: 12px;
+  --text-sm: 13px;
+  --text-base: 15px;
+  --text-md: 17px;
+  --text-lg: 21px;
+  --text-xl: 28px;
+  --text-2xl: 34px;
 }
 
 * {
@@ -69,6 +101,11 @@ body {
   line-height: 1.6;
   font-size: 15px;
   -webkit-font-smoothing: antialiased;
+  /* Sticky-footer column so a short page (e.g. the embedded intake form) can
+     fill the space between the header and footer rather than leaving a gap. */
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
 }
 
 a {
@@ -80,7 +117,7 @@ a {
 :focus-visible {
   outline: 3px solid var(--accent2);
   outline-offset: 2px;
-  border-radius: 2px;
+  border-radius: 2px; /* TODO: snap to scale (2px) */
 }
 
 /* Skip link: visually hidden until focused. */
@@ -88,16 +125,16 @@ a {
   position: absolute;
   left: -9999px;
   top: 0;
-  background: #fff;
+  background: var(--card);
   color: var(--grad-ink);
-  padding: 10px 16px;
-  border-radius: 8px;
+  padding: 10px var(--space-4); /* TODO: snap to scale (10px) */
+  border-radius: 8px; /* TODO: snap to scale (8px) */
   font-weight: 700;
   z-index: 100;
 }
 .skip-link:focus {
-  left: 16px;
-  top: 16px;
+  left: var(--space-4);
+  top: var(--space-4);
 }
 
 .wrap,
@@ -118,25 +155,25 @@ h1 {
   letter-spacing: -0.03em;
 }
 h2 {
-  font-size: 13px;
+  font-size: var(--text-sm);
   text-transform: uppercase;
   letter-spacing: 1.3px;
   color: var(--accent);
-  margin: 30px 0 14px;
+  margin: 30px 0 14px; /* TODO: snap to scale (30px, 14px) */
   font-weight: 700;
 }
 h3 {
   font-family: var(--display);
   font-weight: 600;
-  font-size: 17px;
+  font-size: var(--text-md);
   color: var(--ink);
-  margin: 0 0 6px;
+  margin: 0 0 6px; /* TODO: snap to scale (6px) */
 }
 p {
-  margin: 0 0 13px;
+  margin: 0 0 13px; /* TODO: snap to scale (13px) */
 }
 .lead {
-  font-size: 16.5px;
+  font-size: 16.5px; /* TODO: snap to scale (16.5px) */
   color: var(--ink);
 }
 .muted {
@@ -144,11 +181,11 @@ p {
 }
 
 ul.clean {
-  margin: 8px 0 14px;
-  padding-left: 20px;
+  margin: var(--space-2) 0 14px; /* TODO: snap to scale (14px) */
+  padding-left: 20px; /* TODO: snap to scale (20px) */
 }
 ul.clean li {
-  margin-bottom: 7px;
+  margin-bottom: 7px; /* TODO: snap to scale (7px) */
 }
 ul.clean li strong {
   color: var(--ink);
@@ -159,9 +196,9 @@ section.card,
 .card {
   background: var(--card);
   border: 1px solid var(--line);
-  border-radius: 12px;
-  padding: 24px 26px;
-  margin: 16px 0;
+  border-radius: 12px; /* TODO: snap to scale (12px) */
+  padding: var(--space-5) 26px; /* TODO: snap to scale (26px) */
+  margin: var(--space-4) 0;
   box-shadow: 0 1px 2px rgba(20, 40, 55, 0.04);
 }
 
@@ -169,31 +206,35 @@ section.card,
 .hero {
   background: var(--grad);
   color: #fff;
-  padding: 54px 0 46px;
-  margin-bottom: 30px;
+  padding: 54px 0 46px; /* TODO: snap to scale (54px, 46px) */
+  margin-bottom: 30px; /* TODO: snap to scale (30px) */
 }
 .hero .page,
 .hero .wrap {
+  /* All heroes start at the same point: the homepage hero already adds this
+     top padding via its own .hero .page rule; sharing it here keeps the audit
+     and sample-report titles from sitting higher. */
+  padding-top: var(--space-8);
   padding-bottom: 0;
 }
 .hero .kicker {
-  font-size: 12px;
+  font-size: var(--text-xs);
   letter-spacing: 2px;
   text-transform: uppercase;
-  color: #e8d5b0; /* sand, on warm charcoal/plum gradient > 4.5:1 */
-  margin: 0 0 10px;
+  color: var(--accent-warm); /* terracotta, on warm charcoal/plum gradient > 4.5:1 */
+  margin: 0 0 10px; /* TODO: snap to scale (10px) */
 }
 .hero h1 {
-  font-size: 34px;
+  font-size: var(--text-2xl);
   line-height: 1.05;
-  margin: 0 0 12px;
+  margin: 0 0 var(--space-3);
   letter-spacing: -0.03em;
   color: #fff;
 }
 .hero .sub {
-  font-size: 17px;
-  color: #e6ddd0;
-  margin: 0 0 24px;
+  font-size: var(--text-md);
+  color: var(--on-dark);
+  margin: 0 0 var(--space-5);
   max-width: 640px;
 } /* warm off-white, clears AA on both gradient stops */
 
@@ -203,9 +244,9 @@ section.card,
   background: #fff;
   color: var(--grad-ink);
   font-weight: 700;
-  font-size: 15px;
-  padding: 13px 22px;
-  border-radius: 11px;
+  font-size: var(--text-base);
+  padding: 13px 22px; /* TODO: snap to scale (13px, 22px) */
+  border-radius: var(--radius-md);
   text-decoration: none;
   border: 1px solid #fff;
 }
@@ -213,31 +254,31 @@ section.card,
   background: transparent;
   color: #fff;
   border-color: rgba(255, 255, 255, 0.65);
-  margin-left: 10px;
+  margin-left: 10px; /* TODO: snap to scale (10px) */
 }
 
 /* End CTA block (gradient, centered) */
 .endcta {
   background: var(--grad);
   color: #fff;
-  border-radius: 14px;
-  padding: 34px 30px;
+  border-radius: 14px; /* TODO: snap to scale (14px) */
+  padding: 34px 30px; /* TODO: snap to scale (34px, 30px) */
   text-align: center;
-  margin-top: 30px;
+  margin-top: 30px; /* TODO: snap to scale (30px) */
 }
 .endcta h2 {
-  color: #e8d5b0;
+  color: var(--accent-warm);
   margin-top: 0;
 }
 .endcta p {
-  color: #e6ddd0;
+  color: var(--on-dark);
   max-width: 560px;
-  margin: 0 auto 20px;
+  margin: 0 auto 20px; /* TODO: snap to scale (20px) */
 }
 .endcta .placeholder-note {
-  font-size: 12.5px;
-  margin-top: 16px;
-  color: #e8d5b0;
+  font-size: 12.5px; /* TODO: snap to scale (12.5px) */
+  margin-top: var(--space-4);
+  color: var(--accent-warm);
 }
 
 /* ---- Tags / pills ---- */
@@ -245,20 +286,20 @@ section.card,
   display: inline-block;
   background: var(--chip);
   color: var(--accent);
-  font-size: 11px;
-  padding: 2px 9px;
-  border-radius: 99px;
+  font-size: 11px; /* TODO: snap to scale (11px) */
+  padding: 2px 9px; /* TODO: snap to scale (2px, 9px) */
+  border-radius: 99px; /* TODO: snap to scale (99px vs --radius-pill: 999px) */
   font-weight: 600;
-  margin-bottom: 6px;
+  margin-bottom: 6px; /* TODO: snap to scale (6px) */
 }
 
 /* ---- Severity badges: shape + text + color (never color alone) ---- */
 .sev {
   display: inline-block;
-  font-size: 11px;
+  font-size: 11px; /* TODO: snap to scale (11px) */
   font-weight: 700;
-  padding: 2px 9px;
-  border-radius: 6px;
+  padding: 2px 9px; /* TODO: snap to scale (2px, 9px) */
+  border-radius: var(--radius-sm);
   letter-spacing: 0.4px;
   border: 1px solid;
 }
@@ -279,7 +320,7 @@ section.card,
 }
 .sev::before {
   font-weight: 700;
-  margin-right: 4px;
+  margin-right: var(--space-1);
 }
 .sev.crit::before {
   content: "\25B2";
@@ -299,17 +340,17 @@ section.card,
 .site-header .nav-inner {
   max-width: var(--maxw);
   margin: 0 auto;
-  padding: 14px 20px;
+  padding: 14px 20px; /* TODO: snap to scale (14px, 20px) */
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 16px;
+  gap: var(--space-4);
   flex-wrap: wrap;
 }
 .brand {
   color: #fff;
   font-weight: 800;
-  font-size: 16px;
+  font-size: 16px; /* TODO: snap to scale (16px) */
   letter-spacing: 0.3px;
   text-decoration: none;
 }
@@ -319,18 +360,18 @@ section.card,
 .site-nav ul {
   list-style: none;
   display: flex;
-  gap: 20px;
+  gap: 20px; /* TODO: snap to scale (20px) */
   margin: 0;
   padding: 0;
   flex-wrap: wrap;
   align-items: center;
 }
 .site-nav a {
-  color: #e6ddd0; /* warm off-white, clears AA on the dark charcoal header */
+  color: var(--on-dark); /* warm off-white, clears AA on the dark charcoal header */
   text-decoration: none;
-  font-size: 14px;
+  font-size: 14px; /* TODO: snap to scale (14px) */
   font-weight: 600;
-  padding: 4px 0;
+  padding: var(--space-1) 0;
   border-bottom: 2px solid transparent; /* non-color active cue lives here */
 }
 .site-nav a:hover {
@@ -354,18 +395,18 @@ section.card,
 /* ---- Site footer ---- */
 .site-footer {
   border-top: 1px solid var(--line);
-  margin-top: 40px;
+  margin-top: 40px; /* TODO: snap to scale (40px) */
   background: var(--card);
 }
 .site-footer .foot-inner {
   max-width: var(--maxw);
   margin: 0 auto;
-  padding: 26px 20px 34px;
-  font-size: 13px;
+  padding: 26px 20px 34px; /* TODO: snap to scale (26px, 20px, 34px) */
+  font-size: var(--text-sm);
   color: var(--muted);
   display: flex;
   flex-wrap: wrap;
-  gap: 10px 28px;
+  gap: 10px 28px; /* TODO: snap to scale (10px, 28px) */
   justify-content: space-between;
   align-items: baseline;
 }
@@ -381,9 +422,12 @@ section.card,
   max-width: 460px;
 }
 
-/* ---- Layout content wrapper for non-hero pages ---- */
+/* ---- Layout content wrapper for non-hero pages ----
+   flex: 1 lets <main> grow to fill the viewport between header and footer,
+   so a full-height child (the intake iframe) can resolve height: 100%. */
 main {
   display: block;
+  flex: 1 0 auto;
 }
 
 @media (max-width: 680px) {
@@ -393,9 +437,9 @@ main {
   }
   .cta.secondary {
     margin-left: 0;
-    margin-top: 10px;
+    margin-top: 10px; /* TODO: snap to scale (10px) */
   }
   .hero h1 {
-    font-size: 28px;
+    font-size: var(--text-xl);
   }
 }

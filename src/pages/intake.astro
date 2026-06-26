@@ -1,0 +1,42 @@
+---
+import Layout from "../layouts/Layout.astro";
+---
+
+<Layout
+  title="Start your audit: Component Debt"
+  description="Start a Design System Health Audit. A short written intake form covering your stack, what feels off, and read access. Fixed scope, fully async, about one week."
+>
+  <section class="intake-embed">
+    <iframe
+      data-tally-src="https://tally.so/embed/9qaNRG?transparentBackground=1&dynamicHeight=1"
+      title="Design System Health Audit intake form"
+      loading="lazy"
+      height="600"></iframe>
+  </section>
+</Layout>
+
+<script is:inline src="https://tally.so/widgets/embed.js"></script>
+<script is:inline>
+  // Tally's widget grows the iframe's height attribute via postMessage to
+  // match the form content, so the page scrolls and the iframe itself never
+  // needs its own scrollbar. The iframe must be free to size from that
+  // height attribute (no CSS height override) or the resize has no effect.
+  if (typeof Tally !== "undefined") {
+    Tally.loadEmbeds();
+  }
+</script>
+
+<style>
+  .intake-embed {
+    display: flex;
+    padding-top: var(--space-8); /* matches .hero .page top spacing on other pages */
+  }
+  .intake-embed iframe {
+    flex: 1;
+    width: 100%;
+    min-height: 600px;
+    border: 0;
+    /* transparentBackground=1 on the Tally URL lets the cream page show through */
+    background: transparent;
+  }
+</style>

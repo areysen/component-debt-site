@@ -1,12 +1,16 @@
 ---
 import Layout from "../layouts/Layout.astro";
-import { MAILTO_AUDIT as mailto } from "../consts";
+import { MAILTO_AUDIT as mailto, INTAKE_URL } from "../consts";
 ---
 
 <Layout
   title="Component Debt: Design System Health Audits"
   description="A fixed-scope, fully async audit of your component library, tokens, theming, and accessibility. Written report, prioritized roadmap, and a recorded walkthrough in about one week."
 >
+  {/* JS-detection flag, set before the reveal sections paint so the hidden
+     starting state never applies without JS. Inline + synchronous on purpose. */}
+  <script is:inline>document.documentElement.classList.add("js");</script>
+
   <header class="hero">
     <div class="gridmotif" id="gridmotif" aria-hidden="true"></div>
     <div class="page">
@@ -18,7 +22,7 @@ import { MAILTO_AUDIT as mailto } from "../consts";
         scope, fully async, about one week.
       </p>
       <div class="btnrow">
-        <a class="cta" href={mailto}>Start an audit</a>
+        <a class="cta" href={INTAKE_URL}>Start an audit</a>
         <a class="cta secondary" href="#covers">See what it checks</a>
       </div>
       <p class="pricetag">
@@ -84,39 +88,45 @@ import { MAILTO_AUDIT as mailto } from "../consts";
             >After tokenizing</button
           >
         </div>
-        <div class="swatches" id="tokBefore">
-          <div class="sw">
-            <div class="chip" style="background:#2f6fed"></div>
-            <div class="name">#2f6fed</div>
-            <div class="subtle">card.css</div>
+        <div class="swap">
+          <div class="swapview" data-view="tok-before">
+            <div class="swatches">
+              <div class="sw">
+                <div class="chip" style="background:#2f6fed"></div>
+                <div class="name">#2f6fed</div>
+                <div class="subtle">card.css</div>
+              </div>
+              <div class="sw">
+                <div class="chip" style="background:#2e6fed"></div>
+                <div class="name">#2e6fed</div>
+                <div class="subtle">nav.css</div>
+              </div>
+              <div class="sw">
+                <div class="chip" style="background:#3170ee"></div>
+                <div class="name">#3170ee</div>
+                <div class="subtle">banner.css</div>
+              </div>
+            </div>
+            <div class="driftnote">
+              <span class="icn" aria-hidden="true">!</span><span
+                >Three "brand blues" that are meant to be one.</span
+              >
+            </div>
           </div>
-          <div class="sw">
-            <div class="chip" style="background:#2e6fed"></div>
-            <div class="name">#2e6fed</div>
-            <div class="subtle">nav.css</div>
+          <div class="swapview" data-view="tok-after" data-inactive>
+            <div class="swatches">
+              <div class="sw" style="max-width:260px">
+                <div class="chip" style="background:#2f6fed"></div>
+                <div class="name">--color-brand</div>
+                <div class="subtle">one source, referenced everywhere</div>
+              </div>
+            </div>
+            <div class="okline">
+              <span class="icn" aria-hidden="true">OK</span><span
+                >One semantic token. A brand change is a one-line edit.</span
+              >
+            </div>
           </div>
-          <div class="sw">
-            <div class="chip" style="background:#3170ee"></div>
-            <div class="name">#3170ee</div>
-            <div class="subtle">banner.css</div>
-          </div>
-        </div>
-        <div class="swatches" id="tokAfter" hidden>
-          <div class="sw" style="max-width:260px">
-            <div class="chip" style="background:#2f6fed"></div>
-            <div class="name">--color-brand</div>
-            <div class="subtle">one source, referenced everywhere</div>
-          </div>
-        </div>
-        <div class="driftnote" id="tokNote">
-          <span class="icn" aria-hidden="true">!</span><span
-            >Three "brand blues" that are meant to be one.</span
-          >
-        </div>
-        <div class="okline" id="tokOk" hidden>
-          <span class="icn" aria-hidden="true">OK</span><span
-            >One semantic token. A brand change is a one-line edit.</span
-          >
         </div>
       </div>
     </div>
@@ -144,18 +154,24 @@ import { MAILTO_AUDIT as mailto } from "../consts";
             >Canonical</button
           >
         </div>
-        <div class="bbar" id="btnBefore">
-          <span class="b b1">Save</span><span class="b b2">Save</span><span
-            class="b b3">Save</span
-          ><span class="b b4">Save</span><span class="b b5">Save</span><span
-            class="b b6">Save</span
-          >
-        </div>
-        <div class="bbar" id="btnAfter" hidden>
-          <span class="b bcanon">Save</span>
-          <span class="mono btncaption"
-            >one component, documented variants</span
-          >
+        <div class="swap">
+          <div class="swapview" data-view="btn-before">
+            <div class="bbar">
+              <span class="b b1">Save</span><span class="b b2">Save</span><span
+                class="b b3">Save</span
+              ><span class="b b4">Save</span><span class="b b5">Save</span><span
+                class="b b6">Save</span
+              >
+            </div>
+          </div>
+          <div class="swapview" data-view="btn-after" data-inactive>
+            <div class="bbar">
+              <span class="b bcanon">Save</span>
+              <span class="mono btncaption"
+                >one component, documented variants</span
+              >
+            </div>
+          </div>
         </div>
         <div class="caption mono" id="btnCap">
           6 implementations doing one job.
@@ -173,8 +189,7 @@ import { MAILTO_AUDIT as mailto } from "../consts";
         <p>
           The most-clicked element in a product is often the one that fails.
           Contrast is computed against the AA floor of 4.5:1, and the verdict
-          is shown by label, not color alone. Tab in to see real focus
-          states.
+          is shown by label, not color alone.
         </p>
         <span class="label-key">Accessibility</span>
       </div>
@@ -350,9 +365,9 @@ import { MAILTO_AUDIT as mailto } from "../consts";
   <section class="dogfood">
     <div class="page reveal">
       <p class="seclabel">Practicing what it checks</p>
-      <h3>
+      <h2 class="sectitle">
         This page runs on the same kind of token system the audit looks for.
-      </h3>
+      </h2>
       <p>
         One type scale, one spacing scale, semantic color tokens, focus
         states on every interactive element, and severity that never depends
@@ -361,7 +376,7 @@ import { MAILTO_AUDIT as mailto } from "../consts";
       </p>
       <div class="systable">
         <div>
-          <h4>Type scale</h4>
+          <h3>Type scale</h3>
           <div class="ramp">
             <span class="r40">Aa 40</span>
             <span class="r26">Aa 26</span>
@@ -370,7 +385,7 @@ import { MAILTO_AUDIT as mailto } from "../consts";
           </div>
         </div>
         <div>
-          <h4>Spacing scale</h4>
+          <h3>Spacing scale</h3>
           <div class="scale-row"><i style="width:4px"></i> 4</div>
           <div class="scale-row"><i style="width:8px"></i> 8</div>
           <div class="scale-row"><i style="width:16px"></i> 16</div>
@@ -378,18 +393,18 @@ import { MAILTO_AUDIT as mailto } from "../consts";
           <div class="scale-row"><i style="width:48px"></i> 48</div>
         </div>
         <div>
-          <h4>Color tokens</h4>
+          <h3>Color tokens</h3>
           <div class="tokrow">
-            <span class="sw2" style="background:#5a2c66"></span> --accent2
+            <span class="sw2" style="background:var(--accent2)"></span> --accent2
           </div>
           <div class="tokrow">
-            <span class="sw2" style="background:#3d1a45"></span> --accent
+            <span class="sw2" style="background:var(--accent)"></span> --accent
           </div>
           <div class="tokrow">
-            <span class="sw2" style="background:#e8d5b0"></span> sand label
+            <span class="sw2" style="background:var(--accent-warm)"></span> terracotta label
           </div>
           <div class="tokrow">
-            <span class="sw2" style="background:#2a2622"></span> --body
+            <span class="sw2" style="background:var(--body)"></span> --body
           </div>
         </div>
       </div>
@@ -409,14 +424,12 @@ import { MAILTO_AUDIT as mailto } from "../consts";
         fit, you will hear that too.
       </p>
       <div class="btnrow centered">
-        <a class="cta" href={mailto}>Email to start an audit</a>
-        <a class="cta secondary" href={mailto} data-placeholder
-          >Intake form (coming soon)</a
-        >
+        <a class="cta" href={INTAKE_URL}>Start an audit</a>
+        <a class="cta secondary" href={mailto}>Email instead</a>
       </div>
       <p class="note">
-        The intake form points at email for now. It will be swapped for a
-        hosted form once that is set up.
+        The intake is a short written questionnaire: your stack, what feels
+        off, and read access. Prefer email? That works too.
       </p>
     </div>
   </section>
@@ -456,15 +469,27 @@ import { MAILTO_AUDIT as mailto } from "../consts";
         });
       }
 
+      // Swap the active view inside a .swap grid stack. The inactive view keeps
+      // its box (so the panel height stays fixed to the taller state and the
+      // page does not reflow) but is pulled from sight, AT, and tab order.
+      function showView(stage: Element, active: string, inactive: string) {
+        stage
+          .querySelector<HTMLElement>(`[data-view="${active}"]`)
+          ?.removeAttribute("data-inactive");
+        stage
+          .querySelector<HTMLElement>(`[data-view="${inactive}"]`)
+          ?.setAttribute("data-inactive", "");
+      }
+
       document.querySelectorAll<HTMLButtonElement>("[data-tok]").forEach(
         function (btn) {
           btn.addEventListener("click", function () {
             const after = btn.dataset.tok === "after";
             if (btn.parentElement) setPressed(btn.parentElement, btn);
-            (byId("tokBefore") as HTMLElement).hidden = after;
-            (byId("tokAfter") as HTMLElement).hidden = !after;
-            (byId("tokNote") as HTMLElement).hidden = after;
-            (byId("tokOk") as HTMLElement).hidden = !after;
+            const stage = btn.closest(".stagebig");
+            if (!stage) return;
+            if (after) showView(stage, "tok-after", "tok-before");
+            else showView(stage, "tok-before", "tok-after");
           });
         },
       );
@@ -474,8 +499,10 @@ import { MAILTO_AUDIT as mailto } from "../consts";
           btn.addEventListener("click", function () {
             const after = btn.dataset.btn === "after";
             if (btn.parentElement) setPressed(btn.parentElement, btn);
-            (byId("btnBefore") as HTMLElement).hidden = after;
-            (byId("btnAfter") as HTMLElement).hidden = !after;
+            const stage = btn.closest(".stagebig");
+            if (!stage) return;
+            if (after) showView(stage, "btn-after", "btn-before");
+            else showView(stage, "btn-before", "btn-after");
             byId("btnCap").textContent = after
               ? "One component, documented variants and sizes."
               : "6 implementations doing one job.";
@@ -519,11 +546,11 @@ import { MAILTO_AUDIT as mailto } from "../consts";
     .hero .page {
       position: relative;
       z-index: 1;
-      padding-top: 72px;
-      padding-bottom: 72px;
+      padding-top: var(--space-8);
+      padding-bottom: var(--space-8);
     }
     .hero h1 .hl {
-      color: #e8d5b0;
+      color: var(--accent-warm);
     }
     /* The global focus ring (--accent2, dark plum) fails AA on every dark
        band this page adds (hero, check rows, start): ~1.5:1, far under the
@@ -535,15 +562,15 @@ import { MAILTO_AUDIT as mailto } from "../consts";
     }
     .btnrow {
       display: flex;
-      gap: 12px;
+      gap: var(--space-3);
       flex-wrap: wrap;
       align-items: center;
     }
     .pricetag {
-      margin-top: 24px;
+      margin-top: var(--space-5);
       font-family: var(--mono);
-      font-size: 13.5px;
-      color: #e6ddd0;
+      font-size: 13.5px; /* TODO: snap to scale (13.5px) */
+      color: var(--on-dark);
     }
     .pricetag b {
       color: #fff;
@@ -559,16 +586,16 @@ import { MAILTO_AUDIT as mailto } from "../consts";
     }
     .ticker .track {
       display: flex;
-      gap: 48px;
+      gap: var(--space-7);
       white-space: nowrap;
-      padding: 14px 0;
+      padding: 14px 0; /* TODO: snap to scale (14px) */
       animation: scrollx 28s linear infinite;
       font-family: var(--mono);
-      font-size: 13px;
-      color: #cfc6b8;
+      font-size: var(--text-sm);
+      color: var(--on-dark-dim);
     }
     .ticker .track span b {
-      color: #e8d5b0;
+      color: var(--accent-warm);
     }
     @keyframes scrollx {
       from {
@@ -579,17 +606,24 @@ import { MAILTO_AUDIT as mailto } from "../consts";
       }
     }
 
-    /* ---- Section scaffolding shared by checks-intro / evidence / offer / start ---- */
+    /* ---- Section scaffolding shared by checks-intro / dogfood / evidence / offer / start ----
+       This kicker-label-plus-display-heading pattern is specific to this
+       marketing homepage. /audit and /sample-report use a plainer document
+       pattern instead (a bare small-caps h2, see global.css's h2 rule) since
+       they read as a report, not a pitch. That split is intentional: forcing
+       the document pages to grow a kicker label, or shrinking this page's
+       display headings to match a report's running h2, would both be
+       regressions. Do not unify them. */
     .seclabel {
       font-family: var(--mono);
-      font-size: 12px;
+      font-size: var(--text-xs);
       letter-spacing: 2px;
       text-transform: uppercase;
       color: var(--accent);
-      margin: 0 0 16px;
+      margin: 0 0 var(--space-4);
       display: flex;
       align-items: center;
-      gap: 10px;
+      gap: 10px; /* TODO: snap to scale (10px) */
     }
     .seclabel::before {
       content: "";
@@ -603,15 +637,15 @@ import { MAILTO_AUDIT as mailto } from "../consts";
     .sectitle {
       font-family: var(--display);
       font-weight: 600;
-      font-size: clamp(28px, 4.5vw, 44px);
+      font-size: clamp(28px, 4.5vw, 44px); /* TODO: snap to scale (clamp bounds 28px/44px) */
       line-height: 1.08;
       letter-spacing: -0.03em;
       color: var(--ink);
-      margin: 0 0 20px;
+      margin: 0 0 20px; /* TODO: snap to scale (20px) */
       max-width: 20ch;
     }
     .lede {
-      font-size: 18px;
+      font-size: 18px; /* TODO: snap to scale (18px) */
       color: var(--body);
       max-width: 62ch;
       margin: 0;
@@ -620,31 +654,31 @@ import { MAILTO_AUDIT as mailto } from "../consts";
     /* ---- Checks intro: dark band so the demo rows have somewhere to sit ---- */
     .checks-intro {
       background: var(--grad-ink);
-      padding: 72px 0 48px;
+      padding: var(--space-8) 0 var(--space-7);
     }
     .checks-intro .sectitle {
       color: #fff;
     }
     .checks-intro .seclabel {
-      color: #e8d5b0;
+      color: var(--accent-warm);
     }
     .checks-intro .seclabel::before {
-      background: #e8d5b0;
+      background: var(--accent-warm);
     }
     .checks-intro .lede {
-      color: #d6cdc0;
+      color: var(--on-dark-soft);
     }
 
     /* ---- Full-bleed alternating check rows (dark band continues) ---- */
     .check {
       background: var(--grad-ink);
-      padding: 56px 0;
+      padding: 56px 0; /* TODO: snap to scale (56px) */
       border-top: 1px solid rgba(255, 255, 255, 0.08);
     }
     .check .page {
       display: grid;
       grid-template-columns: 1fr 1fr;
-      gap: 48px;
+      gap: var(--space-7);
       align-items: center;
     }
     .check.flip .copyc {
@@ -652,61 +686,77 @@ import { MAILTO_AUDIT as mailto } from "../consts";
     }
     .check .pn {
       font-family: var(--mono);
-      font-size: 44px;
+      font-size: 44px; /* TODO: snap to scale (44px) */
       font-weight: 700;
       color: rgba(255, 255, 255, 0.42);
       line-height: 1;
       letter-spacing: -1px;
     }
     .check h3 {
-      font-size: clamp(22px, 2.6vw, 30px);
+      font-size: clamp(22px, 2.6vw, 30px); /* TODO: snap to scale (clamp bounds 22px/30px) */
       color: #fff;
-      margin: 12px 0 12px;
+      margin: var(--space-3) 0 var(--space-3);
       max-width: 18ch;
     }
     .check p {
-      font-size: 16px;
-      color: #d6cdc0;
+      font-size: 16px; /* TODO: snap to scale (16px; not a type-scale step) */
+      color: var(--on-dark-soft);
       max-width: 46ch;
-      margin: 0 0 16px;
+      margin: 0 0 var(--space-4);
     }
     .check .label-key {
       font-family: var(--mono);
-      font-size: 12px;
-      color: #e8d5b0;
+      font-size: var(--text-xs);
+      color: var(--accent-warm);
     }
 
     .stagebig {
       background: rgba(255, 255, 255, 0.05);
       border: 1px solid rgba(255, 255, 255, 0.14);
-      border-radius: 18px;
-      padding: 32px;
+      border-radius: var(--radius-lg);
+      padding: var(--space-6);
+    }
+
+    /* Toggle views stack in one grid cell, so the panel is always as tall as
+       the taller state and the layout never reflows when toggling. The inactive
+       view keeps its box (reserving height) but is hidden from sight, screen
+       readers, and tab order. align-items: start keeps any extra space at the
+       bottom of the shorter state. */
+    .swap {
+      display: grid;
+      align-items: start;
+    }
+    .swap > .swapview {
+      grid-area: 1 / 1;
+    }
+    .swap > .swapview[data-inactive] {
+      visibility: hidden;
     }
     .toggle {
       display: inline-flex;
       border: 1px solid rgba(255, 255, 255, 0.24);
-      border-radius: 9px;
+      border-radius: 9px; /* TODO: snap to scale (9px) */
       overflow: hidden;
-      margin-bottom: 20px;
+      margin-bottom: 20px; /* TODO: snap to scale (20px) */
     }
     .toggle button {
       font-family: var(--mono);
-      font-size: 12.5px;
+      font-size: 12.5px; /* TODO: snap to scale (12.5px) */
       border: 0;
       background: transparent;
-      color: #d6cdc0;
-      padding: 8px 15px;
+      color: var(--on-dark-soft);
+      padding: var(--space-2) 15px; /* TODO: snap to scale (15px) */
       cursor: pointer;
     }
     .toggle button[aria-pressed="true"] {
-      background: #e8d5b0;
+      background: var(--accent-warm);
       color: var(--grad-ink);
     }
 
     /* token swatches */
     .swatches {
       display: flex;
-      gap: 16px;
+      gap: var(--space-4);
       flex-wrap: wrap;
     }
     .sw {
@@ -715,29 +765,29 @@ import { MAILTO_AUDIT as mailto } from "../consts";
     }
     .sw .chip {
       height: 76px;
-      border-radius: 12px;
+      border-radius: var(--radius-md);
       border: 1px solid rgba(255, 255, 255, 0.18);
     }
     .sw .name {
       font-family: var(--mono);
-      font-size: 13px;
+      font-size: var(--text-sm);
       color: #fff;
-      margin-top: 8px;
+      margin-top: var(--space-2);
     }
     .sw .subtle {
       font-family: var(--mono);
-      font-size: 11px;
-      color: #cfc6b8;
+      font-size: var(--text-xs);
+      color: var(--on-dark-dim);
     }
     .driftnote,
     .okline {
       display: flex;
       align-items: center;
-      gap: 9px;
-      font-size: 14px;
-      border-radius: 10px;
-      padding: 11px 14px;
-      margin-top: 20px;
+      gap: 9px; /* TODO: snap to scale (9px) */
+      font-size: 14px; /* TODO: snap to scale (14px) */
+      border-radius: 10px; /* TODO: snap to scale (10px) */
+      padding: 11px 14px; /* TODO: snap to scale (11px, 14px) */
+      margin-top: 20px; /* TODO: snap to scale (20px) */
     }
     .driftnote {
       color: #ffd9d2;
@@ -758,10 +808,13 @@ import { MAILTO_AUDIT as mailto } from "../consts";
     /* button row demo */
     .bbar {
       display: flex;
-      gap: 12px;
+      gap: var(--space-3);
       flex-wrap: wrap;
       align-items: center;
     }
+    /* Demo content: .b1-.b6's padding, radius, and font-size are
+       intentionally inconsistent (the drift the demo illustrates). Do not
+       tokenize or snap them, same rule as the do-not-touch hex values. */
     .b {
       cursor: default;
       font-family: "Plus Jakarta Sans", sans-serif;
@@ -818,7 +871,7 @@ import { MAILTO_AUDIT as mailto } from "../consts";
       font-size: 15px;
     }
     .bcanon {
-      background: #e8d5b0;
+      background: var(--accent-warm);
       color: var(--grad-ink);
       border: 0;
       border-radius: 11px;
@@ -827,31 +880,33 @@ import { MAILTO_AUDIT as mailto } from "../consts";
       font-weight: 700;
     }
     .btncaption {
-      font-size: 13px;
-      color: #cfc6b8;
+      font-size: var(--text-sm);
+      color: var(--on-dark-dim);
     }
     .caption.mono {
       font-family: var(--mono);
-      font-size: 12.5px;
-      color: #cfc6b8;
-      margin-top: 16px;
+      font-size: 12.5px; /* TODO: snap to scale (12.5px) */
+      color: var(--on-dark-dim);
+      margin-top: var(--space-4);
     }
 
-    /* contrast demo */
+    /* contrast demo: .csample/.cfail/.cpass colors are protected do-not-touch
+       demo content (see do-not-touch hex list). Their layout values below
+       are not the teaching point and are tokenized normally. */
     .cgrid {
       display: grid;
       grid-template-columns: 1fr 1fr;
-      gap: 16px;
+      gap: var(--space-4);
     }
     .csample {
-      border-radius: 13px;
-      padding: 32px;
+      border-radius: 13px; /* TODO: snap to scale (13px) */
+      padding: var(--space-6);
       text-align: center;
     }
     .csample .lbl {
       color: #fff;
       font-weight: 700;
-      font-size: 16px;
+      font-size: 16px; /* TODO: snap to scale (16px; not a type-scale step) */
     }
     .cfail {
       background: #5b9bd5;
@@ -861,13 +916,13 @@ import { MAILTO_AUDIT as mailto } from "../consts";
     }
     .cverdict {
       font-family: var(--mono);
-      font-size: 12.5px;
-      margin-top: 11px;
+      font-size: 12.5px; /* TODO: snap to scale (12.5px) */
+      margin-top: 11px; /* TODO: snap to scale (11px) */
       display: inline-flex;
       align-items: center;
-      gap: 6px;
-      padding: 4px 11px;
-      border-radius: 7px;
+      gap: 6px; /* TODO: snap to scale (6px) */
+      padding: 4px 11px; /* TODO: snap to scale (4px, 11px) */
+      border-radius: 7px; /* TODO: snap to scale (7px) */
       border: 1px solid;
     }
     .cverdict::before {
@@ -893,19 +948,22 @@ import { MAILTO_AUDIT as mailto } from "../consts";
     /* spec demo */
     .spec {
       font-family: var(--mono);
-      font-size: 14px;
+      font-size: 14px; /* TODO: snap to scale (14px) */
       color: #dbe9ee;
       line-height: 1.8;
     }
     .spec .k {
-      color: #e8d5b0;
+      color: var(--accent-warm);
     }
     .spec .row {
-      display: flex;
-      justify-content: space-between;
-      gap: 14px;
+      /* Two columns so every value shares one left edge instead of being
+         pushed to the right by space-between (which read as ragged). */
+      display: grid;
+      grid-template-columns: 11ch 1fr;
+      gap: 14px; /* TODO: snap to scale (14px) */
+      align-items: baseline;
       border-bottom: 1px dashed rgba(255, 255, 255, 0.16);
-      padding: 7px 0;
+      padding: 7px 0; /* TODO: snap to scale (7px) */
     }
     .spec .row:last-child {
       border-bottom: 0;
@@ -914,21 +972,21 @@ import { MAILTO_AUDIT as mailto } from "../consts";
     /* ---- Evidence ---- */
     .evidence {
       background: var(--bg);
-      padding: 72px 0;
+      padding: var(--space-8) 0;
     }
     .evidence .lede {
-      margin-bottom: 40px;
+      margin-bottom: 40px; /* TODO: snap to scale (40px) */
     }
     .scoreband {
       display: grid;
       grid-template-columns: 1.2fr 1fr 1fr 1fr;
-      gap: 16px;
-      margin: 0 0 32px;
+      gap: var(--space-4);
+      margin: 0 0 var(--space-6);
       align-items: stretch;
     }
     .score {
-      border-radius: 14px;
-      padding: 20px;
+      border-radius: 14px; /* TODO: snap to scale (14px) */
+      padding: 20px; /* TODO: snap to scale (20px) */
       text-align: center;
       background: var(--card);
       border: 1px solid var(--line);
@@ -941,7 +999,7 @@ import { MAILTO_AUDIT as mailto } from "../consts";
       color: #fff;
     }
     .score.grade .l {
-      color: #cfc6b8;
+      color: var(--on-dark-dim);
     }
     .score .n {
       font-family: var(--display);
@@ -954,17 +1012,17 @@ import { MAILTO_AUDIT as mailto } from "../consts";
       color: var(--warn-ink);
     }
     .score .l {
-      font-size: 11.5px;
+      font-size: 11.5px; /* TODO: snap to scale (11.5px) */
       color: var(--muted);
       text-transform: uppercase;
       letter-spacing: 0.6px;
-      margin-top: 8px;
+      margin-top: var(--space-2);
     }
 
     .finding {
       border-left: 6px solid var(--crit-accent);
-      border-radius: 14px;
-      padding: 28px;
+      border-radius: 14px; /* TODO: snap to scale (14px) */
+      padding: 28px; /* TODO: snap to scale (28px) */
       background: var(--card);
       border-top: 1px solid var(--line);
       border-right: 1px solid var(--line);
@@ -974,73 +1032,73 @@ import { MAILTO_AUDIT as mailto } from "../consts";
       display: flex;
       justify-content: space-between;
       align-items: flex-start;
-      gap: 12px;
+      gap: var(--space-3);
     }
     .finding .id {
       font-family: var(--mono);
-      font-size: 12px;
+      font-size: var(--text-xs);
       color: var(--muted);
     }
     .finding h3 {
-      font-size: 22px;
+      font-size: 22px; /* TODO: snap to scale (22px) */
       color: var(--ink);
-      margin: 8px 0 6px;
+      margin: var(--space-2) 0 6px; /* TODO: snap to scale (6px) */
     }
     .finding .where {
       font-family: var(--mono);
-      font-size: 12px;
+      font-size: var(--text-xs);
       color: var(--muted);
-      margin-bottom: 12px;
+      margin-bottom: var(--space-3);
     }
     .finding .findingbody {
-      font-size: 14.5px;
-      margin: 0 0 12px;
+      font-size: 14.5px; /* TODO: snap to scale (14.5px) */
+      margin: 0 0 var(--space-3);
     }
     pre.code {
       background: #241f1d;
       color: #f1ece4;
-      border-radius: 11px;
-      padding: 15px 17px;
+      border-radius: var(--radius-md);
+      padding: 15px 17px; /* TODO: snap to scale (15px, 17px) */
       overflow: auto;
       font-family: var(--mono);
-      font-size: 13px;
+      font-size: var(--text-sm);
       line-height: 1.6;
-      margin: 12px 0;
+      margin: var(--space-3) 0;
     }
     pre.code .c {
-      color: #cfc6b8;
+      color: var(--on-dark-dim);
     }
     .impact {
       background: var(--low-bg);
       border: 1px solid var(--low-bd);
-      border-radius: 11px;
-      padding: 12px 15px;
-      font-size: 14px;
+      border-radius: var(--radius-md);
+      padding: 12px 15px; /* TODO: snap to scale (15px) */
+      font-size: 14px; /* TODO: snap to scale (14px) */
       color: var(--low-ink);
-      margin-top: 16px;
+      margin-top: var(--space-4);
     }
     .note {
-      font-size: 13px;
+      font-size: var(--text-sm);
       color: var(--muted);
-      margin-top: 16px;
+      margin-top: var(--space-4);
     }
 
     /* ---- Offer ---- */
     .offer-sec {
       background: #f0ebe3;
-      padding: 72px 0;
+      padding: var(--space-8) 0;
     }
     .offer-sec .lede {
-      margin-bottom: 40px;
+      margin-bottom: 40px; /* TODO: snap to scale (40px) */
     }
     .offer {
       display: grid;
       grid-template-columns: 1fr 1fr;
-      gap: 20px;
+      gap: 20px; /* TODO: snap to scale (20px) */
     }
     .tier {
-      border-radius: 18px;
-      padding: 28px;
+      border-radius: var(--radius-lg);
+      padding: 28px; /* TODO: snap to scale (28px) */
       background: var(--card);
       border: 1px solid var(--line);
     }
@@ -1052,64 +1110,71 @@ import { MAILTO_AUDIT as mailto } from "../consts";
       font-family: var(--display);
       font-weight: 600;
       color: var(--ink);
-      font-size: 20px;
+      font-size: 20px; /* TODO: snap to scale (20px) */
     }
     .tier .price {
       font-family: var(--display);
-      font-size: 32px;
+      font-size: 32px; /* TODO: snap to scale (32px) */
       font-weight: 700;
       color: var(--accent);
-      margin: 8px 0;
+      margin: var(--space-2) 0;
     }
     .tier .price small {
       font-family: var(--mono);
-      font-size: 13px;
+      font-size: var(--text-sm);
       font-weight: 500;
       color: var(--muted);
     }
     .tier ul.clean {
-      margin: 12px 0 0;
-      font-size: 14.5px;
+      margin: var(--space-3) 0 0;
+      font-size: 14.5px; /* TODO: snap to scale (14.5px) */
     }
 
     /* ---- Dogfood ---- */
     .dogfood {
       background: var(--grad-ink);
-      padding: 72px 0;
+      padding: var(--space-8) 0;
       border-top: 1px solid rgba(255, 255, 255, 0.08);
     }
     .dogfood .seclabel {
-      color: #e8d5b0;
+      color: var(--accent-warm);
     }
     .dogfood .seclabel::before {
-      background: #e8d5b0;
+      background: var(--accent-warm);
     }
-    .dogfood h3 {
+    /* Joins the shared .sectitle pattern (see .checks-intro/.start overrides
+       above) rather than rolling its own heading, but stays smaller than the
+       28-44px default: this is a supporting proof-point between two bigger
+       sales sections, not a primary pitch heading. */
+    .dogfood .sectitle {
       color: #fff;
-      font-size: clamp(24px, 3.6vw, 36px);
-      margin: 0 0 16px;
+      font-size: clamp(24px, 3.6vw, 36px); /* TODO: snap to scale (clamp bounds) */
+      margin: 0 0 var(--space-4);
       max-width: 22ch;
     }
     .dogfood p {
-      color: #d6cdc0;
+      color: var(--on-dark-soft);
       max-width: 62ch;
-      font-size: 16px;
-      margin: 0 0 48px;
+      font-size: 16px; /* TODO: snap to scale (16px; not a type-scale step) */
+      margin: 0 0 var(--space-7);
     }
     .systable {
       display: grid;
       grid-template-columns: repeat(3, 1fr);
-      gap: 40px;
+      gap: 40px; /* TODO: snap to scale (40px) */
     }
-    .systable h4 {
+    .systable h3 {
       font-family: var(--mono);
-      font-size: 12px;
+      font-size: var(--text-xs);
       letter-spacing: 1px;
       text-transform: uppercase;
-      color: #e8d5b0;
-      margin: 0 0 16px;
+      color: var(--accent-warm);
+      margin: 0 0 var(--space-4);
       font-weight: 500;
     }
+    /* Demo content: .r40/.r26/.r16/.r13 are a type-ramp illustration whose
+       visible labels ("Aa 40", "Aa 26", ...) name their own font-size. Do
+       not tokenize or snap; changing the number would make the label lie. */
     .ramp span {
       display: block;
       color: #fff;
@@ -1129,36 +1194,36 @@ import { MAILTO_AUDIT as mailto } from "../consts";
     }
     .r13 {
       font-size: 13px;
-      color: #cfc6b8;
+      color: var(--on-dark-dim);
     }
     .scale-row {
       display: flex;
       align-items: center;
-      gap: 11px;
-      margin-bottom: 10px;
+      gap: 11px; /* TODO: snap to scale (11px) */
+      margin-bottom: 10px; /* TODO: snap to scale (10px) */
       font-family: var(--mono);
-      font-size: 12.5px;
-      color: #d6cdc0;
+      font-size: 12.5px; /* TODO: snap to scale (12.5px) */
+      color: var(--on-dark-soft);
     }
     .scale-row i {
       display: block;
       height: 13px;
-      background: #e8d5b0;
-      border-radius: 3px;
+      background: var(--accent-warm);
+      border-radius: 3px; /* TODO: snap to scale (3px) */
     }
     .tokrow {
       font-family: var(--mono);
-      font-size: 13px;
-      color: #e6ddd0;
+      font-size: var(--text-sm);
+      color: var(--on-dark);
       display: flex;
       align-items: center;
-      gap: 10px;
-      margin-bottom: 10px;
+      gap: 10px; /* TODO: snap to scale (10px) */
+      margin-bottom: 10px; /* TODO: snap to scale (10px) */
     }
     .tokrow .sw2 {
       width: 18px;
       height: 18px;
-      border-radius: 5px;
+      border-radius: 5px; /* TODO: snap to scale (5px) */
       border: 1px solid rgba(255, 255, 255, 0.25);
       flex: none;
     }
@@ -1166,32 +1231,32 @@ import { MAILTO_AUDIT as mailto } from "../consts";
     /* ---- Start ---- */
     .start {
       background: var(--grad);
-      padding: 72px 0;
+      padding: var(--space-8) 0;
       text-align: center;
       border-top: 1px solid rgba(255, 255, 255, 0.08);
     }
     .start .seclabel {
-      color: #e8d5b0;
+      color: var(--accent-warm);
       justify-content: center;
     }
     .start .seclabel::before {
-      background: #e8d5b0;
+      background: var(--accent-warm);
     }
     .start .sectitle {
       color: #fff;
-      margin: 0 auto 16px;
+      margin: 0 auto var(--space-4);
       max-width: 24ch;
     }
     .start .lede {
-      color: #e6ddd0;
-      margin: 0 auto 32px;
+      color: var(--on-dark);
+      margin: 0 auto var(--space-6);
     }
     .start .btnrow {
       justify-content: center;
     }
     .start .note {
-      color: #d6cdc0;
-      margin-top: 24px;
+      color: var(--on-dark-soft);
+      margin-top: var(--space-5);
     }
 
     /* ---- Hero grid motif and reveal: must be global, the spans are
@@ -1230,27 +1295,33 @@ import { MAILTO_AUDIT as mailto } from "../consts";
         background: transparent;
       }
       50% {
-        background: rgba(232, 213, 176, 0.28);
+        background: rgba(224, 122, 95, 0.28);
       }
     }
 
-    /* ---- Scroll reveal ---- */
-    .reveal {
+    /* ---- Scroll reveal ----
+       Progressive enhancement: content is visible by default. The hidden
+       starting state only applies once the inline script has set html.js, so
+       a visitor without JS (or before JS runs) always sees the content. The
+       gated selectors below outrank .reveal.in, so .in must also be gated. */
+    :global(html.js) .reveal {
       opacity: 0;
       transform: translateY(18px);
       transition:
         opacity 0.6s ease,
         transform 0.6s ease;
     }
-    .reveal.in {
+    :global(html.js) .reveal.in {
       opacity: 1;
       transform: none;
     }
 
+    /* ---- Responsive breakpoints (layout reflow, not the per-section rules
+       already inlined above) ---- */
     @media (max-width: 880px) {
       .check .page {
         grid-template-columns: 1fr;
-        gap: 32px;
+        gap: var(--space-6);
       }
       .check.flip .copyc {
         order: 0;
@@ -1262,7 +1333,7 @@ import { MAILTO_AUDIT as mailto } from "../consts";
       }
       .systable {
         grid-template-columns: 1fr;
-        gap: 32px;
+        gap: var(--space-6);
       }
     }
     @media (max-width: 680px) {
@@ -1283,7 +1354,9 @@ import { MAILTO_AUDIT as mailto } from "../consts";
       .ticker .track {
         animation: none !important;
       }
-      .reveal {
+      /* Gated to match (and outrank) the html.js hidden state above, so
+         reduced-motion visitors get the content shown immediately. */
+      :global(html.js) .reveal {
         opacity: 1;
         transform: none;
         transition: none;
