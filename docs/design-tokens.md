@@ -118,6 +118,19 @@ copy). Do not bulk-snap these without a design pass: several are tuned by
 eye against a specific layout (the audit-page numbered-step circles, the
 sample-report finding cards) and snapping could shift things visibly.
 
+## Intentional bare-hex exceptions
+
+A handful of one-off hex values appear outside `:root` with no matching token.
+Each is a single warm-neutral or dark-card variant used in one or two places;
+minting a token for a single call site would be premature abstraction. Listed
+here so a future grep for bare hex does not mistake them for an oversight.
+
+| Hex | Used for | Where |
+| --- | --- | --- |
+| `#fbf9f6` | Warm off-white card background, slightly lighter than `--bg` | `audit.astro` deliverable cards, `sample-report.astro` score cards |
+| `#f0ebe3` | Warm off-white section background, between `--bg` and `--card` | `index.astro` offer section |
+| `#241f1d` / `#f1ece4` | Dark code-block background / on-dark code text (close to but distinct from `--grad-ink` / `--on-dark`) | `index.astro` and `sample-report.astro` `pre.code` |
+
 ## Do-not-touch demonstration content
 
 The homepage (`src/pages/index.astro`) teaches design-system concepts by
