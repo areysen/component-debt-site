@@ -69,6 +69,11 @@ body {
   line-height: 1.6;
   font-size: 15px;
   -webkit-font-smoothing: antialiased;
+  /* Sticky-footer column so a short page (e.g. the embedded intake form) can
+     fill the space between the header and footer rather than leaving a gap. */
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
 }
 
 a {
@@ -174,13 +179,17 @@ section.card,
 }
 .hero .page,
 .hero .wrap {
+  /* All heroes start at the same point: the homepage hero already adds this
+     top padding via its own .hero .page rule; sharing it here keeps the audit
+     and sample-report titles from sitting higher. */
+  padding-top: 72px;
   padding-bottom: 0;
 }
 .hero .kicker {
   font-size: 12px;
   letter-spacing: 2px;
   text-transform: uppercase;
-  color: #e8d5b0; /* sand, on warm charcoal/plum gradient > 4.5:1 */
+  color: #e07a5f; /* terracotta, on warm charcoal/plum gradient > 4.5:1 */
   margin: 0 0 10px;
 }
 .hero h1 {
@@ -226,7 +235,7 @@ section.card,
   margin-top: 30px;
 }
 .endcta h2 {
-  color: #e8d5b0;
+  color: #e07a5f;
   margin-top: 0;
 }
 .endcta p {
@@ -237,7 +246,7 @@ section.card,
 .endcta .placeholder-note {
   font-size: 12.5px;
   margin-top: 16px;
-  color: #e8d5b0;
+  color: #e07a5f;
 }
 
 /* ---- Tags / pills ---- */
@@ -381,9 +390,12 @@ section.card,
   max-width: 460px;
 }
 
-/* ---- Layout content wrapper for non-hero pages ---- */
+/* ---- Layout content wrapper for non-hero pages ----
+   flex: 1 lets <main> grow to fill the viewport between header and footer,
+   so a full-height child (the intake iframe) can resolve height: 100%. */
 main {
   display: block;
+  flex: 1 0 auto;
 }
 
 @media (max-width: 680px) {

@@ -1,0 +1,35 @@
+---
+import Layout from "../layouts/Layout.astro";
+---
+
+<Layout
+  title="Start your audit: Component Debt"
+  description="Start a Design System Health Audit. A short written intake form covering your stack, what feels off, and read access. Fixed scope, fully async, about one week."
+>
+  <section class="intake-embed">
+    <iframe
+      src="https://tally.so/r/9qaNRG?transparentBackground=1"
+      title="Design System Health Audit intake form"
+      loading="lazy"></iframe>
+  </section>
+</Layout>
+
+<style>
+  /* Fill the space between the header and footer. Relies on the sticky-footer
+     flex layout in global.css (body is a flex column, main is flex: 1 0 auto),
+     so height: 100% here resolves against a main that already fills the gap. */
+  .intake-embed {
+    display: flex;
+    height: 100%;
+    min-height: 600px;
+  }
+  .intake-embed iframe {
+    flex: 1;
+    width: 100%;
+    height: 100%;
+    min-height: 600px;
+    border: 0;
+    /* transparentBackground=1 on the Tally URL lets the cream page show through */
+    background: transparent;
+  }
+</style>

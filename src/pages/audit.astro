@@ -1,6 +1,6 @@
 ---
 import Layout from "../layouts/Layout.astro";
-import { MAILTO_AUDIT as mailto } from "../consts";
+import { MAILTO_AUDIT as mailto, INTAKE_URL } from "../consts";
 
 const deliverables = [
   {
@@ -57,7 +57,7 @@ const steps = [
         systems engineer. Written report, prioritized fix roadmap, and a
         recorded walkthrough.
       </p>
-      <a class="cta" href={mailto}>Start an audit</a>
+      <a class="cta" href={INTAKE_URL}>Start an audit</a>
       <a class="cta secondary" href="#whatyouget">See what you get</a>
       <p class="pricetag">
         <b>$2,500</b> · fixed scope · about one week · fully async
@@ -70,7 +70,7 @@ const steps = [
       <h2>The problem</h2>
       <p class="lead">
         Your UI works, but it is quietly working against you. The same button is
-        built five different ways, colors and spacing are hard-coded instead of
+        built six different ways, colors and spacing are hard-coded instead of
         tokenized, and a few components fall short of accessibility standards
         you cannot fully quantify. None of it is on fire; it is a steady tax on
         velocity and quality that compounds as the team grows.
@@ -200,9 +200,11 @@ const steps = [
         fit and timing within two business days. If it is not a fit, you will
         hear that too.
       </p>
-      <a class="cta" href={mailto}>Email to start an audit</a>
+      <a class="cta" href={INTAKE_URL}>Start an audit</a>
+      <a class="cta secondary" href={mailto}>Email instead</a>
       <p class="placeholder-note">
-        A hosted intake form will replace email here once it is set up.
+        The intake is a short written questionnaire. Email works too if you
+        prefer.
       </p>
     </div>
   </div>
@@ -211,6 +213,7 @@ const steps = [
 <style>
   .pricetag {
     margin-top: 18px;
+    font-family: var(--mono); /* match the homepage hero price line */
     font-size: 13.5px;
     color: #e6ddd0;
   }

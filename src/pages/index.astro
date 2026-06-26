@@ -1,12 +1,16 @@
 ---
 import Layout from "../layouts/Layout.astro";
-import { MAILTO_AUDIT as mailto } from "../consts";
+import { MAILTO_AUDIT as mailto, INTAKE_URL } from "../consts";
 ---
 
 <Layout
   title="Component Debt: Design System Health Audits"
   description="A fixed-scope, fully async audit of your component library, tokens, theming, and accessibility. Written report, prioritized roadmap, and a recorded walkthrough in about one week."
 >
+  {/* JS-detection flag, set before the reveal sections paint so the hidden
+     starting state never applies without JS. Inline + synchronous on purpose. */}
+  <script is:inline>document.documentElement.classList.add("js");</script>
+
   <header class="hero">
     <div class="gridmotif" id="gridmotif" aria-hidden="true"></div>
     <div class="page">
@@ -18,7 +22,7 @@ import { MAILTO_AUDIT as mailto } from "../consts";
         scope, fully async, about one week.
       </p>
       <div class="btnrow">
-        <a class="cta" href={mailto}>Start an audit</a>
+        <a class="cta" href={INTAKE_URL}>Start an audit</a>
         <a class="cta secondary" href="#covers">See what it checks</a>
       </div>
       <p class="pricetag">
@@ -84,39 +88,45 @@ import { MAILTO_AUDIT as mailto } from "../consts";
             >After tokenizing</button
           >
         </div>
-        <div class="swatches" id="tokBefore">
-          <div class="sw">
-            <div class="chip" style="background:#2f6fed"></div>
-            <div class="name">#2f6fed</div>
-            <div class="subtle">card.css</div>
+        <div class="swap">
+          <div class="swapview" data-view="tok-before">
+            <div class="swatches">
+              <div class="sw">
+                <div class="chip" style="background:#2f6fed"></div>
+                <div class="name">#2f6fed</div>
+                <div class="subtle">card.css</div>
+              </div>
+              <div class="sw">
+                <div class="chip" style="background:#2e6fed"></div>
+                <div class="name">#2e6fed</div>
+                <div class="subtle">nav.css</div>
+              </div>
+              <div class="sw">
+                <div class="chip" style="background:#3170ee"></div>
+                <div class="name">#3170ee</div>
+                <div class="subtle">banner.css</div>
+              </div>
+            </div>
+            <div class="driftnote">
+              <span class="icn" aria-hidden="true">!</span><span
+                >Three "brand blues" that are meant to be one.</span
+              >
+            </div>
           </div>
-          <div class="sw">
-            <div class="chip" style="background:#2e6fed"></div>
-            <div class="name">#2e6fed</div>
-            <div class="subtle">nav.css</div>
+          <div class="swapview" data-view="tok-after" data-inactive>
+            <div class="swatches">
+              <div class="sw" style="max-width:260px">
+                <div class="chip" style="background:#2f6fed"></div>
+                <div class="name">--color-brand</div>
+                <div class="subtle">one source, referenced everywhere</div>
+              </div>
+            </div>
+            <div class="okline">
+              <span class="icn" aria-hidden="true">OK</span><span
+                >One semantic token. A brand change is a one-line edit.</span
+              >
+            </div>
           </div>
-          <div class="sw">
-            <div class="chip" style="background:#3170ee"></div>
-            <div class="name">#3170ee</div>
-            <div class="subtle">banner.css</div>
-          </div>
-        </div>
-        <div class="swatches" id="tokAfter" hidden>
-          <div class="sw" style="max-width:260px">
-            <div class="chip" style="background:#2f6fed"></div>
-            <div class="name">--color-brand</div>
-            <div class="subtle">one source, referenced everywhere</div>
-          </div>
-        </div>
-        <div class="driftnote" id="tokNote">
-          <span class="icn" aria-hidden="true">!</span><span
-            >Three "brand blues" that are meant to be one.</span
-          >
-        </div>
-        <div class="okline" id="tokOk" hidden>
-          <span class="icn" aria-hidden="true">OK</span><span
-            >One semantic token. A brand change is a one-line edit.</span
-          >
         </div>
       </div>
     </div>
@@ -144,18 +154,24 @@ import { MAILTO_AUDIT as mailto } from "../consts";
             >Canonical</button
           >
         </div>
-        <div class="bbar" id="btnBefore">
-          <span class="b b1">Save</span><span class="b b2">Save</span><span
-            class="b b3">Save</span
-          ><span class="b b4">Save</span><span class="b b5">Save</span><span
-            class="b b6">Save</span
-          >
-        </div>
-        <div class="bbar" id="btnAfter" hidden>
-          <span class="b bcanon">Save</span>
-          <span class="mono btncaption"
-            >one component, documented variants</span
-          >
+        <div class="swap">
+          <div class="swapview" data-view="btn-before">
+            <div class="bbar">
+              <span class="b b1">Save</span><span class="b b2">Save</span><span
+                class="b b3">Save</span
+              ><span class="b b4">Save</span><span class="b b5">Save</span><span
+                class="b b6">Save</span
+              >
+            </div>
+          </div>
+          <div class="swapview" data-view="btn-after" data-inactive>
+            <div class="bbar">
+              <span class="b bcanon">Save</span>
+              <span class="mono btncaption"
+                >one component, documented variants</span
+              >
+            </div>
+          </div>
         </div>
         <div class="caption mono" id="btnCap">
           6 implementations doing one job.
@@ -386,7 +402,7 @@ import { MAILTO_AUDIT as mailto } from "../consts";
             <span class="sw2" style="background:#3d1a45"></span> --accent
           </div>
           <div class="tokrow">
-            <span class="sw2" style="background:#e8d5b0"></span> sand label
+            <span class="sw2" style="background:#e07a5f"></span> terracotta label
           </div>
           <div class="tokrow">
             <span class="sw2" style="background:#2a2622"></span> --body
@@ -409,14 +425,12 @@ import { MAILTO_AUDIT as mailto } from "../consts";
         fit, you will hear that too.
       </p>
       <div class="btnrow centered">
-        <a class="cta" href={mailto}>Email to start an audit</a>
-        <a class="cta secondary" href={mailto} data-placeholder
-          >Intake form (coming soon)</a
-        >
+        <a class="cta" href={INTAKE_URL}>Start an audit</a>
+        <a class="cta secondary" href={mailto}>Email instead</a>
       </div>
       <p class="note">
-        The intake form points at email for now. It will be swapped for a
-        hosted form once that is set up.
+        The intake is a short written questionnaire: your stack, what feels
+        off, and read access. Prefer email? That works too.
       </p>
     </div>
   </section>
@@ -456,15 +470,27 @@ import { MAILTO_AUDIT as mailto } from "../consts";
         });
       }
 
+      // Swap the active view inside a .swap grid stack. The inactive view keeps
+      // its box (so the panel height stays fixed to the taller state and the
+      // page does not reflow) but is pulled from sight, AT, and tab order.
+      function showView(stage: Element, active: string, inactive: string) {
+        stage
+          .querySelector<HTMLElement>(`[data-view="${active}"]`)
+          ?.removeAttribute("data-inactive");
+        stage
+          .querySelector<HTMLElement>(`[data-view="${inactive}"]`)
+          ?.setAttribute("data-inactive", "");
+      }
+
       document.querySelectorAll<HTMLButtonElement>("[data-tok]").forEach(
         function (btn) {
           btn.addEventListener("click", function () {
             const after = btn.dataset.tok === "after";
             if (btn.parentElement) setPressed(btn.parentElement, btn);
-            (byId("tokBefore") as HTMLElement).hidden = after;
-            (byId("tokAfter") as HTMLElement).hidden = !after;
-            (byId("tokNote") as HTMLElement).hidden = after;
-            (byId("tokOk") as HTMLElement).hidden = !after;
+            const stage = btn.closest(".stagebig");
+            if (!stage) return;
+            if (after) showView(stage, "tok-after", "tok-before");
+            else showView(stage, "tok-before", "tok-after");
           });
         },
       );
@@ -474,8 +500,10 @@ import { MAILTO_AUDIT as mailto } from "../consts";
           btn.addEventListener("click", function () {
             const after = btn.dataset.btn === "after";
             if (btn.parentElement) setPressed(btn.parentElement, btn);
-            (byId("btnBefore") as HTMLElement).hidden = after;
-            (byId("btnAfter") as HTMLElement).hidden = !after;
+            const stage = btn.closest(".stagebig");
+            if (!stage) return;
+            if (after) showView(stage, "btn-after", "btn-before");
+            else showView(stage, "btn-before", "btn-after");
             byId("btnCap").textContent = after
               ? "One component, documented variants and sizes."
               : "6 implementations doing one job.";
@@ -523,7 +551,7 @@ import { MAILTO_AUDIT as mailto } from "../consts";
       padding-bottom: 72px;
     }
     .hero h1 .hl {
-      color: #e8d5b0;
+      color: #e07a5f;
     }
     /* The global focus ring (--accent2, dark plum) fails AA on every dark
        band this page adds (hero, check rows, start): ~1.5:1, far under the
@@ -568,7 +596,7 @@ import { MAILTO_AUDIT as mailto } from "../consts";
       color: #cfc6b8;
     }
     .ticker .track span b {
-      color: #e8d5b0;
+      color: #e07a5f;
     }
     @keyframes scrollx {
       from {
@@ -626,10 +654,10 @@ import { MAILTO_AUDIT as mailto } from "../consts";
       color: #fff;
     }
     .checks-intro .seclabel {
-      color: #e8d5b0;
+      color: #e07a5f;
     }
     .checks-intro .seclabel::before {
-      background: #e8d5b0;
+      background: #e07a5f;
     }
     .checks-intro .lede {
       color: #d6cdc0;
@@ -673,7 +701,7 @@ import { MAILTO_AUDIT as mailto } from "../consts";
     .check .label-key {
       font-family: var(--mono);
       font-size: 12px;
-      color: #e8d5b0;
+      color: #e07a5f;
     }
 
     .stagebig {
@@ -681,6 +709,22 @@ import { MAILTO_AUDIT as mailto } from "../consts";
       border: 1px solid rgba(255, 255, 255, 0.14);
       border-radius: 18px;
       padding: 32px;
+    }
+
+    /* Toggle views stack in one grid cell, so the panel is always as tall as
+       the taller state and the layout never reflows when toggling. The inactive
+       view keeps its box (reserving height) but is hidden from sight, screen
+       readers, and tab order. align-items: start keeps any extra space at the
+       bottom of the shorter state. */
+    .swap {
+      display: grid;
+      align-items: start;
+    }
+    .swap > .swapview {
+      grid-area: 1 / 1;
+    }
+    .swap > .swapview[data-inactive] {
+      visibility: hidden;
     }
     .toggle {
       display: inline-flex;
@@ -699,7 +743,7 @@ import { MAILTO_AUDIT as mailto } from "../consts";
       cursor: pointer;
     }
     .toggle button[aria-pressed="true"] {
-      background: #e8d5b0;
+      background: #e07a5f;
       color: var(--grad-ink);
     }
 
@@ -818,7 +862,7 @@ import { MAILTO_AUDIT as mailto } from "../consts";
       font-size: 15px;
     }
     .bcanon {
-      background: #e8d5b0;
+      background: #e07a5f;
       color: var(--grad-ink);
       border: 0;
       border-radius: 11px;
@@ -898,12 +942,15 @@ import { MAILTO_AUDIT as mailto } from "../consts";
       line-height: 1.8;
     }
     .spec .k {
-      color: #e8d5b0;
+      color: #e07a5f;
     }
     .spec .row {
-      display: flex;
-      justify-content: space-between;
+      /* Two columns so every value shares one left edge instead of being
+         pushed to the right by space-between (which read as ragged). */
+      display: grid;
+      grid-template-columns: 11ch 1fr;
       gap: 14px;
+      align-items: baseline;
       border-bottom: 1px dashed rgba(255, 255, 255, 0.16);
       padding: 7px 0;
     }
@@ -1079,10 +1126,10 @@ import { MAILTO_AUDIT as mailto } from "../consts";
       border-top: 1px solid rgba(255, 255, 255, 0.08);
     }
     .dogfood .seclabel {
-      color: #e8d5b0;
+      color: #e07a5f;
     }
     .dogfood .seclabel::before {
-      background: #e8d5b0;
+      background: #e07a5f;
     }
     .dogfood h3 {
       color: #fff;
@@ -1106,7 +1153,7 @@ import { MAILTO_AUDIT as mailto } from "../consts";
       font-size: 12px;
       letter-spacing: 1px;
       text-transform: uppercase;
-      color: #e8d5b0;
+      color: #e07a5f;
       margin: 0 0 16px;
       font-weight: 500;
     }
@@ -1143,7 +1190,7 @@ import { MAILTO_AUDIT as mailto } from "../consts";
     .scale-row i {
       display: block;
       height: 13px;
-      background: #e8d5b0;
+      background: #e07a5f;
       border-radius: 3px;
     }
     .tokrow {
@@ -1171,11 +1218,11 @@ import { MAILTO_AUDIT as mailto } from "../consts";
       border-top: 1px solid rgba(255, 255, 255, 0.08);
     }
     .start .seclabel {
-      color: #e8d5b0;
+      color: #e07a5f;
       justify-content: center;
     }
     .start .seclabel::before {
-      background: #e8d5b0;
+      background: #e07a5f;
     }
     .start .sectitle {
       color: #fff;
@@ -1230,19 +1277,23 @@ import { MAILTO_AUDIT as mailto } from "../consts";
         background: transparent;
       }
       50% {
-        background: rgba(232, 213, 176, 0.28);
+        background: rgba(224, 122, 95, 0.28);
       }
     }
 
-    /* ---- Scroll reveal ---- */
-    .reveal {
+    /* ---- Scroll reveal ----
+       Progressive enhancement: content is visible by default. The hidden
+       starting state only applies once the inline script has set html.js, so
+       a visitor without JS (or before JS runs) always sees the content. The
+       gated selectors below outrank .reveal.in, so .in must also be gated. */
+    :global(html.js) .reveal {
       opacity: 0;
       transform: translateY(18px);
       transition:
         opacity 0.6s ease,
         transform 0.6s ease;
     }
-    .reveal.in {
+    :global(html.js) .reveal.in {
       opacity: 1;
       transform: none;
     }
@@ -1283,7 +1334,9 @@ import { MAILTO_AUDIT as mailto } from "../consts";
       .ticker .track {
         animation: none !important;
       }
-      .reveal {
+      /* Gated to match (and outrank) the html.js hidden state above, so
+         reduced-motion visitors get the content shown immediately. */
+      :global(html.js) .reveal {
         opacity: 1;
         transform: none;
         transition: none;
