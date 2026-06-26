@@ -50,6 +50,38 @@
   --mono: "JetBrains Mono", ui-monospace, Menlo, Consolas, monospace;
 
   --maxw: 980px;
+
+  /* On-dark de-facto tokens: colors used as repeated literals on the
+     gradient/header bands before this pass. See docs/design-tokens.md. */
+  --accent-warm: #e07a5f; /* terracotta: kicker + endcta accents on the dark band */
+  --on-dark: #e6ddd0; /* warm off-white body text on the gradient/header */
+  --on-dark-dim: #cfc6b8; /* dimmer on-dark text (captions on gradient) */
+  --on-dark-soft: #d6cdc0; /* softer on-dark body text */
+
+  /* Spacing scale (4px base) */
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 12px;
+  --space-4: 16px;
+  --space-5: 24px;
+  --space-6: 32px;
+  --space-7: 48px;
+  --space-8: 72px;
+
+  /* Radius scale */
+  --radius-sm: 6px;
+  --radius-md: 11px;
+  --radius-lg: 18px;
+  --radius-pill: 999px;
+
+  /* Type scale */
+  --text-xs: 12px;
+  --text-sm: 13px;
+  --text-base: 15px;
+  --text-md: 17px;
+  --text-lg: 21px;
+  --text-xl: 28px;
+  --text-2xl: 34px;
 }
 
 * {
